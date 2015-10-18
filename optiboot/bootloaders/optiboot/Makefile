@@ -58,7 +58,8 @@ PROGRAM    = optiboot
 export
 
 # defaults
-MCU_TARGET = atmega168
+# Set this explicitly in your make rules!
+# MCU_TARGET = atmega168
 LDSECTIONS  = -Wl,--section-start=.text=0x3e00 -Wl,--section-start=.version=0x3ffe
 
 # Build environments
@@ -155,6 +156,7 @@ ifdef BAUD_RATE
 BAUD_RATE_CMD = -DBAUD_RATE=$(BAUD_RATE)
 dummy = FORCE
 else
+BAUD_RATE     = 115200
 BAUD_RATE_CMD = -DBAUD_RATE=115200
 endif
 
@@ -263,82 +265,6 @@ virboot328_isp: LFUSE ?= FF
 # 2.7V brownout
 virboot328_isp: EFUSE ?= 05
 virboot328_isp: isp
-
-
-# Diecimila, Duemilanove with m168, and NG use identical bootloaders
-# Call it "atmega168" for generality and clarity, keep "diecimila" for
-# backward compatibility of makefile
-#
-atmega168: TARGET = atmega168
-atmega168: MCU_TARGET = atmega168
-atmega168: CFLAGS += $(COMMON_OPTIONS)
-atmega168: AVR_FREQ ?= 16000000L 
-atmega168: $(PROGRAM)_atmega168.hex
-atmega168: $(PROGRAM)_atmega168.lst
-
-atmega168_isp: atmega168
-atmega168_isp: TARGET = atmega168
-# 2.7V brownout
-atmega168_isp: HFUSE ?= DD
-# Full swing (16MHz) 16KCK/14CK+65ms
-atmega168_isp: LFUSE ?= F7
-# 512 byte boot
-atmega168_isp: EFUSE ?= 04
-atmega168_isp: isp
-
-atmega16: TARGET = atmega16
-atmega16: MCU_TARGET = atmega16
-atmega16: CFLAGS += $(COMMON_OPTIONS)
-atmega16: AVR_FREQ ?= 16000000L 
-atmega16: $(PROGRAM)_atmega16.hex
-atmega16: $(PROGRAM)_atmega16.lst
-
-atmega328: TARGET = atmega328
-atmega328: MCU_TARGET = atmega328p
-atmega328: CFLAGS += $(COMMON_OPTIONS)
-atmega328: AVR_FREQ ?= 16000000L
-atmega328: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
-atmega328: $(PROGRAM)_atmega328.hex
-atmega328: $(PROGRAM)_atmega328.lst
-
-atmega328_isp: atmega328
-atmega328_isp: TARGET = atmega328
-atmega328_isp: MCU_TARGET = atmega328p
-# 512 byte boot, SPIEN
-atmega328_isp: HFUSE ?= DE
-# Low power xtal (16MHz) 16KCK/14CK+65ms
-atmega328_isp: LFUSE ?= FF
-# 2.7V brownout
-atmega328_isp: EFUSE ?= 05
-atmega328_isp: isp
-
-#Atmega1280
-atmega1280: MCU_TARGET = atmega1280
-atmega1280: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT $(UART_CMD)
-atmega1280: AVR_FREQ ?= 16000000L
-atmega1280: LDSECTIONS  = -Wl,--section-start=.text=0x1fc00  -Wl,--section-start=.version=0x1fffe
-atmega1280: $(PROGRAM)_atmega1280.hex
-atmega1280: $(PROGRAM)_atmega1280.lst
-
-
-# ATmega8
-#
-atmega8: TARGET = atmega8
-atmega8: MCU_TARGET = atmega8
-atmega8: CFLAGS += $(COMMON_OPTIONS)
-atmega8: AVR_FREQ ?= 16000000L 
-atmega8: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega8: $(PROGRAM)_atmega8.hex
-atmega8: $(PROGRAM)_atmega8.lst
-
-atmega8_isp: atmega8
-atmega8_isp: TARGET = atmega8
-atmega8_isp: MCU_TARGET = atmega8
-# SPIEN, CKOPT (for full swing xtal), Bootsize=512B
-atmega8_isp: HFUSE ?= CC
-# 2.7V brownout, 16MHz Xtal, 16KCK/14CK+65ms
-atmega8_isp: LFUSE ?= BF
-atmega8_isp: isp
 
 
 #---------------------------------------------------------------------------
@@ -506,7 +432,7 @@ include Makefile.atmel
 include Makefile.extras
 include Makefile.1284
 include Makefile.custom
-
+include Makefile.generic
 
 #---------------------------------------------------------------------------
 #

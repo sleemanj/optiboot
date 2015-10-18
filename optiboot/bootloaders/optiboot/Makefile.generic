@@ -1,0 +1,288 @@
+
+################################################################################
+# For convenience, generates better named hex files
+#  you can now do
+#
+#     AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328 atmega8 atmega168
+#
+# to produce
+#
+#    optiboot_atmega328p_16000000L_57600.hex
+#    optiboot_atmega8_16000000L_57600.CONVERT_TO_HEX
+#    optiboot_atmega168_16000000L_57600.hex
+#
+# etc...
+
+# Note that if you use the _isp targets (eg atmega8_isp) the default 
+# fuses are for 8MHz internal oscillator for safety.
+#
+# If make were easier to write for occasionally, then I'd have included suggested
+# fuse values in the file names, but it's too hard.
+#
+#
+# WHAT IS THE .TEXT and .VERSION SECTION ADDRESSES
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# .text is the byte address of the start of the boot area, as determined by
+#  your (intended) fuse settings, if we assume that the boot section is at the
+#  top of the flash memory and you will use a 256 WORD (512 BYTE) boot section
+#  then the address should be CONVERT_TO_HEX(TOTAL_FLASH - 512)
+#
+# .version is CONVERT_TO_HEX(TOTAL_FLASH - 2) 
+#   - that is, the last 2 bytes of flash, I don't claim to know why, but it is
+#
+#  Eg: ATMega8 is 8192 bytes of Flash, we use a 256 Word Boot Area (512 Byte)
+#    .text    = 8192-512 = 7680 = 0x1E00
+#    .version = 8192-2   = 8190 = 0x1FFE
+#
+#
+################################################################################
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+################################################################################
+#                                                                              #
+#  These are the ATMega-8 Controllers, they are essentially pin compatible     #
+#  with each other and differ mainly in the amount of Memory                   #
+#                                                                              #
+#  At current time, I think the full list of these similar beasts is           #
+#    8, 8A*, 88, 88p, 48*, 168, 168p, 328, 328p                                #
+#                                                                              #
+#  * the 8A has the same device signature as the 8 so they can be regarded     #
+#    as identical for our purposes.                                            #
+#  * the 48 can not self-program, so optiboot is no good for it.               #
+#                                                                              #
+################################################################################
+################################################################################
+# {{{
+
+## ATMEGA328 / 328P
+#  Same code is for both 328 and 328p, there is no difference as far as 
+#  optiboot is interested.  However we have to duplicate the _isp section
+#  because we have to pass the MCU_TARGET to avrdude
+################################################################################
+
+atmega328: TARGET = atmega328
+atmega328: MCU_TARGET = atmega328
+atmega328: CFLAGS += $(COMMON_OPTIONS)
+atmega328: AVR_FREQ ?= 8000000L
+atmega328: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega328: $(PROGRAM)_atmega328_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega328_isp: atmega328
+atmega328_isp: TARGET = atmega328_$(AVR_FREQ)_$(BAUD_RATE)
+atmega328_isp: MCU_TARGET ?= atmega328
+atmega328_isp: LFUSE ?= E2
+atmega328_isp: HFUSE ?= DE
+atmega328_isp: EFUSE ?= 05
+atmega328_isp: isp
+
+atmega328p:    atmega328
+atmega328_isp: MCU_TARGET = atmega328p
+atmega328_isp: atmega328
+
+
+## ATMEGA168/168p
+#  As with 328, the 168p and 168 are the same as far as we care.
+################################################################################
+atmega168p:     atmega168
+atmega168p_isp: MCU_TARGET = atmega168p 
+atmega168p_isp: atmega168_isp
+
+atmega168: TARGET = atmega168
+atmega168: MCU_TARGET ?= atmega168
+atmega168: CFLAGS += $(COMMON_OPTIONS)
+atmega168: AVR_FREQ ?= 8000000L 
+atmega168: $(PROGRAM)_atmega168_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega168_isp: atmega168
+atmega168_isp: TARGET = atmega168_$(AVR_FREQ)_$(BAUD_RATE)
+atmega168_isp: MCU_TARGET ?= atmega168
+atmega168_isp: LFUSE ?= E2
+atmega168_isp: HFUSE ?= DD
+atmega168_isp: EFUSE ?= 04
+atmega168_isp: isp
+
+## ATMEGA88/88P
+#  As with 328, the 88p and 88 are the same as far as we care.
+#
+# NB: I do not know why the -Wl,--undefined=optiboot_version option is required, 
+#  I suspect it's something to do with OS/X developers.
+#  On Linux, seems to be fine without but I'll leave it in anyway.
+################################################################################
+atmega88p:     atmega88
+atmega88p_isp: MCU_TARGET = atmega88p 
+atmega88p_isp: atmega88_isp
+
+atmega88: TARGET = atmega88
+atmega88: MCU_TARGET = atmega88
+atmega88: CFLAGS += $(COMMON_OPTIONS)
+atmega88: AVR_FREQ ?= 8000000L
+atmega88: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega88: $(PROGRAM)_atmega88_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega88_isp: atmega88
+atmega88_isp: TARGET = atmega88_$(AVR_FREQ)_$(BAUD_RATE)
+atmega88_isp: MCU_TARGET ?= atmega88
+atmega88_isp: LFUSE ?= E2
+atmega88_isp: HFUSE ?= DD
+atmega88_isp: EFUSE ?= FC
+atmega88_isp: isp
+
+## ATMEGA8
+#
+# The Atmega8 is similar to the Atmega88, main difference is that it doesn't have
+# pin change interrupts on all the pins like the 88 so only has the two explicit
+# interrupt pins and doesn't have debugWire not that Arduino users will need that.
+#
+# NB: I do not know why the -Wl,--undefined=optiboot_version option is required, 
+#  I suspect it's something to do with OS/X developers.
+#  On Linux, seems to be fine without but I'll leave it in anyway.
+################################################################################
+
+atmega8: TARGET = atmega8
+atmega8: MCU_TARGET = atmega8
+atmega8: CFLAGS += $(COMMON_OPTIONS)
+atmega8: AVR_FREQ ?= 8000000L
+atmega8: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega8: $(PROGRAM)_atmega8_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega8_isp: atmega8
+atmega8_isp: TARGET = atmega8_$(AVR_FREQ)_$(BAUD_RATE)
+atmega8_isp: MCU_TARGET ?= atmega8
+atmega8_isp: LFUSE ?= A4
+atmega8_isp: HFUSE ?= CC
+atmega8_isp: isp
+
+# }}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+################################################################################
+#                                                                              #
+# The following ATMegas have more I/O pins etc than the 8, 88, 168 and 328     #
+# so you will likely need a different Arduino Core for these, they are also    #
+# not pin-compatible, for obvious reasons (there being more pins!)             #
+#                                                                              #
+# They have 40pin DIP or 44pin SMD packages                                    #
+#                                                                              #
+################################################################################
+################################################################################
+#{{{
+
+## ATMEGA16
+#
+# The Atmega16 is similar to the Atmega168, main difference is that it doesn't have
+# pin change interrupts on all the pins like the 168 so only has the 3 explicit
+# interrupt pins and doesn't have debugWire not that Arduino users will need that
+# but does have JTAG (if fused) and more I/O pins.
+#
+# Note the fuse settings for the below have not been tested.
+################################################################################
+atmega16: TARGET = atmega16
+atmega16: MCU_TARGET = atmega16
+atmega16: CFLAGS += $(COMMON_OPTIONS)
+atmega16: AVR_FREQ ?= 8000000L 
+atmega16: $(PROGRAM)_atmega16_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega16_isp: atmega16
+atmega16_isp: TARGET = atmega16_$(AVR_FREQ)_$(BAUD_RATE)
+atmega16_isp: MCU_TARGET ?= atmega16
+atmega16_isp: LFUSE ?= A4
+atmega16_isp: HFUSE ?= CC
+atmega16_isp: isp
+
+
+
+## ATMEGA32
+# The Atmega32 is similar to the Atmega328, main difference is that it doesn't have
+# pin change interrupts on all the pins like the 168 so only has the 3 explicit
+# interrupt pins and doesn't have debugWire not that Arduino users will need that
+# but does have JTAG (if fused) and more I/O pins.
+################################################################################
+
+atmega32: TARGET = atmega32
+atmega32: MCU_TARGET = atmega32
+atmega32: CFLAGS += $(COMMON_OPTIONS)
+atmega32: AVR_FREQ ?= 8000000L
+atmega32: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega32: $(PROGRAM)_atmega32_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega32_isp: atmega32
+atmega32_isp: TARGET = atmega32_$(AVR_FREQ)_$(BAUD_RATE)
+atmega32_isp: MCU_TARGET ?= atmega32
+atmega32_isp: LFUSE ?= A4
+atmega32_isp: HFUSE ?= CE
+atmega32_isp: isp
+
+#}}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+################################################################################
+#                                                                              #
+# The following ATMegas have even more IO pins, they are pin compatible        #
+#                                                                              #
+# They have 100 pin SMD packages                                               #
+#                                                                              #
+################################################################################
+################################################################################
+#{{{
+
+## ATMEGA1280
+#
+# Note the fuse settings for the below have not been tested.
+################################################################################
+
+atmega1280: MCU_TARGET = atmega1280
+atmega1280: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT $(UART_CMD)
+atmega1280: AVR_FREQ ?= 8000000L
+atmega1280: LDSECTIONS  = -Wl,--section-start=.text=0x1fc00  -Wl,--section-start=.version=0x1fffe
+atmega1280: $(PROGRAM)_atmega1280_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega1280_isp: atmega1280
+atmega1280_isp: TARGET = atmega1280_$(AVR_FREQ)_$(BAUD_RATE)
+atmega1280_isp: MCU_TARGET ?= atmega1280
+atmega1280_isp: LFUSE ?= E2
+atmega1280_isp: HFUSE ?= DE
+atmega1280_isp: EFUSE ?= FD
+atmega1280_isp: isp
+
+#}}}
