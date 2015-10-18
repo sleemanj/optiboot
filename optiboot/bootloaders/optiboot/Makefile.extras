@@ -12,62 +12,6 @@
 #
 
 #
-# ATmega88
-#
-atmega88: TARGET = atmega88
-atmega88: MCU_TARGET = atmega88
-atmega88: CFLAGS += $(COMMON_OPTIONS)
-atmega88: AVR_FREQ ?= 16000000L 
-atmega88: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega88: $(PROGRAM)_atmega88.hex
-atmega88: $(PROGRAM)_atmega88.lst
-
-atmega88_isp: atmega88
-atmega88_isp: TARGET = atmega88
-atmega88_isp: MCU_TARGET = atmega88
-# 2.7V brownout
-atmega88_isp: HFUSE ?= DD
-# Low power xtal (16MHz) 16KCK/14CK+65ms
-atmega88_isp: LFUSE ?= FF
-# 512 byte boot
-atmega88_isp: EFUSE ?= 04
-atmega88_isp: isp
-
-atmega88p_isp: atmega88
-atmega88p_isp: TARGET = atmega88
-atmega88p_isp: MCU_TARGET = atmega88p
-# 2.7V brownout
-atmega88p_isp: HFUSE ?= DD
-# Low power xtal (16MHz) 16KCK/14CK+65ms
-atmega88p_isp: LFUSE ?= FF
-# 512 byte boot
-atmega88p_isp: EFUSE ?= 04
-atmega88p_isp: isp
-
-
-#
-# ATmega32
-#
-atmega32: TARGET = atmega32
-atmega32: MCU_TARGET = atmega32
-atmega32: CFLAGS += $(COMMON_OPTIONS)
-atmega32: AVR_FREQ ?= 11059200L
-atmega32: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
-atmega32: $(PROGRAM)_atmega32.hex
-atmega32: $(PROGRAM)_atmega32.lst
-
-atmega32_isp: atmega32
-atmega32_isp: TARGET = atmega32
-atmega32_isp: MCU_TARGET = atmega32
-# No OCD or JTAG, SPIEN, CKOPT (for full swing xtal), Bootsize=512B
-atmega32_isp: HFUSE ?= CE
-# 2.7V brownout, 16MHz Xtal, 16KCK/14CK+65ms
-atmega32_isp: LFUSE ?= BF
-atmega32_isp: isp
-
-
-
-#
 # ATtiny84
 #
 attiny84: TARGET = attiny84
