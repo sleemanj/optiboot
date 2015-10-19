@@ -14,7 +14,7 @@ fi
 export AVR_FREQ
 export BAUD_RATE
 
-for chip in $(cat Makefile.generic | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | sort | uniq | sed s/://)
+for chip in $(cat Makefile.atmega* | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | sort | uniq | sed s/://)
 do
   echo -n "Building $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ... "
   

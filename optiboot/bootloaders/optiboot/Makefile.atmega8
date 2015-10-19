@@ -1,10 +1,32 @@
-
 ################################################################################
-# For convenience, generates better named hex files.
+#
+#  ATMEGA8 Series Pin Compatible Microcontrollers
+#
+#   ATMega8,   ATMega8A,
+#   ATMega88,  ATMega88A,  ATMega88P,  ATMega88PA, ATMega88PB 
+#   ATMega168, ATMega168A, ATMega168P, ATMega168PA, ATMega168PB
+#   ATMega328, ATMega328P, ATMega328PB
+#   ATMega48,  ATMega48A,  ATMega48P, ATMega48PA, ATMega48PB
+#           
+#  These microcontrollers are essentially pin compatible in a DIP 28 and TQFP 32
+#  package, the differ mostly in memory (but not only).
+#
+#  The 48 and 48P are quite special cases, because they do not have a boot 
+#  section of memory, so they use the VIRTUAL_BOOT function of optiboot.
+#
+#  A number of the updated ("A", "B") versions are not known about by 
+#  avr-gcc so we are just treating them as the original version - this should
+#  be fine, as long as the signature bytes are not changing (usually don't).
+#
+################################################################################
+################################################################################
+#
+# Usage and General Development Notes 
+# (See Further Comments for Chip Specific Notes)
 #
 #  WARNING: DO NOT GENERATE MULTIPLE TARGETS IN A SINGLE MAKE INVOCATION
 #   DO NOT DO: `make X Y Z`
-#   INSTEAD  : for i in X Y Z; do make $i; done
+#   INSTEAD  : for i in X Y Z; do AVR_FREQ=16000000L BAUD_RATE=57600 make $i; done
 #   REASON   : I hate gnu make and it hates me, if you try to do `make X Y Z` it
 #              *appears* to work, but actually the generated hex files are 
 #              wrong. 
@@ -15,7 +37,7 @@
 #
 #    optiboot_atmega328p_16000000L_57600.hex
 #
-## Note that if you use the _isp targets (eg atmega8_isp) the default 
+# Note that if you use the _isp targets (eg atmega8_isp) the default 
 # fuses are for 8MHz internal oscillator for safety.
 #
 # If make were easier to write for occasionally, then I'd have included suggested
@@ -39,10 +61,6 @@
 #
 #
 ################################################################################
-
-
-
-
 
 
 
@@ -93,6 +111,38 @@ atmega328p_isp: HFUSE ?= DE
 atmega328p_isp: EFUSE ?= 05
 atmega328p_isp: isp
 
+# 328pa is not known by avr-gcc, so we use 328p for MCU_TARGET
+atmega328pa: TARGET = atmega328pa
+atmega328pa: MCU_TARGET = atmega328p
+atmega328pa: CFLAGS += $(COMMON_OPTIONS)
+atmega328pa: AVR_FREQ ?= 8000000L
+atmega328pa: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega328pa: $(PROGRAM)_atmega328pa_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega328pa_isp: atmega328p
+atmega328pa_isp: TARGET = atmega328pa_$(AVR_FREQ)_$(BAUD_RATE)
+atmega328pa_isp: MCU_TARGET ?= atmega328pa
+atmega328pa_isp: LFUSE ?= E2
+atmega328pa_isp: HFUSE ?= DE
+atmega328pa_isp: EFUSE ?= 05
+atmega328pa_isp: isp
+
+# 328pb is not known by avr-gcc, so we use 328p for MCU_TARGET
+atmega328pb: TARGET = atmega328pb
+atmega328pb: MCU_TARGET = atmega328p
+atmega328pb: CFLAGS += $(COMMON_OPTIONS)
+atmega328pb: AVR_FREQ ?= 8000000L
+atmega328pb: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega328pb: $(PROGRAM)_atmega328pb_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega328pb_isp: atmega328p
+atmega328pb_isp: TARGET = atmega328pb_$(AVR_FREQ)_$(BAUD_RATE)
+atmega328pb_isp: MCU_TARGET ?= atmega328pb
+atmega328pb_isp: LFUSE ?= E2
+atmega328pb_isp: HFUSE ?= DE
+atmega328pb_isp: EFUSE ?= 05
+atmega328pb_isp: isp
+
 atmega328: TARGET = atmega328
 atmega328: MCU_TARGET = atmega328
 atmega328: CFLAGS += $(COMMON_OPTIONS)
@@ -131,6 +181,20 @@ atmega168_isp: HFUSE ?= DD
 atmega168_isp: EFUSE ?= 04
 atmega168_isp: isp
 
+atmega168a: TARGET = atmega168a
+atmega168a: MCU_TARGET ?= atmega168a
+atmega168a: CFLAGS += $(COMMON_OPTIONS)
+atmega168a: AVR_FREQ ?= 8000000L 
+atmega168a: $(PROGRAM)_atmega168a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega168a_isp: atmega168a
+atmega168a_isp: TARGET = atmega168a_$(AVR_FREQ)_$(BAUD_RATE)
+atmega168a_isp: MCU_TARGET ?= atmega168a
+atmega168a_isp: LFUSE ?= E2
+atmega168a_isp: HFUSE ?= DD
+atmega168a_isp: EFUSE ?= 04
+atmega168a_isp: isp
+
 atmega168p: TARGET = atmega168p
 atmega168p: MCU_TARGET ?= atmega168p
 atmega168p: CFLAGS += $(COMMON_OPTIONS)
@@ -144,6 +208,36 @@ atmega168p_isp: LFUSE ?= E2
 atmega168p_isp: HFUSE ?= DD
 atmega168p_isp: EFUSE ?= 04
 atmega168p_isp: isp
+
+# 168pa is not known by avr-libc so we use 168p
+atmega168pa: TARGET = atmega168pa
+atmega168pa: MCU_TARGET ?= atmega168p
+atmega168pa: CFLAGS += $(COMMON_OPTIONS)
+atmega168pa: AVR_FREQ ?= 8000000L 
+atmega168pa: $(PROGRAM)_atmega168pa_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega168pa_isp: atmega168pa
+atmega168pa_isp: TARGET = atmega168pa_$(AVR_FREQ)_$(BAUD_RATE)
+atmega168pa_isp: MCU_TARGET ?= atmega168pa
+atmega168pa_isp: LFUSE ?= E2
+atmega168pa_isp: HFUSE ?= DD
+atmega168pa_isp: EFUSE ?= 04
+atmega168pa_isp: isp
+
+# 168pb is not known by avr-gcc so we use 168p
+atmega168pb: TARGET = atmega168pb
+atmega168pb: MCU_TARGET ?= atmega168p
+atmega168pb: CFLAGS += $(COMMON_OPTIONS)
+atmega168pb: AVR_FREQ ?= 8000000L 
+atmega168pb: $(PROGRAM)_atmega168pb_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega168pb_isp: atmega168p
+atmega168pb_isp: TARGET = atmega168pb_$(AVR_FREQ)_$(BAUD_RATE)
+atmega168pb_isp: MCU_TARGET ?= atmega168p
+atmega168pb_isp: LFUSE ?= E2
+atmega168pb_isp: HFUSE ?= DD
+atmega168pb_isp: EFUSE ?= 04
+atmega168pb_isp: isp
 
 ## ATMEGA88/88P
 #
@@ -188,6 +282,21 @@ atmega88_isp: HFUSE ?= DD
 atmega88_isp: EFUSE ?= FC
 atmega88_isp: isp
 
+atmega88a: TARGET = atmega88a
+atmega88a: MCU_TARGET = atmega88a
+atmega88a: CFLAGS += $(COMMON_OPTIONS)
+atmega88a: AVR_FREQ ?= 8000000L
+atmega88a: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega88a: $(PROGRAM)_atmega88a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega88a_isp: atmega88a
+atmega88a_isp: TARGET = atmega88a_$(AVR_FREQ)_$(BAUD_RATE)
+atmega88a_isp: MCU_TARGET ?= atmega88a
+atmega88a_isp: LFUSE ?= E2
+atmega88a_isp: HFUSE ?= DD
+atmega88a_isp: EFUSE ?= FC
+atmega88a_isp: isp
+
 atmega88pa: TARGET = atmega88pa
 atmega88pa: MCU_TARGET = atmega88pa
 atmega88pa: CFLAGS += $(COMMON_OPTIONS)
@@ -203,6 +312,21 @@ atmega88pa_isp: HFUSE ?= DD
 atmega88pa_isp: EFUSE ?= FC
 atmega88pa_isp: isp
 
+# 88pb is not known by avr-gcc, we use 88pa instead
+atmega88pb: TARGET = atmega88pb
+atmega88pb: MCU_TARGET = atmega88pa
+atmega88pb: CFLAGS += $(COMMON_OPTIONS)
+atmega88pb: AVR_FREQ ?= 8000000L
+atmega88pb: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega88pb: $(PROGRAM)_atmega88pb_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega88pb_isp: atmega88pb
+atmega88pb_isp: TARGET = atmega88pb_$(AVR_FREQ)_$(BAUD_RATE)
+atmega88pb_isp: MCU_TARGET ?= atmega88pa
+atmega88pb_isp: LFUSE ?= E2
+atmega88pb_isp: HFUSE ?= DD
+atmega88pb_isp: EFUSE ?= FC
+atmega88pb_isp: isp
 
 
 ## ATMEGA8
@@ -210,6 +334,10 @@ atmega88pa_isp: isp
 # The Atmega8 is similar to the Atmega88, main difference is that it doesn't have
 # pin change interrupts on all the pins like the 88 so only has the two explicit
 # interrupt pins and doesn't have debugWire not that Arduino users will need that.
+#
+# avr-gcc doesn't know about the 8A, so we target the 8 instead for that
+#  yes this means that the binaries are identical and ther'es no difference
+#  but one day maybe avr-gcc will treat it differently
 #
 # NB: I do not know why the -Wl,--undefined=optiboot_version option is required, 
 #  I suspect it's something to do with OS/X developers.
@@ -230,6 +358,19 @@ atmega8_isp: LFUSE ?= A4
 atmega8_isp: HFUSE ?= CC
 atmega8_isp: isp
 
+atmega8a: TARGET = atmega8a
+atmega8a: MCU_TARGET = atmega8
+atmega8a: CFLAGS += $(COMMON_OPTIONS)
+atmega8a: AVR_FREQ ?= 8000000L
+atmega8a: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega8a: $(PROGRAM)_atmega8a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega8a_isp: atmega8a
+atmega8a_isp: TARGET = atmega8a_$(AVR_FREQ)_$(BAUD_RATE)
+atmega8a_isp: MCU_TARGET ?= atmega8
+atmega8a_isp: LFUSE ?= A4
+atmega8a_isp: HFUSE ?= CC
+atmega8a_isp: isp
 
 ## ATMEGA48/48P
 #  
@@ -274,6 +415,43 @@ atmega48p_isp: EFUSE ?= 00
 atmega48p_isp: LOCKBYTE ?= 3F
 atmega48p_isp: isp
 
+# avr-libc doesn't know about the 48PA, we use 48P instead
+atmega48pa: TARGET = atmega48pa
+atmega48pa: MCU_TARGET = atmega48p
+atmega48pa: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=26
+atmega48pa: AVR_FREQ ?= 8000000L
+# My system compiles to 602 bytes for 48p, so .text is 4096 - 602 - 2 - 10 (futureproofing) = 0x0D9A
+atmega48pa: LDSECTIONS = -Wl,--section-start=.text=0x0D9A -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega48pa: $(PROGRAM)_atmega48pa_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega48pa_isp: atmega48pa
+atmega48pa_isp: TARGET = atmega48pa_$(AVR_FREQ)_$(BAUD_RATE)
+atmega48pa_isp: MCU_TARGET ?= atmega48p
+atmega48pa_isp: LFUSE ?= E2
+atmega48pa_isp: HFUSE ?= DD
+atmega48pa_isp: EFUSE ?= 00
+atmega48pa_isp: LOCKBYTE ?= 3F
+atmega48pa_isp: isp
+
+# avr-gcc doesn't know about the 48PB, we use 48P instead
+atmega48pb: TARGET = atmega48pb
+atmega48pb: MCU_TARGET = atmega48p
+atmega48pb: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=26
+atmega48pb: AVR_FREQ ?= 8000000L
+# My system compiles to 602 bytes for 48p, so .text is 4096 - 602 - 2 - 10 (futureproofing) = 0x0D9A
+atmega48pb: LDSECTIONS = -Wl,--section-start=.text=0x0D9A -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega48pb: $(PROGRAM)_atmega48pb_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega48pb_isp: atmega48pb
+atmega48pb_isp: TARGET = atmega48pb_$(AVR_FREQ)_$(BAUD_RATE)
+atmega48pb_isp: MCU_TARGET ?= atmega48p
+atmega48pb_isp: LFUSE ?= E2
+atmega48pb_isp: HFUSE ?= DD
+atmega48pb_isp: EFUSE ?= 00
+atmega48pb_isp: LOCKBYTE ?= 3F
+atmega48pb_isp: isp
+
+
 atmega48: TARGET = atmega48
 atmega48: MCU_TARGET = atmega48
 atmega48: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=26
@@ -291,123 +469,19 @@ atmega48_isp: EFUSE ?= 00
 atmega48_isp: isp
 
 
+atmega48a: TARGET = atmega48a
+atmega48a: MCU_TARGET = atmega48a
+atmega48a: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=26
+atmega48a: AVR_FREQ ?= 8000000L
+# My system compiles to 592 bytes for 48, so .text is 4096 - 592 - 2 - 10 (futureproofing) = 0x0DA4
+atmega48a: LDSECTIONS = -Wl,--section-start=.text=0x0DA4 -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega48a: $(PROGRAM)_atmega48a_$(AVR_FREQ)_$(BAUD_RATE).hex
 
+atmega48a_isp: atmega48a
+atmega48a_isp: TARGET = atmega48a_$(AVR_FREQ)_$(BAUD_RATE)
+atmega48a_isp: MCU_TARGET ?= atmega48a
+atmega48a_isp: LFUSE ?= E2
+atmega48a_isp: HFUSE ?= DD
+atmega48a_isp: EFUSE ?= 00
+atmega48a_isp: isp
 
-
-
-
-
-
-
-
-
-
-
-################################################################################
-################################################################################
-#                                                                              #
-# The following ATMegas have more I/O pins etc than the 8, 88, 48, 168 and 328 #
-# so you will likely need a different Arduino Core for these, they are also    #
-# not pin-compatible, for obvious reasons (there being more pins!)             #
-#                                                                              #
-# They have 40pin DIP or 44pin SMD packages                                    #
-#                                                                              #
-################################################################################
-################################################################################
-#{{{
-
-## ATMEGA16
-#
-# The Atmega16 is similar to the Atmega168, main difference is that it doesn't have
-# pin change interrupts on all the pins like the 168 so only has the 3 explicit
-# interrupt pins and doesn't have debugWire not that Arduino users will need that
-# but does have JTAG (if fused) and more I/O pins.
-#
-# Note the fuse settings for the below have not been tested.
-################################################################################
-atmega16: TARGET = atmega16
-atmega16: MCU_TARGET = atmega16
-atmega16: CFLAGS += $(COMMON_OPTIONS)
-atmega16: AVR_FREQ ?= 8000000L 
-atmega16: $(PROGRAM)_atmega16_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega16_isp: atmega16
-atmega16_isp: TARGET = atmega16_$(AVR_FREQ)_$(BAUD_RATE)
-atmega16_isp: MCU_TARGET ?= atmega16
-atmega16_isp: LFUSE ?= A4
-atmega16_isp: HFUSE ?= CC
-atmega16_isp: isp
-
-
-
-## ATMEGA32
-# The Atmega32 is similar to the Atmega328, main difference is that it doesn't have
-# pin change interrupts on all the pins like the 168 so only has the 3 explicit
-# interrupt pins and doesn't have debugWire not that Arduino users will need that
-# but does have JTAG (if fused) and more I/O pins.
-################################################################################
-
-atmega32: TARGET = atmega32
-atmega32: MCU_TARGET = atmega32
-atmega32: CFLAGS += $(COMMON_OPTIONS)
-atmega32: AVR_FREQ ?= 8000000L
-atmega32: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
-atmega32: $(PROGRAM)_atmega32_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega32_isp: atmega32
-atmega32_isp: TARGET = atmega32_$(AVR_FREQ)_$(BAUD_RATE)
-atmega32_isp: MCU_TARGET ?= atmega32
-atmega32_isp: LFUSE ?= A4
-atmega32_isp: HFUSE ?= CE
-atmega32_isp: isp
-
-#}}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-################################################################################
-################################################################################
-#                                                                              #
-# The following ATMegas have even more IO pins, they are pin compatible        #
-#                                                                              #
-# They have 100 pin SMD packages                                               #
-#                                                                              #
-################################################################################
-################################################################################
-#{{{
-
-## ATMEGA1280
-#
-# Note the fuse settings for the below have not been tested.
-################################################################################
-
-atmega1280: MCU_TARGET = atmega1280
-atmega1280: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT $(UART_CMD)
-atmega1280: AVR_FREQ ?= 8000000L
-atmega1280: LDSECTIONS  = -Wl,--section-start=.text=0x1fc00  -Wl,--section-start=.version=0x1fffe
-atmega1280: $(PROGRAM)_atmega1280_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega1280_isp: atmega1280
-atmega1280_isp: TARGET = atmega1280_$(AVR_FREQ)_$(BAUD_RATE)
-atmega1280_isp: MCU_TARGET ?= atmega1280
-atmega1280_isp: LFUSE ?= E2
-atmega1280_isp: HFUSE ?= DE
-atmega1280_isp: EFUSE ?= FD
-atmega1280_isp: isp
-
-#}}}

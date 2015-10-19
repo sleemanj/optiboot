@@ -1,0 +1,151 @@
+################################################################################
+#
+#  ATMEGA640 and compatible 100 Pin Devices
+#
+#   ATMega640
+#   ATMega1280, ATMega1281
+#   ATMega2560, ATMega2561
+#
+#  These microcontrollers are essentially pin compatible in a TQFP 100
+#  package, the differ mostly in memory (but not only).
+#
+#
+################################################################################
+################################################################################
+#
+# Usage and General Development Notes 
+# (See Further Comments for Chip Specific Notes)
+#
+#  WARNING: DO NOT GENERATE MULTIPLE TARGETS IN A SINGLE MAKE INVOCATION
+#   DO NOT DO: `make X Y Z`
+#   INSTEAD  : for i in X Y Z; do AVR_FREQ=16000000L BAUD_RATE=57600 make $i; done
+#   REASON   : I hate gnu make and it hates me, if you try to do `make X Y Z` it
+#              *appears* to work, but actually the generated hex files are 
+#              wrong. 
+#   
+#     AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328p
+#
+# to produce
+#
+#    optiboot_atmega328p_16000000L_57600.hex
+#
+# Note that if you use the _isp targets (eg atmega8_isp) the default 
+# fuses are for 8MHz internal oscillator for safety.
+#
+# If make were easier to write for occasionally, then I'd have included suggested
+# fuse values in the file names, but it's too hard (would have to look at AVR_FREQ
+# and choose fuse values from a table based on that).#
+#
+# WHAT IS THE .TEXT and .VERSION SECTION ADDRESSES
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# .text is the byte address of the start of the boot area, as determined by
+#  your (intended) fuse settings, if we assume that the boot section is at the
+#  top of the flash memory and you will use a 256 WORD (512 BYTE) boot section
+#  then the address should be CONVERT_TO_HEX(TOTAL_FLASH - 512)
+#
+# .version is CONVERT_TO_HEX(TOTAL_FLASH - 2) 
+#   - that is, the last 2 bytes of flash, I don't claim to know why, but it is
+#
+#  Eg: ATMega8 is 8192 bytes of Flash, we use a 256 Word Boot Area (512 Byte)
+#    .text    = 8192-512 = 7680 = 0x1E00
+#    .version = 8192-2   = 8190 = 0x1FFE
+#
+#
+################################################################################
+
+## ATMEGA640
+#
+# Note the fuse settings for the below have not been tested.
+################################################################################
+
+atmega640: MCU_TARGET = atmega640
+atmega640: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT $(UART_CMD)
+atmega640: AVR_FREQ ?= 8000000L
+atmega640: LDSECTIONS  = -Wl,--section-start=.text=0xfc00  -Wl,--section-start=.version=0xfffe
+atmega640: $(PROGRAM)_atmega640_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega640_isp: atmega640
+atmega640_isp: TARGET = atmega640_$(AVR_FREQ)_$(BAUD_RATE)
+atmega640_isp: MCU_TARGET ?= atmega640
+atmega640_isp: LFUSE ?= E2
+atmega640_isp: HFUSE ?= DE
+atmega640_isp: EFUSE ?= 05
+atmega640_isp: isp
+
+
+## ATMEGA1280
+#
+# Note the fuse settings for the below have not been tested.
+################################################################################
+
+atmega1280: MCU_TARGET = atmega1280
+atmega1280: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT $(UART_CMD)
+atmega1280: AVR_FREQ ?= 8000000L
+atmega1280: LDSECTIONS  = -Wl,--section-start=.text=0x1fc00  -Wl,--section-start=.version=0x1fffe
+atmega1280: $(PROGRAM)_atmega1280_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega1280_isp: atmega1280
+atmega1280_isp: TARGET = atmega1280_$(AVR_FREQ)_$(BAUD_RATE)
+atmega1280_isp: MCU_TARGET ?= atmega1280
+atmega1280_isp: LFUSE ?= E2
+atmega1280_isp: HFUSE ?= DE
+atmega1280_isp: EFUSE ?= 05
+atmega1280_isp: isp
+
+## ATMEGA1281
+#
+# Note the fuse settings for the below have not been tested.
+################################################################################
+
+atmega1281: MCU_TARGET = atmega1281
+atmega1281: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT $(UART_CMD)
+atmega1281: AVR_FREQ ?= 8000000L
+atmega1281: LDSECTIONS  = -Wl,--section-start=.text=0x1fc00  -Wl,--section-start=.version=0x1fffe
+atmega1281: $(PROGRAM)_atmega1281_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega1281_isp: atmega1281
+atmega1281_isp: TARGET = atmega1281_$(AVR_FREQ)_$(BAUD_RATE)
+atmega1281_isp: MCU_TARGET ?= atmega1281
+atmega1281_isp: LFUSE ?= E2
+atmega1281_isp: HFUSE ?= DE
+atmega1281_isp: EFUSE ?= 05
+atmega1281_isp: isp
+
+## ATMEGA2560
+#
+# Note the fuse settings for the below have not been tested.
+################################################################################
+
+atmega2560: MCU_TARGET = atmega2560
+atmega2560: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT $(UART_CMD)
+atmega2560: AVR_FREQ ?= 8000000L
+atmega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3fc00  -Wl,--section-start=.version=0x3fffe
+atmega2560: $(PROGRAM)_atmega2560_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega2560_isp: atmega2560
+atmega2560_isp: TARGET = atmega2560_$(AVR_FREQ)_$(BAUD_RATE)
+atmega2560_isp: MCU_TARGET ?= atmega2560
+atmega2560_isp: LFUSE ?= E2
+atmega2560_isp: HFUSE ?= DE
+atmega2560_isp: EFUSE ?= 05
+atmega2560_isp: isp
+
+## ATMEGA2561
+#
+# Note the fuse settings for the below have not been tested.
+################################################################################
+
+atmega2561: MCU_TARGET = atmega2561
+atmega2561: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT $(UART_CMD)
+atmega2561: AVR_FREQ ?= 8000000L
+atmega2561: LDSECTIONS  = -Wl,--section-start=.text=0x3fc00  -Wl,--section-start=.version=0x3fffe
+atmega2561: $(PROGRAM)_atmega2561_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega2561_isp: atmega2561
+atmega2561_isp: TARGET = atmega2561_$(AVR_FREQ)_$(BAUD_RATE)
+atmega2561_isp: MCU_TARGET ?= atmega2561
+atmega2561_isp: LFUSE ?= E2
+atmega2561_isp: HFUSE ?= DE
+atmega2561_isp: EFUSE ?= 05
+atmega2561_isp: isp

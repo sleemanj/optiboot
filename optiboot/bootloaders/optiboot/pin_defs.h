@@ -12,7 +12,7 @@
  */
 
 /*------------------------------------------------------------------------ */
-#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega88) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega88P__) || defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega48__) || defined(__AVR_ATmega48P__)
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168P__) || defined(__AVR_ATmega168PA__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega88) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega8A__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega88A__) || defined(__AVR_ATmega88P__) || defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega88PB__) || defined(__AVR_ATmega48__)  || defined(__AVR_ATmega48A__) || defined(__AVR_ATmega48P__) || defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega48PB__)
 /*------------------------------------------------------------------------ */
 
 /* Onboard LED is connected to pin PB5 in Arduino NG, Diecimila, and Duemilanove
@@ -31,6 +31,26 @@
 #endif
 #endif
 
+
+/** The following chips are pin compatible.  Note just because they are defined here doesn't mean that
+ *  avr-libc or avr-gcc know about them all, yet, but if/when they do, so will we.
+ * 
+ */
+#if     defined (__AVR_ATmega32__)  || defined (__AVR_ATmega32A__) \
+     || defined (__AVR_ATmega16__)  || defined (__AVR_ATmega16A__) \
+     || defined (__AVR_ATmega164__) || defined (__AVR_ATmega164P__) || defined (__AVR_ATmega164PA__) \
+     || defined (__AVR_ATmega324__) || defined (__AVR_ATmega324A__) || defined (__AVR_ATmega324P__) || defined (__AVR_ATmega324PA__) \
+     || defined (__AVR_ATmega644__) || defined (__AVR_ATmega644A__) || defined (__AVR_ATmega644P__) || defined (__AVR_ATmega644PA__) \
+     || defined (__AVR_ATmega1284__) || defined (__AVR_ATmega1284P__)      
+#define __OPTI_XX4__ 1
+#endif
+     
+#if    defined(__AVR_ATmega640__) \
+    || defined (__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) \
+    || defined (__AVR_ATmega2560__) || defined(__AVR_ATmega2561__) 
+#define __OPTI_1280_COMPAT__ 1
+#endif  
+     
 /*
  * Handle devices with up to 4 uarts (eg m1280.)  Rather inelegantly.
  * Note that mega8/m32 still needs special handling, because ubrr is handled
@@ -71,7 +91,9 @@
 # define UART_UDR UDR3
 #endif
 
-#if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__) || defined (__AVR_ATmega16__)
+// james@gogo.co.nz: I suspect that these renamings can be more generic, perhaps should just 
+//    check for lack of the old definition being present and just go ahead and define it
+#if defined(__AVR_ATmega8__) || defined(__AVR_ATmega8A__) || ( !defined(WDTCSR) && defined (__OPTI_XX4__) )
   //Name conversion R.Wiersma
   #define UCSR0A	UCSRA
   #define UDR0 		UDR
@@ -81,7 +103,7 @@
   #define TIFR1 	TIFR
   #define WDTCSR	WDTCR
 #endif
-#if defined (__AVR_ATmega32__) || defined (__AVR_ATmega16__)
+#if defined (__OPTI_XX4__) && !defined(WDCE)
   #define WDCE		WDTOE
 #endif
 
@@ -106,7 +128,7 @@
 
 /*------------------------------------------------------------------------ */
 /* Sanguino support (and other 40pin DIP cpus) */
-#if defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega32__) || defined (__AVR_ATmega16__)
+#if defined(__OPTI_XX4__)
 /*------------------------------------------------------------------------ */
 /* Onboard LED is connected to pin PB0 on Sanguino */ 
 #if !defined(LED)
@@ -125,7 +147,8 @@
 
 /*------------------------------------------------------------------------ */
 /* Mega support */
-#if defined(__AVR_ATmega1280__)
+//#if defined(__AVR_ATmega1280__)
+#if defined(__OPTI_1280_COMPAT__)
 /*------------------------------------------------------------------------ */
 /* Onboard LED is connected to pin PB7 on Arduino Mega */ 
 #if !defined(LED)

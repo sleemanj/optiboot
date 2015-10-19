@@ -432,7 +432,9 @@ include Makefile.atmel
 include Makefile.extras
 include Makefile.1284
 include Makefile.custom
-include Makefile.generic
+include Makefile.atmega8
+include Makefile.atmegaxx4-16-32
+include Makefile.atmega640-1280-1281-2560-2561
 
 #---------------------------------------------------------------------------
 #

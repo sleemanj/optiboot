@@ -1,0 +1,341 @@
+################################################################################
+#
+#  ATMEGA16, ATMEGA32 and ATMEGAxx4 Series Pin Compatible Microcontrollers
+#
+#   ATMega16,   ATMega16A
+#   ATMega32,   ATMega32A
+#   ATMega164,  ATMega164P,  ATMega164PA
+#   ATMega324,  ATMega324A,  ATMega324PA
+#   ATMega644,  ATMega644A,  ATMega644P,  ATMega644PA, 
+#   ATMega1284, ATMega1284P
+#
+#  These microcontrollers are essentially pin compatible in a DIP 40 and TQFP 44
+#  package, the differ mostly in memory (but not only).
+#
+#  A number of the updated ("A", "B") versions are not known about by 
+#  avr-gcc so we are just treating them as the original version - this should
+#  be fine, as long as the signature bytes are not changing (usually don't).
+#
+################################################################################
+################################################################################
+#
+# Usage and General Development Notes 
+# (See Further Comments for Chip Specific Notes)
+#
+#  WARNING: DO NOT GENERATE MULTIPLE TARGETS IN A SINGLE MAKE INVOCATION
+#   DO NOT DO: `make X Y Z`
+#   INSTEAD  : for i in X Y Z; do AVR_FREQ=16000000L BAUD_RATE=57600 make $i; done
+#   REASON   : I hate gnu make and it hates me, if you try to do `make X Y Z` it
+#              *appears* to work, but actually the generated hex files are 
+#              wrong. 
+#   
+#     AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328p
+#
+# to produce
+#
+#    optiboot_atmega328p_16000000L_57600.hex
+#
+# Note that if you use the _isp targets (eg atmega8_isp) the default 
+# fuses are for 8MHz internal oscillator for safety.
+#
+# If make were easier to write for occasionally, then I'd have included suggested
+# fuse values in the file names, but it's too hard (would have to look at AVR_FREQ
+# and choose fuse values from a table based on that).#
+#
+# WHAT IS THE .TEXT and .VERSION SECTION ADDRESSES
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# .text is the byte address of the start of the boot area, as determined by
+#  your (intended) fuse settings, if we assume that the boot section is at the
+#  top of the flash memory and you will use a 256 WORD (512 BYTE) boot section
+#  then the address should be CONVERT_TO_HEX(TOTAL_FLASH - 512)
+#
+# .version is CONVERT_TO_HEX(TOTAL_FLASH - 2) 
+#   - that is, the last 2 bytes of flash, I don't claim to know why, but it is
+#
+#  Eg: ATMega8 is 8192 bytes of Flash, we use a 256 Word Boot Area (512 Byte)
+#    .text    = 8192-512 = 7680 = 0x1E00
+#    .version = 8192-2   = 8190 = 0x1FFE
+#
+#
+################################################################################
+
+
+## ATMEGA16
+#
+# Note the fuse settings for the below have not been tested.
+################################################################################
+atmega16: TARGET = atmega16
+atmega16: MCU_TARGET = atmega16
+atmega16: CFLAGS += $(COMMON_OPTIONS)
+atmega16: AVR_FREQ ?= 8000000L 
+atmega16: $(PROGRAM)_atmega16_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega16_isp: atmega16
+atmega16_isp: TARGET = atmega16_$(AVR_FREQ)_$(BAUD_RATE)
+atmega16_isp: MCU_TARGET ?= atmega16
+atmega16_isp: LFUSE ?= A4
+atmega16_isp: HFUSE ?= CC
+atmega16_isp: isp
+
+atmega16a: TARGET = atmega16a
+atmega16a: MCU_TARGET = atmega16
+atmega16a: CFLAGS += $(COMMON_OPTIONS)
+atmega16a: AVR_FREQ ?= 8000000L 
+atmega16a: $(PROGRAM)_atmega16a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega16a_isp: atmega16a
+atmega16a_isp: TARGET = atmega16a_$(AVR_FREQ)_$(BAUD_RATE)
+atmega16a_isp: MCU_TARGET ?= atmega16
+atmega16a_isp: LFUSE ?= A4
+atmega16a_isp: HFUSE ?= CC
+atmega16a_isp: isp
+
+## ATMEGA164
+#
+# Note the fuse settings for the below have not been tested.
+#
+# avr-gcc doesn't know about 164, avr-libc doesn't know about 164pa, so
+# all three use 164p as the mcu target
+################################################################################
+atmega164: TARGET = atmega164
+atmega164: MCU_TARGET = atmega164p
+atmega164: CFLAGS += $(COMMON_OPTIONS)
+atmega164: AVR_FREQ ?= 8000000L 
+atmega164: $(PROGRAM)_atmega164_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega164_isp: atmega164
+atmega164_isp: TARGET = atmega164_$(AVR_FREQ)_$(BAUD_RATE)
+atmega164_isp: MCU_TARGET ?= atmega164p
+atmega164_isp: LFUSE ?= E2
+atmega164_isp: HFUSE ?= DC
+atmega164_isp: HFUSE ?= 05
+atmega164_isp: isp
+
+atmega164p: TARGET = atmega164p
+atmega164p: MCU_TARGET = atmega164p
+atmega164p: CFLAGS += $(COMMON_OPTIONS)
+atmega164p: AVR_FREQ ?= 8000000L 
+atmega164p: $(PROGRAM)_atmega164p_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega164p_isp: atmega164p
+atmega164p_isp: TARGET = atmega164p_$(AVR_FREQ)_$(BAUD_RATE)
+atmega164p_isp: MCU_TARGET ?= atmega164p
+atmega164p_isp: LFUSE ?= E2
+atmega164p_isp: HFUSE ?= DC
+atmega164p_isp: HFUSE ?= 05
+atmega164p_isp: isp
+
+atmega164pa: TARGET = atmega164pa
+atmega164pa: MCU_TARGET = atmega164p
+atmega164pa: CFLAGS += $(COMMON_OPTIONS)
+atmega164pa: AVR_FREQ ?= 8000000L 
+atmega164pa: $(PROGRAM)_atmega164pa_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega164pa_isp: atmega164pa
+atmega164pa_isp: TARGET = atmega164pa_$(AVR_FREQ)_$(BAUD_RATE)
+atmega164pa_isp: MCU_TARGET ?= atmega164p
+atmega164pa_isp: LFUSE ?= E2
+atmega164pa_isp: HFUSE ?= DC
+atmega164pa_isp: HFUSE ?= 05
+atmega164pa_isp: isp
+
+## ATMEGA32
+#  
+# Note the fuse settings for the below have not been tested.
+################################################################################
+
+atmega32: TARGET = atmega32
+atmega32: MCU_TARGET = atmega32
+atmega32: CFLAGS += $(COMMON_OPTIONS)
+atmega32: AVR_FREQ ?= 8000000L
+atmega32: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega32: $(PROGRAM)_atmega32_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega32_isp: atmega32
+atmega32_isp: TARGET = atmega32_$(AVR_FREQ)_$(BAUD_RATE)
+atmega32_isp: MCU_TARGET ?= atmega32
+atmega32_isp: LFUSE ?= A4
+atmega32_isp: HFUSE ?= CE
+atmega32_isp: isp
+
+atmega32a: TARGET = atmega32a
+atmega32a: MCU_TARGET = atmega32
+atmega32a: CFLAGS += $(COMMON_OPTIONS)
+atmega32a: AVR_FREQ ?= 8000000L
+atmega32a: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega32a: $(PROGRAM)_atmega32a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega32a_isp: atmega32a
+atmega32a_isp: TARGET = atmega32a_$(AVR_FREQ)_$(BAUD_RATE)
+atmega32a_isp: MCU_TARGET ?= atmega32
+atmega32a_isp: LFUSE ?= A4
+atmega32a_isp: HFUSE ?= CE
+atmega32a_isp: isp
+
+## ATMEGA324
+#  
+# Note the fuse settings for the below have not been tested.
+################################################################################
+
+atmega324: TARGET = atmega324
+atmega324: MCU_TARGET = atmega324p
+atmega324: CFLAGS += $(COMMON_OPTIONS)
+atmega324: AVR_FREQ ?= 8000000L
+atmega324: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega324: $(PROGRAM)_atmega324_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega324_isp: atmega324
+atmega324_isp: TARGET = atmega324_$(AVR_FREQ)_$(BAUD_RATE)
+atmega324_isp: MCU_TARGET ?= atmega324p
+atmega324_isp: LFUSE ?= E2
+atmega324_isp: HFUSE ?= DE
+atmega324_isp: HFUSE ?= 05
+atmega324_isp: isp
+
+atmega324a: TARGET = atmega324a
+atmega324a: MCU_TARGET = atmega324a
+atmega324a: CFLAGS += $(COMMON_OPTIONS)
+atmega324a: AVR_FREQ ?= 8000000L
+atmega324a: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega324a: $(PROGRAM)_atmega324a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega324a_isp: atmega324a
+atmega324a_isp: TARGET = atmega324a_$(AVR_FREQ)_$(BAUD_RATE)
+atmega324a_isp: MCU_TARGET ?= atmega324a
+atmega324a_isp: LFUSE ?= E2
+atmega324a_isp: HFUSE ?= DE
+atmega324a_isp: HFUSE ?= 05
+atmega324a_isp: isp
+
+atmega324p: TARGET = atmega324p
+atmega324p: MCU_TARGET = atmega324p
+atmega324p: CFLAGS += $(COMMON_OPTIONS)
+atmega324p: AVR_FREQ ?= 8000000L
+atmega324p: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega324p: $(PROGRAM)_atmega324p_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega324p_isp: atmega324p
+atmega324p_isp: TARGET = atmega324p_$(AVR_FREQ)_$(BAUD_RATE)
+atmega324p_isp: MCU_TARGET ?= atmega324p
+atmega324p_isp: LFUSE ?= E2
+atmega324p_isp: HFUSE ?= DE
+atmega324p_isp: HFUSE ?= 05
+atmega324p_isp: isp
+
+atmega324pa: TARGET = atmega324pa
+atmega324pa: MCU_TARGET = atmega324pa
+atmega324pa: CFLAGS += $(COMMON_OPTIONS)
+atmega324pa: AVR_FREQ ?= 8000000L
+atmega324pa: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega324pa: $(PROGRAM)_atmega324pa_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega324pa_isp: atmega324pa
+atmega324pa_isp: TARGET = atmega324pa_$(AVR_FREQ)_$(BAUD_RATE)
+atmega324pa_isp: MCU_TARGET ?= atmega324pa
+atmega324pa_isp: LFUSE ?= E2
+atmega324pa_isp: HFUSE ?= DE
+atmega324pa_isp: HFUSE ?= 05
+atmega324pa_isp: isp
+
+## ATMEGA644
+#  
+# Note the fuse settings for the below have not been tested.
+################################################################################
+
+atmega644: TARGET = atmega644
+atmega644: MCU_TARGET = atmega644
+atmega644: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT
+atmega644: AVR_FREQ ?= 8000000L
+atmega644: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe
+atmega644: $(PROGRAM)_atmega644_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega644_isp: atmega644
+atmega644_isp: TARGET = atmega644_$(AVR_FREQ)_$(BAUD_RATE)
+atmega644_isp: MCU_TARGET ?= atmega644
+atmega644_isp: LFUSE ?= E2
+atmega644_isp: HFUSE ?= DE
+atmega644_isp: EFUSE ?= 05
+atmega644_isp: isp
+
+atmega644a: TARGET = atmega644a
+atmega644a: MCU_TARGET = atmega644a
+atmega644a: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT
+atmega644a: AVR_FREQ ?= 8000000L
+atmega644a: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe
+atmega644a: $(PROGRAM)_atmega644a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega644a_isp: atmega644a
+atmega644a_isp: TARGET = atmega644a_$(AVR_FREQ)_$(BAUD_RATE)
+atmega644a_isp: MCU_TARGET ?= atmega644a
+atmega644a_isp: LFUSE ?= E2
+atmega644a_isp: HFUSE ?= DE
+atmega644a_isp: EFUSE ?= 05
+atmega644a_isp: isp
+
+atmega644p: TARGET = atmega644p
+atmega644p: MCU_TARGET = atmega644p
+atmega644p: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT
+atmega644p: AVR_FREQ ?= 8000000L
+atmega644p: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe
+atmega644p: $(PROGRAM)_atmega644p_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega644p_isp: atmega644p
+atmega644p_isp: TARGET = atmega644p_$(AVR_FREQ)_$(BAUD_RATE)
+atmega644p_isp: MCU_TARGET ?= atmega644p
+atmega644p_isp: LFUSE ?= E2
+atmega644p_isp: HFUSE ?= DE
+atmega644p_isp: EFUSE ?= 05
+atmega644p_isp: isp
+
+atmega644pa: TARGET = atmega644pa
+atmega644pa: MCU_TARGET = atmega644pa
+atmega644pa: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT
+atmega644pa: AVR_FREQ ?= 8000000L
+atmega644pa: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe
+atmega644pa: $(PROGRAM)_atmega644pa_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega644pa_isp: atmega644pa
+atmega644pa_isp: TARGET = atmega644pa_$(AVR_FREQ)_$(BAUD_RATE)
+atmega644pa_isp: MCU_TARGET ?= atmega644pa
+atmega644pa_isp: LFUSE ?= E2
+atmega644pa_isp: HFUSE ?= DE
+atmega644pa_isp: EFUSE ?= 05
+atmega644pa_isp: isp
+
+## ATMEGA1284
+#  
+# Note the fuse settings for the below have not been tested.
+################################################################################
+
+# avr-libc does not know about the atmega1284, so we use atmega1284p as the mcu
+atmega1284: TARGET = atmega1284
+atmega1284: MCU_TARGET = atmega1284p
+atmega1284: CFLAGS += $(COMMON_OPTIONS) $(UART_CMD) -DBIGBOOT
+atmega1284: AVR_FREQ ?= 8000000L
+atmega1284: LDSECTIONS  = -Wl,--section-start=.text=0x1fc00 -Wl,--section-start=.version=0x1fffe
+atmega1284: $(PROGRAM)_atmega1284_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega1284_isp: atmega1284
+atmega1284_isp: TARGET = atmega1284_$(AVR_FREQ)_$(BAUD_RATE)
+atmega1284_isp: MCU_TARGET ?= atmega1284p
+atmega1284_isp: LFUSE ?= E2
+atmega1284_isp: HFUSE ?= DE
+atmega1284_isp: EFUSE ?= 05
+atmega1284_isp: isp
+
+atmega1284p: TARGET = atmega1284p
+atmega1284p: MCU_TARGET = atmega1284p
+atmega1284p: CFLAGS += $(COMMON_OPTIONS) $(UART_CMD) -DBIGBOOT
+atmega1284p: AVR_FREQ ?= 8000000L
+atmega1284p: LDSECTIONS  = -Wl,--section-start=.text=0x1fc00 -Wl,--section-start=.version=0x1fffe
+atmega1284p: $(PROGRAM)_atmega1284p_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega1284p_isp: atmega1284p
+atmega1284p_isp: TARGET = atmega1284p_$(AVR_FREQ)_$(BAUD_RATE)
+atmega1284p_isp: MCU_TARGET ?= atmega1284p
+atmega1284p_isp: LFUSE ?= E2
+atmega1284p_isp: HFUSE ?= DE
+atmega1284p_isp: EFUSE ?= 05
+atmega1284p_isp: isp
+
