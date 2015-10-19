@@ -306,7 +306,7 @@ atmega48_isp: isp
 ################################################################################
 ################################################################################
 #                                                                              #
-# The following ATMegas have more I/O pins etc than the 8, 88, 168 and 328     #
+# The following ATMegas have more I/O pins etc than the 8, 88, 48, 168 and 328 #
 # so you will likely need a different Arduino Core for these, they are also    #
 # not pin-compatible, for obvious reasons (there being more pins!)             #
 #                                                                              #

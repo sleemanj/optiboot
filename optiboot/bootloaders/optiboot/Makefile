@@ -458,7 +458,7 @@ isp-stk500: $(PROGRAM)_$(TARGET).hex
 	$(SIZE) $@
 
 clean:
-	rm -rf *.o *.elf *.lst *.map *.sym *.lss *.eep *.srec *.bin *.hex *.tmp.sh
+	rm -rf *.o *.elf *.lst *.map *.sym *.lss *.eep *.srec *.bin *.hex *.tmp.sh *.build_log
 
 %.lst: %.elf
 	$(OBJDUMP) -h -S $< > $@
