@@ -238,8 +238,14 @@ atmega8_isp: isp
 #  a different binary for 48 and 48P
 #
 # The 48 does not have a protected boot section of flash, so we have to use the 
-#  virtual boot method of optiboot.  Vector 23 is analog comparator, I think 
-#  that is probably least used (I think most people forget it even exists)?
+#  virtual boot method of optiboot.  
+#
+#  Vector 26 is SPM_READY, optiboot.c indicates that this is little used and is
+#   the default for optiboot to use (that is, SPM_READY, not necessarily that
+#   it is vector number 26).  I'm not sure that it's entirely ok to use 26...
+#
+#  Vector 23 is analog comparator, if 26 does funky stuff, then 23 would be a
+#   good choice, few people would use the analog comparator in Arduino world.
 #
 # Take care to also set the fuse to enable self programming, unlike the other
 #  chips you can turn this function on or off, of course we need it on!
@@ -253,7 +259,7 @@ atmega8_isp: isp
 
 atmega48p: TARGET = atmega48p
 atmega48p: MCU_TARGET = atmega48p
-atmega48p: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=23
+atmega48p: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=26
 atmega48p: AVR_FREQ ?= 8000000L
 # My system compiles to 602 bytes for 48p, so .text is 4096 - 602 - 2 - 10 (futureproofing) = 0x0D9A
 atmega48p: LDSECTIONS = -Wl,--section-start=.text=0x0D9A -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
@@ -270,7 +276,7 @@ atmega48p_isp: isp
 
 atmega48: TARGET = atmega48
 atmega48: MCU_TARGET = atmega48
-atmega48: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=23
+atmega48: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=26
 atmega48: AVR_FREQ ?= 8000000L
 # My system compiles to 592 bytes for 48, so .text is 4096 - 592 - 2 - 10 (futureproofing) = 0x0DA4
 atmega48: LDSECTIONS = -Wl,--section-start=.text=0x0DA4 -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
