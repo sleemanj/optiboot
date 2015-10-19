@@ -1,24 +1,26 @@
 
 ################################################################################
-# For convenience, generates better named hex files
-#  you can now do
+# For convenience, generates better named hex files.
 #
-#     AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328 atmega8 atmega168
+#  WARNING: DO NOT GENERATE MULTIPLE TARGETS IN A SINGLE MAKE INVOCATION
+#   DO NOT DO: `make X Y Z`
+#   INSTEAD  : for i in X Y Z; do make $i; done
+#   REASON   : I hate gnu make and it hates me, if you try to do `make X Y Z` it
+#              *appears* to work, but actually the generated hex files are 
+#              wrong. 
+#   
+#     AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328p
 #
 # to produce
 #
 #    optiboot_atmega328p_16000000L_57600.hex
-#    optiboot_atmega8_16000000L_57600.CONVERT_TO_HEX
-#    optiboot_atmega168_16000000L_57600.hex
 #
-# etc...
-
-# Note that if you use the _isp targets (eg atmega8_isp) the default 
+## Note that if you use the _isp targets (eg atmega8_isp) the default 
 # fuses are for 8MHz internal oscillator for safety.
 #
 # If make were easier to write for occasionally, then I'd have included suggested
-# fuse values in the file names, but it's too hard.
-#
+# fuse values in the file names, but it's too hard (would have to look at AVR_FREQ
+# and choose fuse values from a table based on that).#
 #
 # WHAT IS THE .TEXT and .VERSION SECTION ADDRESSES
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,17 +61,37 @@
 #                                                                              #
 #  * the 8A has the same device signature as the 8 so they can be regarded     #
 #    as identical for our purposes.                                            #
-#  * the 48 can not self-program, so optiboot is no good for it.               #
+#  * has no boot section, so virtual boot mode is used                         #
 #                                                                              #
 ################################################################################
 ################################################################################
 # {{{
 
 ## ATMEGA328 / 328P
-#  Same code is for both 328 and 328p, there is no difference as far as 
-#  optiboot is interested.  However we have to duplicate the _isp section
-#  because we have to pass the MCU_TARGET to avrdude
+#  
+#  328 and 328p both result in the same code, but this is only because of the 
+#  fact that /usr/lib/avr/include/avr/io.h includes iom328p.h for both the 
+#  varients which causes the signature bytes to ALWAYS be the 328p ones
+#  
+#  If that include error (feature?) is ever fixed in avr-libc then the optiboot
+#  binary would be different for 328 and 328p
+#
 ################################################################################
+
+atmega328p: TARGET = atmega328p
+atmega328p: MCU_TARGET = atmega328p
+atmega328p: CFLAGS += $(COMMON_OPTIONS)
+atmega328p: AVR_FREQ ?= 8000000L
+atmega328p: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega328p: $(PROGRAM)_atmega328p_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega328p_isp: atmega328p
+atmega328p_isp: TARGET = atmega328p_$(AVR_FREQ)_$(BAUD_RATE)
+atmega328p_isp: MCU_TARGET ?= atmega328p
+atmega328p_isp: LFUSE ?= E2
+atmega328p_isp: HFUSE ?= DE
+atmega328p_isp: EFUSE ?= 05
+atmega328p_isp: isp
 
 atmega328: TARGET = atmega328
 atmega328: MCU_TARGET = atmega328
@@ -86,17 +108,14 @@ atmega328_isp: HFUSE ?= DE
 atmega328_isp: EFUSE ?= 05
 atmega328_isp: isp
 
-atmega328p:    atmega328
-atmega328_isp: MCU_TARGET = atmega328p
-atmega328_isp: atmega328
-
 
 ## ATMEGA168/168p
-#  As with 328, the 168p and 168 are the same as far as we care.
+#  
+# The 168 and 168p have different signatures, and avr/io.h treats them as 
+# different chips also, so unlike the 328/328p pairing, these ones do have 
+# a different binary for 168 and 168p
+#
 ################################################################################
-atmega168p:     atmega168
-atmega168p_isp: MCU_TARGET = atmega168p 
-atmega168p_isp: atmega168_isp
 
 atmega168: TARGET = atmega168
 atmega168: MCU_TARGET ?= atmega168
@@ -112,16 +131,47 @@ atmega168_isp: HFUSE ?= DD
 atmega168_isp: EFUSE ?= 04
 atmega168_isp: isp
 
+atmega168p: TARGET = atmega168p
+atmega168p: MCU_TARGET ?= atmega168p
+atmega168p: CFLAGS += $(COMMON_OPTIONS)
+atmega168p: AVR_FREQ ?= 8000000L 
+atmega168p: $(PROGRAM)_atmega168p_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega168p_isp: atmega168p
+atmega168p_isp: TARGET = atmega168p_$(AVR_FREQ)_$(BAUD_RATE)
+atmega168p_isp: MCU_TARGET ?= atmega168p
+atmega168p_isp: LFUSE ?= E2
+atmega168p_isp: HFUSE ?= DD
+atmega168p_isp: EFUSE ?= 04
+atmega168p_isp: isp
+
 ## ATMEGA88/88P
-#  As with 328, the 88p and 88 are the same as far as we care.
+#
+# The 88 and 88P have different signatures, and avr/io.h treats them as 
+# different chips also, so unlike the 328/328p pairing, these ones do have 
+# a different binary for 88 and 88P
+#
+# Note that 88PA is same as 88P, use that.
 #
 # NB: I do not know why the -Wl,--undefined=optiboot_version option is required, 
 #  I suspect it's something to do with OS/X developers.
 #  On Linux, seems to be fine without but I'll leave it in anyway.
 ################################################################################
-atmega88p:     atmega88
-atmega88p_isp: MCU_TARGET = atmega88p 
-atmega88p_isp: atmega88_isp
+
+atmega88p: TARGET = atmega88p
+atmega88p: MCU_TARGET = atmega88p
+atmega88p: CFLAGS += $(COMMON_OPTIONS)
+atmega88p: AVR_FREQ ?= 8000000L
+atmega88p: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega88p: $(PROGRAM)_atmega88p_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega88p_isp: atmega88p
+atmega88p_isp: TARGET = atmega88p_$(AVR_FREQ)_$(BAUD_RATE)
+atmega88p_isp: MCU_TARGET ?= atmega88p
+atmega88p_isp: LFUSE ?= E2
+atmega88p_isp: HFUSE ?= DD
+atmega88p_isp: EFUSE ?= FC
+atmega88p_isp: isp
 
 atmega88: TARGET = atmega88
 atmega88: MCU_TARGET = atmega88
@@ -137,6 +187,23 @@ atmega88_isp: LFUSE ?= E2
 atmega88_isp: HFUSE ?= DD
 atmega88_isp: EFUSE ?= FC
 atmega88_isp: isp
+
+atmega88pa: TARGET = atmega88pa
+atmega88pa: MCU_TARGET = atmega88pa
+atmega88pa: CFLAGS += $(COMMON_OPTIONS)
+atmega88pa: AVR_FREQ ?= 8000000L
+atmega88pa: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega88pa: $(PROGRAM)_atmega88pa_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega88pa_isp: atmega88pa
+atmega88pa_isp: TARGET = atmega88pa_$(AVR_FREQ)_$(BAUD_RATE)
+atmega88pa_isp: MCU_TARGET ?= atmega88pa
+atmega88pa_isp: LFUSE ?= E2
+atmega88pa_isp: HFUSE ?= DD
+atmega88pa_isp: EFUSE ?= FC
+atmega88pa_isp: isp
+
+
 
 ## ATMEGA8
 #
@@ -163,7 +230,59 @@ atmega8_isp: LFUSE ?= A4
 atmega8_isp: HFUSE ?= CC
 atmega8_isp: isp
 
-# }}}
+
+## ATMEGA48/48P
+#  
+# The 48 and 48P have different signatures, and avr/io.h treats them as 
+#  different chips also, so unlike the 328/328p pairing, these ones do have 
+#  a different binary for 48 and 48P
+#
+# The 48 does not have a protected boot section of flash, so we have to use the 
+#  virtual boot method of optiboot.  Vector 23 is analog comparator, I think 
+#  that is probably least used (I think most people forget it even exists)?
+#
+# Take care to also set the fuse to enable self programming, unlike the other
+#  chips you can turn this function on or off, of course we need it on!
+#
+# Note that you may need to adjust the --section-start if your avr-gcc compiles
+# to a larger size, I have set these to have an extra 10 bytes over the sizes
+# which they compiled to on my specific system, just in case in future there
+# is any expansion (eh, the normal boot sections are about 10 bytes larger than
+# they need to be so I figure it's a good guess).
+################################################################################
+
+atmega48p: TARGET = atmega48p
+atmega48p: MCU_TARGET = atmega48p
+atmega48p: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=23
+atmega48p: AVR_FREQ ?= 8000000L
+# My system compiles to 602 bytes for 48p, so .text is 4096 - 602 - 2 - 10 (futureproofing) = 0x0D9A
+atmega48p: LDSECTIONS = -Wl,--section-start=.text=0x0D9A -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega48p: $(PROGRAM)_atmega48p_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega48p_isp: atmega48p
+atmega48p_isp: TARGET = atmega48p_$(AVR_FREQ)_$(BAUD_RATE)
+atmega48p_isp: MCU_TARGET ?= atmega48p
+atmega48p_isp: LFUSE ?= E2
+atmega48p_isp: HFUSE ?= DD
+atmega48p_isp: EFUSE ?= 00
+atmega48p_isp: LOCKBYTE ?= 3F
+atmega48p_isp: isp
+
+atmega48: TARGET = atmega48
+atmega48: MCU_TARGET = atmega48
+atmega48: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=23
+atmega48: AVR_FREQ ?= 8000000L
+# My system compiles to 592 bytes for 48, so .text is 4096 - 592 - 2 - 10 (futureproofing) = 0x0DA4
+atmega48: LDSECTIONS = -Wl,--section-start=.text=0x0DA4 -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
+atmega48: $(PROGRAM)_atmega48_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+atmega48_isp: atmega48
+atmega48_isp: TARGET = atmega48_$(AVR_FREQ)_$(BAUD_RATE)
+atmega48_isp: MCU_TARGET ?= atmega48
+atmega48_isp: LFUSE ?= E2
+atmega48_isp: HFUSE ?= DD
+atmega48_isp: EFUSE ?= 00
+atmega48_isp: isp
 
 
 

@@ -66,7 +66,12 @@ ISPFUSES =	-e -u -U lock:w:0x3f:m $(EFUSE_CMD) \
 # space from accidental SPM writes.  Note: "2f" allows boot section to be read
 # by the application, which is different than the arduino default.
 #
-ISPFLASH =	-U flash:w:$(PROGRAM)_$(TARGET).hex -U lock:w:0x2f:m
+ifdef LOCKBYTE
+LOCK_CMD= -U lock:w:0x$(LOCKBYTE):m
+else
+LOCK_CMD= -U lock:w:0x2f:m
+endif
+ISPFLASH =	-U flash:w:$(PROGRAM)_$(TARGET).hex $(LOCK_CMD)
 
 # There are certain complicated caused by the fact that the default state
 # of a fuse is a "1" rather than a "0", especially with respect to fuse bits
