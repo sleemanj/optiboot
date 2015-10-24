@@ -43,7 +43,7 @@ function package_for
   cp -rp avr $PACKAGENAME
   zip -r $PACKAGENAME.zip $PACKAGENAME  
   rm -r $PACKAGENAME
-  mv $PACKAGENAME.zip ../$PACKAGENAME
+  mv $PACKAGENAME.zip ../$PACKAGENAME.zip
   popd 
   
   pushd dists
@@ -55,6 +55,7 @@ function package_for
                    | sed -r "s/\"size\":.*/\"size\": \"$SIZE\",/" \
                    | sed -r "s/\"version\":.*/\"version\": \"$VERSION\",/" \
                    > $PACKAGEFILE.$VERSION.json  
+  mv $PACKAGEFILE.$VERSION.json $PACKAGEFILE        
   popd
   
 }
