@@ -21,7 +21,7 @@
           "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/diy_atmega8_series.zip",
           "archiveFileName": "diy_atmega8_series.zip",
           
-          "checksum": "SHA-256:86a63e976c999879fb0e4bb7f1f028b35ba8ad04bd36d3657a8b0fea8a6852df",
+          "checksum": "SHA-256:9adb2e2ee7c27efbf93a5402b7b196f7cb8e569405461310262d6794c422c96d",
           "size": "65472",
 
           "boards": [
@@ -35,7 +35,7 @@
             {
               "packager": "arduino",
               "name": "avrdude",
-              "version": "2015.10.25",
+              "version": "6.0.1-arduino5"
             }
           ]
         }

@@ -53,7 +53,7 @@ function package_for
   PACKAGEFILE=$(ls *_${PACKAGENAME}_index.json | head -1)
   cat $PACKAGEFILE | sed -r "s/SHA-256:([^\"]+)/SHA-256:$HASH/" \
                    | sed -r "s/\"size\":.*/\"size\": \"$SIZE\",/" \
-                   | sed -r "s/\"version\":.*/\"version\": \"$VERSION\",/" \
+                   | sed -r "s/\"version\":.*,/\"version\": \"$VERSION\",/" \
                    > $PACKAGEFILE.$VERSION.json  
   mv $PACKAGEFILE.$VERSION.json $PACKAGEFILE        
   popd
