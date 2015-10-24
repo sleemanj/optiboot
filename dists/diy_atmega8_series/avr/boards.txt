@@ -1,0 +1,557 @@
+################################################################################
+#
+# Written by James Sleeman, http://sparks.gogo.co.nz/
+#
+#  ATMEGA8 Series Pin Compatible Microcontrollers
+#
+#   ATMega8,   ATMega8A,
+#   ATMega88,  ATMega88A,  ATMega88P,  ATMega88PA, ATMega88PB 
+#   ATMega168, ATMega168A, ATMega168P, ATMega168PA, ATMega168PB
+#   ATMega328, ATMega328P, ATMega328PB
+#   ATMega48,  ATMega48A,  ATMega48P, ATMega48PA, ATMega48PB
+#           
+#  These microcontrollers are essentially pin compatible in a DIP 28 and TQFP 32
+#  package, the differ mostly in memory (but not only).
+#
+# LOCK/UNLOCK BITS NOTES!  READ THIS BEFORE YOU GET CONFUSED!
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# avrdude masks out bits 6 and 7 of the lock bits when it READS
+# them in (sets them zero), which means if you give it unmasked 
+# lock bits (bits 6 and 7 = 1) then the write works fine but the 
+# verification will fail, so always make sure you set those two
+# bits to zero.
+#
+# For the ATMega*8 Series, here are the sequences which are important
+#  to us...
+#
+#  Without Bootloader;
+#
+#   00111111 (0x3F)  - No Locking
+#   00111101 (0x3E)  - Write Lock
+#   00111100 (0x3C)  - Read and Write Lock
+#
+# With Bootloader*;
+#
+#   00001111 (0x0F)  - No Locking 
+#   00001101 (0x0E)  - Write Lock
+#   00001100 (0x0C)  - Read and Write Lock
+#
+# * With a bootloader the lockbits restrict LPM and SPL 
+#   (Load / Store Program Memory) in the Bootloader Section
+#  
+# NOTE, UNLOCK IS PRETTY MUCH NONSENSE
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  See Datasheet Page 283 of ATMega8 for example:
+#  > The Lock Bits can only be erased to “1” with the 
+#  > Chip Erase command.
+#
+# This applies to all the AVR series I have looked at (and
+#  it makes sense to do it that way, the point of locking is 
+#  to make it hard to get/change the code, if you could just 
+#  unlock it, what would be the point).
+#
+# Since burning the bootloader is going to do a full erase 
+# (-e option passed to avrdude) anyway, it's already 
+# unlocked, so doing this "unlock bits" step is pointless
+# as far as I can see, but whatever, the Arduino IDE 
+# wants them, maybe some other chip than an AVR might need them
+# one day?
+#
+################################################################################
+
+menu.version    = Processor Version
+menu.clock      = Processor Speed
+menu.boot       = Use Bootloader
+
+
+
+################################################################################
+# ATMEGA8
+#
+# A note about CKOPT fuse on ATMega8
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  If CKOPT is NOT programmed ( 1 ) then you are limited to 8MHz
+#  If CKOPT is programmed ( 0 ) then power consumption is higher
+#   but you can go up to 16MHz
+#  
+#  The safe way then is to always program CKOPT ( 0 )
+#
+#  BTW: Can somebody give a punch in the face to the person at Atmel 
+#   who decided that "1" means unprogrammed and "0" means programmed.
+#   Even if it's a hardware necessity, you could at least have hidden
+#   it in avrdude or something.  Gah.
+#
+#
+################################################################################
+# {{{
+
+atmega8_diy.name=ATmega8/A
+atmega8_diy.build.mcu=atmega8
+atmega8_diy.bootloader.low_fuses=0xA4
+atmega8_diy.bootloader.high_fuses=0xCC
+atmega8_diy.bootloader.unlock_bits=0x3F
+atmega8_diy.bootloader.lock_bits=0x0F
+atmega8_diy.build.f_cpu=8000000L
+atmega8_diy.upload.speed=57600
+atmega8_diy.build.core=arduino:arduino
+atmega8_diy.build.variant=arduino:standard
+atmega8_diy.build.board=ATMEGA8_DIY
+atmega8_diy.upload.tool=avrdude_noefuse
+atmega8_diy.bootloader.tool=avrdude_noefuse
+
+# Version Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega8_diy.menu.version.atmega8a = ATmega8A
+atmega8_diy.menu.version.atmega8a.build.mcu = atmega8
+
+atmega8_diy.menu.version.atmega8 = ATmega8
+atmega8_diy.menu.version.atmega8.build.mcu = atmega8
+
+# Bootloader Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega8_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
+atmega8_diy.menu.boot.optiboot.upload.protocol=arduino
+atmega8_diy.menu.boot.optiboot.upload.maximum_size=7680
+atmega8_diy.menu.boot.optiboot.bootloader.high_fuses=0xCC
+atmega8_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+atmega8_diy.menu.boot.none=No (ISP Programmer Upload)
+atmega8_diy.menu.boot.none.upload.maximum_size=8192
+atmega8_diy.menu.boot.none.bootloader.high_fuses=0xCD
+atmega8_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader_noefuse
+
+# Speed Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega8_diy.menu.clock.8MHz=8MHz Internal Oscillator
+atmega8_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega8_diy.menu.clock.8MHz.bootloader.low_fuses=0xA4
+
+atmega8_diy.menu.clock.16MHz=16MHz Crystal/Resonator
+atmega8_diy.menu.clock.16MHz.build.f_cpu=16000000L
+atmega8_diy.menu.clock.16MHz.bootloader.low_fuses=0xBF
+
+atmega8_diy.menu.clock.1MHz=1MHz Internal Oscillator
+atmega8_diy.menu.clock.1MHz.build.f_cpu=1000000L
+atmega8_diy.menu.clock.1MHz.bootloader.low_fuses=0xA1
+atmega8_diy.menu.clock.1MHz.upload.speed=9600
+
+
+# }}}
+
+
+
+################################################################################
+# ATMEGA48p
+#
+# The ATMega48p has a small problem in the Arduino 1.0.5 because it's included 
+# avrdude doesn't support it, and will report an incorrect signature or unknown
+# device type.  1.6.x is fine.
+#
+# To fix this, edit your avrdude.conf, duplicate the section for the ATMega48 
+# and change the duplicated section such that:
+#
+#   id = "m48p";
+#   desc = "ATmega48P";
+#   signature = 0x1e 0x92 0x0a;
+#
+# The 48 does not have a separate boot section of memory, so this means that
+# optiboot uses a virtual boot method, this has a couple effects, firstly
+# it takes more flash for the boot process, secondly it sacrifices the analog 
+# comparator interrupt vector, and thirdly it means that the lock bits 
+# are just the simple set as with no bootloader.
+#
+################################################################################
+# {{{
+
+atmega48_diy.name=ATmega48/A/P/PA/PB
+atmega48_diy.bootloader.low_fuses=0xE2
+atmega48_diy.bootloader.high_fuses=0xDD
+atmega48_diy.bootloader.extended_fuses=0x00
+atmega48_diy.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega48_diy.bootloader.unlock_bits=0x3F
+atmega48_diy.bootloader.lock_bits=0x3F
+atmega48_diy.build.mcu=atmega48p
+atmega48_diy.build.f_cpu=8000000L
+atmega48_diy.upload.speed=57600
+atmega48_diy.build.core=arduino:arduino
+atmega48_diy.build.variant=arduino:standard
+atmega48_diy.build.board=ATMEGA48_DIY
+atmega48_diy.upload.tool=arduino:avrdude
+atmega48_diy.bootloader.tool=arduino:avrdude
+
+# Version Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega48_diy.menu.version.atmega48p = Atmega48p
+atmega48_diy.menu.version.atmega48p.build.mcu = atmega48p
+
+atmega48_diy.menu.version.atmega48pa = Atmega48pa
+atmega48_diy.menu.version.atmega48pa.build.mcu = atmega48p
+
+atmega48_diy.menu.version.atmega48pb = Atmega48pb
+atmega48_diy.menu.version.atmega48pb.build.mcu = atmega48p
+
+atmega48_diy.menu.version.atmega48  = ATmega48
+atmega48_diy.menu.version.atmega48.build.mcu = atmega48
+
+atmega48_diy.menu.version.atmega48a = Atmega48a
+atmega48_diy.menu.version.atmega48a.build.mcu = atmega48
+
+
+# Bootloader Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega48_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
+atmega48_diy.menu.boot.optiboot.upload.protocol=arduino
+atmega48_diy.menu.boot.optiboot.upload.maximum_size=3478
+atmega48_diy.menu.boot.optiboot.bootloader.high_fuses=0xDD
+atmega48_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+atmega48_diy.menu.boot.none=No (ISP Programmer Upload)
+atmega48_diy.menu.boot.none.upload.maximum_size=4096
+atmega48_diy.menu.boot.none.bootloader.high_fuses=0xDD
+atmega48_diy.menu.boot.none.upload.tool=arduino:avrdude
+atmega48_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
+
+
+# Speed Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega48_diy.menu.clock.8MHz=8MHz Internal Oscillator
+atmega48_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega48_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
+
+atmega48_diy.menu.clock.16MHz=16MHz Crystal/Resonator
+atmega48_diy.menu.clock.16MHz.build.f_cpu=16000000L
+atmega48_diy.menu.clock.16MHz.bootloader.low_fuses=0xF7
+
+atmega48_diy.menu.clock.1MHz=1MHz Internal Oscillator
+atmega48_diy.menu.clock.1MHz.build.f_cpu=1000000L
+atmega48_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
+atmega48_diy.menu.clock.1MHz.upload.speed=9600
+
+}}}
+
+
+################################################################################
+# ATMEGA328(P)
+#
+# EXTENDED FUSES NOTES
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# avrdude masks out some bits of the extended fuse on read, which would result 
+# in verification error of the extended fuse if you give it an unmasked value
+#
+# The best idea is to use this fuse calculator
+#
+#     http://www.engbedded.com/fusecalc/ 
+#
+# which will helpfully tell you in red underneat the AVRDUDE arguments section
+# if you should change the fuse, for example if you use that calculator with
+# say "F5" for the extended fuse, and ATMega328P selected as the part name,
+# then it will tell you "Note that there are some...." and that you  should use 
+# "Extended: 0x05" instead.
+#
+#
+# 1.0.5 Compatability Note
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 
+#  1.0.5 has some minor problems with the non-p ATmega328 (the 328p is fine).
+#
+#   1: avrdude bundled in the IDE may not know about the non-p 328p signature
+#       - characterised by a signature mismatch when you try and burn bootloader
+#   2: avr-gcc bundled in the IDE doesn't know about the non-p at all
+#       - characterised by the error "atmega328 supported for assembler only"
+#
+# Problem 1 can be solved by editing avrdude.conf and copying the existing m328p 
+# section to make an m328 section, by changing the
+#   id to m328
+#   desc to ATMEGA328
+#   signature to 0x1e 0x95 0x14
+# You can then burn a bootloader, easy.
+# 
+# Problem 2 can be solved in 1 of 2 way, either;
+#   a) After solving (1), use the IDE to burn the bootloader for the non-p
+#       variant (eg "ATmega328 8MHz Internal Clock"), and then change the
+#       selected board in the IDE to the P (eg "ATmega328p 8MHz Internal Clock")
+#       variant, from which point on you can upload USING THE BOOTLOADER ONLY
+#       this works because of the following reasons - you don't need to know, 
+#       just if you are curious, or I want to remind myself...
+#
+#             i) The optiboot.c bootloader reports the signature to avrdude
+#                by outputting the 3 bytes from the defines SIGNATURE_0..2 
+#
+#            ii) These defines are provided by avr libc from the specific files
+#                /usr/lib/avr/include/avr/iom*.h
+#
+#           iii) The specific file (only one is included ultimately) is included
+#                from /usr/lib/avr/include/avr/io.h 
+#
+#            iv) That file includes the iom328p.h for BOTH the 328 and the 328p
+#                and it sets SIGNATURE_0..2 to the 328p bytes regardless.
+#
+#             v) Thus, optiboot reports the 328p bytes for both 328 and 328p
+#
+#            vi) Therefore when avrdude asks optiboot for the signature bytes
+#                when it is on an atmega328 (non-p) it will give the bytes for 
+#                the atmega328p instead, and everybody is happy.
+#       
+#   b) Instead of solving problem 1 in the correct manner, just change the 
+#       signature bytes of the m328p section to 0x1e 0x95 0x14 and then select 
+#        the P  board in your IDE (eg "ATmega328p 8MHz Internal Clock"), this 
+#        works because now both the IDE and avrdude think your chip is a "p", 
+#        which is fine since for your purposes they are identical.
+#
+################################################################################
+# {{{
+
+atmega328_diy.name=ATmega328/A/P/PB
+atmega328_diy.bootloader.low_fuses=0xE2
+atmega328_diy.bootloader.high_fuses=0xDE
+atmega328_diy.bootloader.extended_fuses=0x05
+atmega328_diy.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega328_diy.bootloader.unlock_bits=0x3F
+atmega328_diy.bootloader.lock_bits=0x0F
+atmega328_diy.build.mcu=atmega328p
+atmega328_diy.build.f_cpu=8000000L
+atmega328_diy.upload.speed=57600
+atmega328_diy.build.core=arduino:arduino
+atmega328_diy.build.variant=arduino:standard
+atmega328_diy.build.board=ATMEGA328_DIY
+atmega328_diy.upload.tool=arduino:avrdude
+atmega328_diy.bootloader.tool=arduino:avrdude
+
+# Version Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega328_diy.menu.version.atmega328p = Atmega328p
+atmega328_diy.menu.version.atmega328p.build.mcu = atmega328p
+
+atmega328_diy.menu.version.atmega328pb = Atmega328pb
+atmega328_diy.menu.version.atmega328pb.build.mcu = atmega328p
+
+atmega328_diy.menu.version.atmega328  = ATmega328
+atmega328_diy.menu.version.atmega328.build.mcu = atmega328
+
+# Bootloader Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega328_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
+atmega328_diy.menu.boot.optiboot.upload.protocol=arduino
+atmega328_diy.menu.boot.optiboot.upload.maximum_size=32256
+atmega328_diy.menu.boot.optiboot.bootloader.high_fuses=0xDE
+atmega328_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+atmega328_diy.menu.boot.none=No (ISP Programmer Upload)
+atmega328_diy.menu.boot.none.upload.maximum_size=4096
+atmega328_diy.menu.boot.none.bootloader.high_fuses=0xDF
+atmega328_diy.menu.boot.none.upload.tool=arduino:avrdude
+atmega328_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
+
+
+# Speed Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega328_diy.menu.clock.8MHz=8MHz Internal Oscillator
+atmega328_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega328_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
+
+atmega328_diy.menu.clock.16MHz=16MHz Crystal/Resonator
+atmega328_diy.menu.clock.16MHz.build.f_cpu=16000000L
+atmega328_diy.menu.clock.16MHz.bootloader.low_fuses=0xFF
+
+atmega328_diy.menu.clock.1MHz=1MHz Internal Oscillator
+atmega328_diy.menu.clock.1MHz.build.f_cpu=1000000L
+atmega328_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
+atmega328_diy.menu.clock.1MHz.upload.speed=9600
+
+}}}
+
+
+
+
+################################################################################
+# ATMEGA88/A/P/PA/PB
+#
+# EXTENDED FUSES NOTES
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# avrdude masks out some bits of the extended fuse on read, which would result 
+# in verification error of the extended fuse if you give it an unmasked value
+#
+# The best idea is to use this fuse calculator
+#
+#     http://www.engbedded.com/fusecalc/ 
+#
+# which will helpfully tell you in red underneat the AVRDUDE arguments section
+# if you should change the fuse, for example if you use that calculator with
+# say "F5" for the extended fuse, and ATMega328P selected as the part name,
+# then it will tell you "Note that there are some...." and that you  should use 
+# "Extended: 0x05" instead.
+#
+#
+################################################################################
+# {{{
+
+atmega88_diy.name=ATmega88/A/P/PA/PB
+atmega88_diy.bootloader.low_fuses=0xE2
+atmega88_diy.bootloader.high_fuses=0xDD
+atmega88_diy.bootloader.extended_fuses=0x04
+atmega88_diy.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega88_diy.bootloader.unlock_bits=0x3F
+atmega88_diy.bootloader.lock_bits=0x0F
+atmega88_diy.build.mcu=atmega88p
+atmega88_diy.build.f_cpu=8000000L
+atmega88_diy.upload.speed=57600
+atmega88_diy.build.core=arduino:arduino
+atmega88_diy.build.variant=arduino:standard
+atmega88_diy.build.board=ATMEGA88_DIY
+atmega88_diy.upload.tool=arduino:avrdude
+atmega88_diy.bootloader.tool=arduino:avrdude
+
+# Version Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega88_diy.menu.version.atmega88p = Atmega88p
+atmega88_diy.menu.version.atmega88p.build.mcu = atmega88p
+
+atmega88_diy.menu.version.atmega88pa = Atmega88pa
+atmega88_diy.menu.version.atmega88pa.build.mcu = atmega88p
+
+atmega88_diy.menu.version.atmega88pb = Atmega88pb
+atmega88_diy.menu.version.atmega88pb.build.mcu = atmega88p
+
+atmega88_diy.menu.version.atmega88  = ATmega88
+atmega88_diy.menu.version.atmega88.build.mcu = atmega88
+
+atmega88_diy.menu.version.atmega88a  = ATmega88a
+atmega88_diy.menu.version.atmega88a.build.mcu = atmega88
+
+# Bootloader Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega88_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
+atmega88_diy.menu.boot.optiboot.upload.protocol=arduino
+atmega88_diy.menu.boot.optiboot.upload.maximum_size=7680
+atmega88_diy.menu.boot.optiboot.bootloader.extended_fuses=0x04
+atmega88_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+atmega88_diy.menu.boot.none=No (ISP Programmer Upload)
+atmega88_diy.menu.boot.none.upload.maximum_size=8192
+atmega88_diy.menu.boot.none.bootloader.extended_fuses=0x05
+atmega88_diy.menu.boot.none.upload.tool=arduino:avrdude
+atmega88_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
+
+
+# Speed Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega88_diy.menu.clock.8MHz=8MHz Internal Oscillator
+atmega88_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega88_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
+
+atmega88_diy.menu.clock.16MHz=16MHz Crystal/Resonator
+atmega88_diy.menu.clock.16MHz.build.f_cpu=16000000L
+atmega88_diy.menu.clock.16MHz.bootloader.low_fuses=0xFF
+
+atmega88_diy.menu.clock.1MHz=1MHz Internal Oscillator
+atmega88_diy.menu.clock.1MHz.build.f_cpu=1000000L
+atmega88_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
+atmega88_diy.menu.clock.1MHz.upload.speed=9600
+
+}}}
+
+
+
+
+################################################################################
+# ATMEGA168/A/P/PA/PB
+#
+# EXTENDED FUSES NOTES
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# avrdude masks out some bits of the extended fuse on read, which would result 
+# in verification error of the extended fuse if you give it an unmasked value
+#
+# The best idea is to use this fuse calculator
+#
+#     http://www.engbedded.com/fusecalc/ 
+#
+# which will helpfully tell you in red underneat the AVRDUDE arguments section
+# if you should change the fuse, for example if you use that calculator with
+# say "F5" for the extended fuse, and ATMega328P selected as the part name,
+# then it will tell you "Note that there are some...." and that you  should use 
+# "Extended: 0x05" instead.
+#
+################################################################################
+# {{{
+
+atmega168_diy.name=ATmega168/A/P/PA/PB
+atmega168_diy.bootloader.low_fuses=0xE2
+atmega168_diy.bootloader.high_fuses=0xDD
+atmega168_diy.bootloader.extended_fuses=0x04
+atmega168_diy.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega168_diy.bootloader.unlock_bits=0x3F
+atmega168_diy.bootloader.lock_bits=0x0F
+atmega168_diy.build.mcu=atmega168p
+atmega168_diy.build.f_cpu=8000000L
+atmega168_diy.upload.speed=57600
+atmega168_diy.build.core=arduino:arduino
+atmega168_diy.build.variant=arduino:standard
+atmega168_diy.build.board=ATMEGA88_DIY
+atmega168_diy.upload.tool=arduino:avrdude
+atmega168_diy.bootloader.tool=arduino:avrdude
+
+# Version Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega168_diy.menu.version.atmega168p = Atmega168p
+atmega168_diy.menu.version.atmega168p.build.mcu = atmega168p
+
+atmega168_diy.menu.version.atmega168pa = Atmega168pa
+atmega168_diy.menu.version.atmega168pa.build.mcu = atmega168p
+
+atmega168_diy.menu.version.atmega168pb = Atmega168pb
+atmega168_diy.menu.version.atmega168pb.build.mcu = atmega168p
+
+atmega168_diy.menu.version.atmega168  = ATmega168
+atmega168_diy.menu.version.atmega168.build.mcu = atmega168
+
+atmega168_diy.menu.version.atmega168a  = ATmega168a
+atmega168_diy.menu.version.atmega168a.build.mcu = atmega168
+
+# Bootloader Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega168_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
+atmega168_diy.menu.boot.optiboot.upload.protocol=arduino
+atmega168_diy.menu.boot.optiboot.upload.maximum_size=7680
+atmega168_diy.menu.boot.optiboot.bootloader.extended_fuses=0x04
+atmega168_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+atmega168_diy.menu.boot.none=No (ISP Programmer Upload)
+atmega168_diy.menu.boot.none.upload.maximum_size=8192
+atmega168_diy.menu.boot.none.bootloader.extended_fuses=0x05
+atmega168_diy.menu.boot.none.upload.tool=arduino:avrdude
+atmega168_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
+
+
+# Speed Menu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega168_diy.menu.clock.8MHz=8MHz Internal Oscillator
+atmega168_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega168_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
+
+atmega168_diy.menu.clock.16MHz=16MHz Crystal/Resonator
+atmega168_diy.menu.clock.16MHz.build.f_cpu=16000000L
+atmega168_diy.menu.clock.16MHz.bootloader.low_fuses=0xFF
+
+atmega168_diy.menu.clock.1MHz=1MHz Internal Oscillator
+atmega168_diy.menu.clock.1MHz.build.f_cpu=1000000L
+atmega168_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
+atmega168_diy.menu.clock.1MHz.upload.speed=9600
+
+}}}
+

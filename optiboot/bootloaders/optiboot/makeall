@@ -11,10 +11,15 @@ then
   BAUD_RATE=57600
 fi
 
+if [ -z "$USINGMAKEFILES" ]
+then 
+  USINGMAKEFILES="Makefile.atmega8 Makefile.atmega640-1280-1281-2560-2561 Makefile.atmegaxx4-16-31"
+fi
+
 export AVR_FREQ
 export BAUD_RATE
 
-for chip in $(cat Makefile.atmega* | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | sort | uniq | sed s/://)
+for chip in $(cat $USINGMAKEFILES | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | sort | uniq | sed s/://)
 do
   echo -n "Building $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ... "
   
@@ -22,33 +27,10 @@ do
   then
     echo "FAILED, SEE: $chip.build_log"
     exit
-  else
+  else    
     echo -n "OK, SIZE: "
     avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1
   fi
 done
 
 ls *hex
-
-exit
-
-
-
-#  buildable platforms of somewhat questionable support level
-make lilypad
-make pro8
-make pro16
-make pro20
-make atmega328_pro8
-make sanguino
-make mega1280
-make luminet
-make diecimila
-make bobuino
-make wildfirev2
-make atmega1284
-#
-# Atmel development board targets
-make xplained168pb
-make xplained328p
-make xplained328pb
