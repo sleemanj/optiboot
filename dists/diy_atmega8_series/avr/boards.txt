@@ -499,7 +499,7 @@ atmega168_diy.build.f_cpu=8000000L
 atmega168_diy.upload.speed=57600
 atmega168_diy.build.core=arduino:arduino
 atmega168_diy.build.variant=arduino:standard
-atmega168_diy.build.board=ATMEGA88_DIY
+atmega168_diy.build.board=ATMEGA168_DIY
 atmega168_diy.upload.tool=arduino:avrdude
 atmega168_diy.bootloader.tool=arduino:avrdude
 
