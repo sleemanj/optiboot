@@ -12,7 +12,7 @@ Currenly supported are:
 
 ### I Just Want To Use This!
 
-See dists/README.md for the installation and usage instructions for your specific Arduino IDE Version (currently tested 1.0.5 and 1.6.5)
+See [dists/README.md](dists/README.md) for the installation and usage instructions for your specific Arduino IDE Version (currently tested 1.0.5 and 1.6.5)
 
 ### I want to build the bootloaders/distribution from source!
 
@@ -34,7 +34,7 @@ If you want to make the bootloader and burn it to your chip right then...
     cd optiboot/bootloaders/optiboot
     AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328p_isp
     
-### I want to add a new chip
+### I want to add a new chip to optiboot's capabilities
 
 See `Makefile.atmega8` for a start, but in short
 
