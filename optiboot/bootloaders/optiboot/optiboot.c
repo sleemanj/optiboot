@@ -490,8 +490,8 @@ int main(void) {
 #endif
 
 /*
-  @NOTE sleemanj: I think that we could check for U2X being defined
-    here instead of specific chips.
+  @NOTE james@gogo.co.nz: I think that we could check for U2X being 
+  defined here instead of specific chips.
     
   Also we should use the /usr/lib/avr/include/utin/setbaud.h
    to get USE_2X insted of just blindly setting it always to 2x
@@ -526,9 +526,23 @@ int main(void) {
   not using USART0 on the chips with more than one, but we get away with 
   it because all the U2Xn etc have the same value anyway.
   
+  URSEL is used by a couple of chips, so again we should check for that 
+    specifically and change setting UART_SRC on it's existence
+  
+  UART_SRA etc is not available for the first cases only because it hasn't 
+    been pin_defs.h properly, if it was we could simplify here
+
+  if we used tools/setbaud.h then we would also be able to use
+    the UBRR_LVALUE instead of our own calculation for UART_SRL
+    I think that the calculation below is wrong and only works
+    because double speed is always enabled. I think
+    that we should use setbaud.h and also remove the various
+    baud rate checks and warnings above setbaud.h will output
+    warnings suitable (set BAUD_TOL to a percentage)
+    
   Probably this should be fixed better.
 */
-  
+
 #ifndef SOFT_UART
 #if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__) || defined (__AVR_ATmega16__)
   UCSRA = _BV(U2X); //Double speed mode USART

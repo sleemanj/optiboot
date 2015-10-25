@@ -91,10 +91,17 @@
 # define UART_UDR UDR3
 #endif
 
-// james@gogo.co.nz: I suspect that these renamings can be more generic, perhaps should just 
-//    check for lack of the old definition being present and just go ahead and define it
-//    these should also be moved above the UART defines above then some stuff in .c can
-//    be simpler
+// @NOTE james@gogo.co.nz: I suspect that these renamings can be more generic, perhaps 
+//    should just  check for lack of the old definition being present and just go ahead 
+//    and define it these should also be moved above the UART defines above then some 
+//    stuff in .c can be simpler
+// 
+//   We should also set:
+//
+//     #define UCSR0B  UCSRB
+//     #define UCSR0C  UCSRC 
+//     #define UBRR0L  UBRRL
+//
 #if defined(__AVR_ATmega8__) || defined(__AVR_ATmega8A__) || ( !defined(WDTCSR) && defined (__OPTI_XX4__) )
   //Name conversion R.Wiersma
   #define UCSR0A	UCSRA
