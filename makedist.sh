@@ -110,7 +110,7 @@ See the following URL for the automatic installation instructions
   #  except we comment out all the boards  
   #  and then uncomment the ones we want
   
-  local LOOKING_FOR="(_(($(echo "$IDE10X_LIMIT_TO" | sed "s/ /)|(/g")))_.*\.)"  
+  local LOOKING_FOR="(_(($(echo "$IDE10X_LIMIT_TO" | sed "s/ /)|(/g")))_[^.]*((optiboot|none))\.)"  
   $REPOROOT/1.6-to-1.0.sh "avr/boards.txt" | sed "s/^\([a-z0-9_\.]\)/# \1/" \
     | sed -r "s/^# (.*${LOOKING_FOR}.*)$/\1/" \
     >$PACKAGENAME/boards.txt
