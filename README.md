@@ -1,33 +1,51 @@
-## Optiboot Bootloader for Arduino and Atmel AVR ##
+## Easy Install Setup for DIY Avr (Arduino) Boards using Optiboot or No Boot Loader ##
 
-![http://optiboot.googlecode.com/files/optiboot.png](http://optiboot.googlecode.com/files/optiboot.png)
+This is a "fork" of optiboot (http://github.com/Optiboot/optiboot) in which I have cleaned up the build and distribution process to create an easy to install setup which covers a wide range of Atmel AVR Microcontrollers.
 
-Optiboot is an easy to install upgrade to the Arduino bootloader within Arduino boards. It provides the following features:
+Currenly supported are:
 
-  * Allows larger sketches. Optiboot is a quarter of the size of the default bootloader, freeing 1.5k of extra space.
-  * Makes your sketches upload faster. Optiboot operates at higher baud rates and has streamlined programming.
-  * Adaboot performance improvements. Optiboot runs your sketches sooner, with no watchdog issues.
-  * Compatible with 168 and 328 Arduinos including Lilypad, Pro, Nano
-  * Believed to work with ATmega1280 ("Mega"), ATmega644 ("Sanguino"), and ATmega1284 ("Mighty")
-  * Supports several additional AVR chips (ATmega88, ATmega32)
+ * ATmega8,   ATmega8A,
+ * ATmega88,  ATmega88A,  ATmega88P,  ATmega88PA, ATmega88PB 
+ * ATmega168, ATmega168A, ATmega168P, ATmega168PA, ATmega168PB
+ * ATmega328, ATmega328P, ATmega328PB
+ * ATmega48,  ATmega48A,  ATmega48P, ATmega48PA, ATmega48PB
 
-Optiboot is now installed by default on the Arduino Uno. It can be installed on all older mega8, 168 or 328 based Arduinos.
+### I Just Want To Use This!
 
-## Additional Documentation
-More detailed documentation is being added (slowly) to the [repository wiki](https://github.com/Optiboot/optiboot/wiki).
+See dists/README.md for the installation and usage instructions for your specific Arduino IDE Version (currently tested 1.0.5 and 1.6.5)
 
-## To install into the Arduino software ##
-  1. Download the latest using Git or the Zip download feature of GitHub.  If you download as a zip, also extract it.
-  1. You will need to be using a recent version of the [Arduino environment](http://arduino.cc), version 18 or later.
-  1. Create a 'hardware' directory inside your sketches folder.
-  1. Copy the optiboot directory into the hardware directory.
-  1. Restart the Arduino software. New boards will appear in the Tools>Board menu.
+### I want to build the bootloaders/distribution from source!
 
-## To burn Optiboot onto an Arduino board ##
-  1. Select the appropriate Optiboot board type (or non-Optiboot if you want to change back)
-  1. Connect your Arduino to an ISP programmer [[Installing]]
-  1. Use the 'Burn Bootloader' item in Arduino.
-  1. You can then upload sketches as normal, using the Optiboot board type.
+Assuming that you are on a Linux platform, and you have a reasonably modern avr-gcc and avrdude installed...
+
+  ./makedist.sh
+  
+will build all the currently supported bootloaders (in the dists/*/avr/bootloaders folder(s)), create zip files under dists and update the package json file.
+
+If you just want to build one bootloader, for example, atmega328p running at 16MHz with 57600 baud rate for the upload, then you can do...
+
+    cd optiboot/bootloaders/optiboot
+    AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328p
+    
+and the hex file will be created.
+
+If you want to make the bootloader and burn it to your chip right then...
+
+    cd optiboot/bootloaders/optiboot
+    AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328p_isp
+    
+### I want to add a new chip
+
+See `Makefile.atmega8` for a start, but in short
+
+  * Use an AVR Fuse Calculator to work out the L, H and E fuse for your base setting - I have chosen to se 8MHz Internal Oscillator, you typically need 256 words (512 bytes) for the boot flash size, or larger if your chip doesn't go that small, and boot reset vector enabled (and of course SPI enabled, reset enabled etc as necessary). 
+  * The `--section-start=.text=0x****` is the total flash memory of the chip minus the size of the boot section in bytes.
+  * the `--section-start=.version=0x****` is the total flash memory of th echip minus 2 bytes
+  * avrdude, and avr-libc sometimes don't know about a specific variant of a chip.  If it is avr-libc that doesn't know (error when compiling) then you need to change the `MCU_TARGET` in the main compile rules (not the isp rules).  If it's avrdude that doesn't know (error when burning), change the `MCU_TARGET` in the `_isp` rules.  In either case you can generally change to a close-enough target, eg the atmega328pa rules target the atmega328p instead because libc doesn't know about the pa.
+  * you can determine what avr-libc knows about by searching inside /usr/lib/avr/include/avr/io.h, for example search that file for "mega48" and you will see it knos about the 48, 48A which are treated as the same chip and 48P which is treated differently.
+  * you can determine what avrdude knows about by searching inside /etc/avrdude.conf, for example search that file for "mega48" and we can see it (at least mine) knows about the 48 and the 48P, but it doesn't directly know about the 48A so in our Makefile we have set the atmega48a_isp MCU_TARGET to atmega48 to keep avrdude happy
+
+
 
 ----
 
