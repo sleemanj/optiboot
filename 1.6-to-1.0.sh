@@ -34,6 +34,11 @@ function escape_sed
   echo "$1" | sed -e 's/[\/&]/\\&/g'
 }
 
+function get_from_settings
+{
+  echo "$1" | sed "s/\s+=/=/" | grep -F "$2=" | sed "s/^.*=\s*//" | sed "s/\s*$//"
+}
+
 function build_settings
 {
   # Arguments are
@@ -48,9 +53,23 @@ function build_settings
   
   if [ -z "$MENUS_LEFT_TO_PROCESS" ]
   then 
+  
+    # The 1.0.x IDE doesn't support {build.mcu} {build.f_cpu} and {upload.speed} 
+    #  replacemenet s in the bootloader filename, so we have to resolve these
+    #  now.
+    local BUILD_MCU="$(get_from_settings "$CURRENT_SETTINGS" build.mcu)"
+    local BUILD_F_CPU="$(get_from_settings "$CURRENT_SETTINGS" build.f_cpu)"
+    local UPLOAD_SPEED="$(get_from_settings "$CURRENT_SETTINGS" upload.speed)"
+    echo "# MCU = $BUILD_MCU"
+    echo "# FREQ = $BUILD_F_CPU"
+    echo "# BAUD = $UPLOAD_SPEED"
+    
+    CURRENT_SETTINGS="$(echo "$CURRENT_SETTINGS" | sed "s/{build.mcu}/$BUILD_MCU/" | sed "s/{build.f_cpu}/$BUILD_F_CPU/" | sed "s/{upload.speed}/$UPLOAD_SPEED/")"
     echo "# $FULL_NAME_FOR_BOARD"
-    echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    echo "$CURRENT_SETTINGS"
+    echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"    
+    echo "$CURRENT_SETTINGS" | sed s/^\s*$BOARD_NAME./$FULL_NAME_FOR_BOARD./
+    echo "$FULL_NAME_FOR_BOARD.bootloader.path="
+    
     echo
     echo
   else
