@@ -1,19 +1,11 @@
 #!/bin/bash
 
 IN_16_BOARDS="$1"
-OUT_10_BOARDS="$2"
 
 function usage
 {
-  echo "$0 /path/to/boards.txt /path/to/output/directory"  
+  echo "$0 /path/to/boards.txt"
 }
-
-if [ ! -d "$OUT_10_BOARDS" ]
-then
-  echo "The output directory must be present."
-  usage
-  exit 1
-fi
 
 if [ ! -f "$IN_16_BOARDS" ]
 then
@@ -23,11 +15,11 @@ then
 fi
 
 BOARD_TYPES=$(cat $IN_16_BOARDS | grep -oP "^\s*([A-Za-z0-9_]+).name" | sed "s/^\s*//" | sed "s/\.name//" | sort | uniq | sed ':a;N;$!ba;s/\n/ /g' )
-echo "Board Types: $BOARD_TYPES"
+#echo "Board Types: $BOARD_TYPES"
 
 # Find the menu options
 MENU_OPTIONS=$(cat $IN_16_BOARDS | grep -oP "^(?:\s*)menu.([A-Za-z0-9_]+)(?:\s*=)" | sed "s/.*menu.//" | sed "s/\s*=//")
-echo "Menu: " $MENU_OPTIONS
+#echo "Menu: " $MENU_OPTIONS
 
 function escape_sed
 {
@@ -60,11 +52,13 @@ function build_settings
     local BUILD_MCU="$(get_from_settings "$CURRENT_SETTINGS" build.mcu)"
     local BUILD_F_CPU="$(get_from_settings "$CURRENT_SETTINGS" build.f_cpu)"
     local UPLOAD_SPEED="$(get_from_settings "$CURRENT_SETTINGS" upload.speed)"
-    echo "# MCU = $BUILD_MCU"
-    echo "# FREQ = $BUILD_F_CPU"
-    echo "# BAUD = $UPLOAD_SPEED"
     
     CURRENT_SETTINGS="$(echo "$CURRENT_SETTINGS" | sed "s/{build.mcu}/$BUILD_MCU/" | sed "s/{build.f_cpu}/$BUILD_F_CPU/" | sed "s/{upload.speed}/$UPLOAD_SPEED/")"
+    
+    # It doesn't know about bootloader.tool or upload.tool, so strip those out
+    #  (not that they do any harm, but don't want to cause confusion)
+    CURRENT_SETTINGS="$(echo "$CURRENT_SETTINGS" | grep -v upload.tool | grep -v bootloader.tool)"
+    
     echo "# $FULL_NAME_FOR_BOARD"
     echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"    
     echo "$CURRENT_SETTINGS" | sed s/^\s*$BOARD_NAME./$FULL_NAME_FOR_BOARD./
@@ -131,10 +125,33 @@ $(cat $IN_16_BOARDS | grep -P "^\s*$BOARD_NAME\.menu\.$OUR_MENU\.$THISOPT\.$OVER
   fi  
 }
 
+
+echo "
+# 1.0.x (1.0.5+ Perhaps) Arduino IDE Compatible boards.txt
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# This boards.txt has been automatically generated from a
+# 1.6.x compatible version which contains sub-menus for each
+# board to choose the specific variant (A, P etc), clock
+# speed, and bootloader or not.
+#
+# Because the 1.0.x IDE does not have a submenu feature, 
+# we include ALL the possible combinations below.
+#
+# However because the 1.0.x IDE also has a bit of a problem
+# with long menus, we have disabled all but the most common
+# by commenting them out.
+#
+# If you would like to enable one of the currently disabled
+# options, simply remove the comment markers (hash character)
+# from the start of all the lines of that option.
+#
+#############################################################
+
+"
+
 for BOARD in $BOARD_TYPES
 do
   STANDARD_SETTINGS=$(cat $IN_16_BOARDS | grep -P "^\s*$BOARD." | grep -v "menu"  )
-  build_settings "$BOARD" "$BOARD" "$STANDARD_SETTINGS" "$MENU_OPTIONS"
-  
-
+  build_settings "$BOARD" "$BOARD" "$STANDARD_SETTINGS" "$MENU_OPTIONS" 
 done
