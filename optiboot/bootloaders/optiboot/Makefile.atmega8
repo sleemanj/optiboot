@@ -119,7 +119,7 @@ atmega328pa: AVR_FREQ ?= 8000000L
 atmega328pa: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
 atmega328pa: $(PROGRAM)_atmega328pa_$(AVR_FREQ)_$(BAUD_RATE).hex
 
-atmega328pa_isp: atmega328p
+atmega328pa_isp: atmega328pa
 atmega328pa_isp: TARGET = atmega328pa_$(AVR_FREQ)_$(BAUD_RATE)
 atmega328pa_isp: MCU_TARGET ?= atmega328pa
 atmega328pa_isp: LFUSE ?= E2
@@ -135,7 +135,7 @@ atmega328pb: AVR_FREQ ?= 8000000L
 atmega328pb: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
 atmega328pb: $(PROGRAM)_atmega328pb_$(AVR_FREQ)_$(BAUD_RATE).hex
 
-atmega328pb_isp: atmega328p
+atmega328pb_isp: atmega328pb
 atmega328pb_isp: TARGET = atmega328pb_$(AVR_FREQ)_$(BAUD_RATE)
 atmega328pb_isp: MCU_TARGET ?= atmega328pb
 atmega328pb_isp: LFUSE ?= E2
@@ -442,7 +442,7 @@ atmega48pb: AVR_FREQ ?= 8000000L
 atmega48pb: LDSECTIONS = -Wl,--section-start=.text=0x0D9A -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
 atmega48pb: $(PROGRAM)_atmega48pb_$(AVR_FREQ)_$(BAUD_RATE).hex
 
-atmega48pb_isp: atmega48pb
+atmega48pb_isp: atmega48p
 atmega48pb_isp: TARGET = atmega48pb_$(AVR_FREQ)_$(BAUD_RATE)
 atmega48pb_isp: MCU_TARGET ?= atmega48p
 atmega48pb_isp: LFUSE ?= E2
@@ -479,7 +479,7 @@ atmega48a: $(PROGRAM)_atmega48a_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega48a_isp: atmega48a
 atmega48a_isp: TARGET = atmega48a_$(AVR_FREQ)_$(BAUD_RATE)
-atmega48a_isp: MCU_TARGET ?= atmega48a
+atmega48a_isp: MCU_TARGET ?= atmega48
 atmega48a_isp: LFUSE ?= E2
 atmega48a_isp: HFUSE ?= DD
 atmega48a_isp: EFUSE ?= 00

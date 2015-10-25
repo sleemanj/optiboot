@@ -21,8 +21,8 @@
           "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/diy_atmega8_series_ARDUINO_1_6_x_BOARDS_MANAGER.zip",
           "archiveFileName": "diy_atmega8_series_ARDUINO_1_6_x_BOARDS_MANAGER.zip",
           
-          "checksum": "SHA-256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "size": "",
+          "checksum": "SHA-256:243bee70681f2227c5ba7394366bf7b709ba069110d23621ac12c14448ccbbb0",
+          "size": "65933",
 
           "boards": [
             {"name": "ATmega8"},
