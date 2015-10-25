@@ -18,11 +18,11 @@
           "help": {
 	            "online": "https://github.com/sleemanj/optiboot/dists/"
           },
-          "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/diy_atmega8_series.zip",
-          "archiveFileName": "diy_atmega8_series.zip",
+          "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/diy_atmega8_series_ARDUINO_1_6_x_BOARDS_MANAGER.zip",
+          "archiveFileName": "diy_atmega8_series_ARDUINO_1_6_x_BOARDS_MANAGER.zip",
           
-          "checksum": "SHA-256:9adb2e2ee7c27efbf93a5402b7b196f7cb8e569405461310262d6794c422c96d",
-          "size": "65472",
+          "checksum": "SHA-256:3255f5c238e2f6acde4c6d765e865fd52cb96b40c5c4add5d2a44617281053d1",
+          "size": "65456",
 
           "boards": [
             {"name": "DIY ATmega8, ATmega8A"},
