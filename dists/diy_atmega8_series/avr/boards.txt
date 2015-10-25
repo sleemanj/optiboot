@@ -4,17 +4,17 @@
 #
 #  ATMEGA8 Series Pin Compatible Microcontrollers
 #
-#   ATMega8,   ATMega8A,
-#   ATMega88,  ATMega88A,  ATMega88P,  ATMega88PA, ATMega88PB 
-#   ATMega168, ATMega168A, ATMega168P, ATMega168PA, ATMega168PB
-#   ATMega328, ATMega328P, ATMega328PB
-#   ATMega48,  ATMega48A,  ATMega48P, ATMega48PA, ATMega48PB
+#   ATmega8,   ATmega8A,
+#   ATmega88,  ATmega88A,  ATmega88P,  ATmega88PA, ATmega88PB
+#   ATmega168, ATmega168A, ATmega168P, ATmega168PA, ATmega168PB
+#   ATmega328, ATmega328P, ATmega328PB
+#   ATmega48,  ATmega48A,  ATmega48P, ATmega48PA, ATmega48PB
 #           
 #  These microcontrollers are essentially pin compatible in a DIP 28 and TQFP 32
 #  package, the differ mostly in memory (but not only).
 #
 # LOCK/UNLOCK BITS NOTES!  READ THIS BEFORE YOU GET CONFUSED!
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # avrdude masks out bits 6 and 7 of the lock bits when it READS
 # them in (sets them zero), which means if you give it unmasked 
@@ -41,7 +41,7 @@
 #   (Load / Store Program Memory) in the Bootloader Section
 #  
 # NOTE, UNLOCK IS PRETTY MUCH NONSENSE
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #  See Datasheet Page 283 of ATMega8 for example:
 #  > The Lock Bits can only be erased to “1” with the 
 #  > Chip Erase command.
@@ -70,7 +70,7 @@ menu.boot       = Use Bootloader
 # ATMEGA8
 #
 # A note about CKOPT fuse on ATMega8
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #  If CKOPT is NOT programmed ( 1 ) then you are limited to 8MHz
 #  If CKOPT is programmed ( 0 ) then power consumption is higher
 #   but you can go up to 16MHz
@@ -101,7 +101,7 @@ atmega8_diy.upload.tool=avrdude_noefuse
 atmega8_diy.bootloader.tool=avrdude_noefuse
 
 # Version Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega8_diy.menu.version.atmega8a = ATmega8A
 atmega8_diy.menu.version.atmega8a.build.mcu = atmega8
@@ -110,7 +110,7 @@ atmega8_diy.menu.version.atmega8 = ATmega8
 atmega8_diy.menu.version.atmega8.build.mcu = atmega8
 
 # Bootloader Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega8_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 atmega8_diy.menu.boot.optiboot.upload.protocol=arduino
@@ -124,7 +124,7 @@ atmega8_diy.menu.boot.none.bootloader.high_fuses=0xCD
 atmega8_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader_noefuse
 
 # Speed Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega8_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega8_diy.menu.clock.8MHz.build.f_cpu=8000000L
@@ -183,26 +183,26 @@ atmega48_diy.upload.tool=arduino:avrdude
 atmega48_diy.bootloader.tool=arduino:avrdude
 
 # Version Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-atmega48_diy.menu.version.atmega48p = Atmega48p
+atmega48_diy.menu.version.atmega48p = Atmega48P
 atmega48_diy.menu.version.atmega48p.build.mcu = atmega48p
 
-atmega48_diy.menu.version.atmega48pa = Atmega48pa
+atmega48_diy.menu.version.atmega48pa = Atmega48PA
 atmega48_diy.menu.version.atmega48pa.build.mcu = atmega48p
 
-atmega48_diy.menu.version.atmega48pb = Atmega48pb
+atmega48_diy.menu.version.atmega48pb = Atmega48PB
 atmega48_diy.menu.version.atmega48pb.build.mcu = atmega48p
 
 atmega48_diy.menu.version.atmega48  = ATmega48
 atmega48_diy.menu.version.atmega48.build.mcu = atmega48
 
-atmega48_diy.menu.version.atmega48a = Atmega48a
+atmega48_diy.menu.version.atmega48a = Atmega48A
 atmega48_diy.menu.version.atmega48a.build.mcu = atmega48
 
 
 # Bootloader Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega48_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 atmega48_diy.menu.boot.optiboot.upload.protocol=arduino
@@ -218,7 +218,7 @@ atmega48_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
 
 
 # Speed Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega48_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega48_diy.menu.clock.8MHz.build.f_cpu=8000000L
@@ -233,7 +233,7 @@ atmega48_diy.menu.clock.1MHz.build.f_cpu=1000000L
 atmega48_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 atmega48_diy.menu.clock.1MHz.upload.speed=9600
 
-}}}
+# }}}
 
 
 ################################################################################
@@ -307,7 +307,7 @@ atmega48_diy.menu.clock.1MHz.upload.speed=9600
 ################################################################################
 # {{{
 
-atmega328_diy.name=ATmega328/A/P/PB
+atmega328_diy.name=ATmega328/P/PB
 atmega328_diy.bootloader.low_fuses=0xE2
 atmega328_diy.bootloader.high_fuses=0xDE
 atmega328_diy.bootloader.extended_fuses=0x05
@@ -323,19 +323,19 @@ atmega328_diy.upload.tool=arduino:avrdude
 atmega328_diy.bootloader.tool=arduino:avrdude
 
 # Version Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-atmega328_diy.menu.version.atmega328p = Atmega328p
+atmega328_diy.menu.version.atmega328p = Atmega328P
 atmega328_diy.menu.version.atmega328p.build.mcu = atmega328p
 
-atmega328_diy.menu.version.atmega328pb = Atmega328pb
+atmega328_diy.menu.version.atmega328pb = Atmega328PB
 atmega328_diy.menu.version.atmega328pb.build.mcu = atmega328p
 
 atmega328_diy.menu.version.atmega328  = ATmega328
 atmega328_diy.menu.version.atmega328.build.mcu = atmega328
 
 # Bootloader Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega328_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 atmega328_diy.menu.boot.optiboot.upload.protocol=arduino
@@ -351,7 +351,7 @@ atmega328_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
 
 
 # Speed Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega328_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega328_diy.menu.clock.8MHz.build.f_cpu=8000000L
@@ -366,7 +366,7 @@ atmega328_diy.menu.clock.1MHz.build.f_cpu=1000000L
 atmega328_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 atmega328_diy.menu.clock.1MHz.upload.speed=9600
 
-}}}
+# }}}
 
 
 
@@ -409,25 +409,25 @@ atmega88_diy.upload.tool=arduino:avrdude
 atmega88_diy.bootloader.tool=arduino:avrdude
 
 # Version Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-atmega88_diy.menu.version.atmega88p = Atmega88p
+atmega88_diy.menu.version.atmega88p = Atmega88P
 atmega88_diy.menu.version.atmega88p.build.mcu = atmega88p
 
-atmega88_diy.menu.version.atmega88pa = Atmega88pa
+atmega88_diy.menu.version.atmega88pa = Atmega88PA
 atmega88_diy.menu.version.atmega88pa.build.mcu = atmega88p
 
-atmega88_diy.menu.version.atmega88pb = Atmega88pb
+atmega88_diy.menu.version.atmega88pb = Atmega88PB
 atmega88_diy.menu.version.atmega88pb.build.mcu = atmega88p
 
 atmega88_diy.menu.version.atmega88  = ATmega88
 atmega88_diy.menu.version.atmega88.build.mcu = atmega88
 
-atmega88_diy.menu.version.atmega88a  = ATmega88a
+atmega88_diy.menu.version.atmega88a  = ATmega88A
 atmega88_diy.menu.version.atmega88a.build.mcu = atmega88
 
 # Bootloader Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega88_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 atmega88_diy.menu.boot.optiboot.upload.protocol=arduino
@@ -443,7 +443,7 @@ atmega88_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
 
 
 # Speed Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega88_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega88_diy.menu.clock.8MHz.build.f_cpu=8000000L
@@ -458,7 +458,7 @@ atmega88_diy.menu.clock.1MHz.build.f_cpu=1000000L
 atmega88_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 atmega88_diy.menu.clock.1MHz.upload.speed=9600
 
-}}}
+# }}}
 
 
 
@@ -500,25 +500,25 @@ atmega168_diy.upload.tool=arduino:avrdude
 atmega168_diy.bootloader.tool=arduino:avrdude
 
 # Version Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-atmega168_diy.menu.version.atmega168p = Atmega168p
+atmega168_diy.menu.version.atmega168p = Atmega168P
 atmega168_diy.menu.version.atmega168p.build.mcu = atmega168p
 
-atmega168_diy.menu.version.atmega168pa = Atmega168pa
+atmega168_diy.menu.version.atmega168pa = Atmega168PA
 atmega168_diy.menu.version.atmega168pa.build.mcu = atmega168p
 
-atmega168_diy.menu.version.atmega168pb = Atmega168pb
+atmega168_diy.menu.version.atmega168pb = Atmega168PB
 atmega168_diy.menu.version.atmega168pb.build.mcu = atmega168p
 
 atmega168_diy.menu.version.atmega168  = ATmega168
 atmega168_diy.menu.version.atmega168.build.mcu = atmega168
 
-atmega168_diy.menu.version.atmega168a  = ATmega168a
+atmega168_diy.menu.version.atmega168a  = ATmega168A
 atmega168_diy.menu.version.atmega168a.build.mcu = atmega168
 
 # Bootloader Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega168_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 atmega168_diy.menu.boot.optiboot.upload.protocol=arduino
@@ -534,7 +534,7 @@ atmega168_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
 
 
 # Speed Menu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 atmega168_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega168_diy.menu.clock.8MHz.build.f_cpu=8000000L
@@ -549,5 +549,5 @@ atmega168_diy.menu.clock.1MHz.build.f_cpu=1000000L
 atmega168_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 atmega168_diy.menu.clock.1MHz.upload.speed=9600
 
-}}}
+# }}}
 

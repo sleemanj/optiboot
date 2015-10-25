@@ -128,27 +128,42 @@ $(cat $IN_16_BOARDS | grep -P "^\s*$BOARD_NAME\.menu\.$OUR_MENU\.$THISOPT\.$OVER
 
 echo "
 # 1.0.x (1.0.5+ Perhaps) Arduino IDE Compatible boards.txt
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# This boards.txt has been automatically generated from a
-# 1.6.x compatible version which contains sub-menus for each
-# board to choose the specific variant (A, P etc), clock
-# speed, and bootloader or not.
+# This boards.txt has been automatically generated from a 1.6.x compatible 
+# version which contains sub-menus for each board to choose the specific variant
+# (A, P etc), clock speed, and bootloader or not.
 #
-# Because the 1.0.x IDE does not have a submenu feature, 
-# we include ALL the possible combinations below.
+# Because the 1.0.x IDE does not have a submenu feature,  we include ALL the 
+# possible combinations below.
 #
-# However because the 1.0.x IDE also has a bit of a problem
-# with long menus, we have disabled all but the most common
-# by commenting them out.
+# However because the 1.0.x IDE also has a bit of a problem with long menus, we 
+# have disabled all but the most common by commenting them out.
 #
-# If you would like to enable one of the currently disabled
-# options, simply remove the comment markers (hash character)
-# from the start of all the lines of that option.
+# If you would like to enable one of the currently disabled options, simply 
+# remove the comment markers (hash character) from the start of all the lines of
+# that option.
 #
-#############################################################
+# Some chips may have trouble in the 1.0.x IDE because of the old version of 
+# avrdude and less commonly avr-gcc, please read the rest of the comments in 
+# this file which will help you solve those problems if you run into them.
+# 
+################################################################################
 
 "
+
+# We can't easily embed the comments in the correct places in the file
+# so we'll just concatenate them all at the top.
+
+cat $IN_16_BOARDS | grep "#" \
+  | grep -v "# Version Menu" \
+  | grep -v "# Speed Menu" \
+  | grep -v "# Bootloader Menu" \
+  | grep -v "# {{{" \
+  | grep -v "# }}}"
+
+echo
+echo
 
 for BOARD in $BOARD_TYPES
 do

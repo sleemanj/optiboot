@@ -21,15 +21,30 @@
           "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/diy_atmega8_series_ARDUINO_1_6_x_BOARDS_MANAGER.zip",
           "archiveFileName": "diy_atmega8_series_ARDUINO_1_6_x_BOARDS_MANAGER.zip",
           
-          "checksum": "SHA-256:3255f5c238e2f6acde4c6d765e865fd52cb96b40c5c4add5d2a44617281053d1",
-          "size": "65456",
+          "checksum": "SHA-256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": "",
 
           "boards": [
-            {"name": "DIY ATmega8, ATmega8A"},
-            {"name": "DIY ATmega48, ATmega48A, Atmega48P, Atmega48PA, ATmega48PB"},
-            {"name": "DIY ATmega88, ATmega88A, Atmega88P, Atmega88PA, ATmega88PB"},
-            {"name": "DIY ATmega168, ATmega168A, Atmega168P, Atmega168PA, ATmega168PB"},
-            {"name": "DIY ATmega328, ATmega328P, ATmega328PB"}                                    
+            {"name": "ATmega8"},
+            {"name": "ATmega8A"},
+            {"name": "ATmega48"},
+            {"name": "ATmega48A"},
+            {"name": "Atmega48P"},
+            {"name": "ATmega48PA"},
+            {"name": "ATmega48PB"},
+            {"name": "ATmega88"},
+            {"name": "ATmega88A"},
+            {"name": "Atmega88P"},
+            {"name": "Atmega88PA"},
+            {"name": "ATmega88PB"},
+            {"name": "ATmega168"},
+            {"name": "ATmega168A"},
+            {"name": "Atmega168P"},
+            {"name": "Atmega168PA"},
+            {"name": "ATmega168PB"},
+            {"name": "ATmega328"},
+            {"name": "ATmega328P"},
+            {"name": "ATmega328PB"}                                    
           ],
           "toolsDependencies": [
             {

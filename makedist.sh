@@ -91,7 +91,7 @@ After installation, restart your Arduino IDE and you can then select the
     echo "Arduino 1.6.x boards.txt - AUTOMATIC INSTALLATION PACKAGE
 --------------------------------------------------------------------------------
 
-This file contains manual installation files for boards.txt and optiboot
+This file contains automatic installation files for boards.txt and optiboot
 bootloaders for various microcontrollers for the 1.6.x Ardiuno IDE.
 
 Arduino IDE 1.6.x allows you to use a boards manager to automatically install
@@ -160,9 +160,12 @@ menu, open {$PACKAGENAME}/boards.txt and search for it, then you can uncomment
   rm -r $PACKAGENAME
   popd 
   
+  
+  # Update the json file for this package with the new hash, size and 
+  #  updated version information
   pushd dists
-  HASH=$(cat $PACKAGENAME.zip | sha256sum | sed "s/ .*//")
-  SIZE=$(stat -c %s $PACKAGENAME.zip)
+  HASH=$(cat ${PACKAGENAME}_ARDUINO_1_6_x_BOARDS_MANAGER.zip | sha256sum | sed "s/ .*//")
+  SIZE=$(stat -c %s ${PACKAGENAME}_ARDUINO_1_6_x_BOARDS_MANAGER.zip)
   
   PACKAGEFILE=$(ls *_${PACKAGENAME}_index.json | head -1)
   cat $PACKAGEFILE | sed -r "s/SHA-256:([^\"]+)/SHA-256:$HASH/" \

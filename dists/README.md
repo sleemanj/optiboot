@@ -70,7 +70,7 @@ Note that this has been tested with 1.0.5, older versions your milage may vary.
 ### Manual Installation
 
   * Download the following zip file
-  * https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/diy_atmega8_series_ARDUINO_1_0_x_MANUAL_INSTALL.zip
+  * https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/diy_atmega8_series_ARDUINO_1_0_x.zip
   * Unzip the file
   * Move the folder you unzipped into a folder called "hardware" inside your Arduino Sketchbook (create one if it doesn't exist) - see the README.TXT in the file for full instructions on where to find your sketchbook folder
   * Restart your Arduino IDE
