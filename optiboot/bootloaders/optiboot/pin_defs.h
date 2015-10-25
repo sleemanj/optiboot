@@ -93,13 +93,15 @@
 
 // james@gogo.co.nz: I suspect that these renamings can be more generic, perhaps should just 
 //    check for lack of the old definition being present and just go ahead and define it
+//    these should also be moved above the UART defines above then some stuff in .c can
+//    be simpler
 #if defined(__AVR_ATmega8__) || defined(__AVR_ATmega8A__) || ( !defined(WDTCSR) && defined (__OPTI_XX4__) )
   //Name conversion R.Wiersma
   #define UCSR0A	UCSRA
   #define UDR0 		UDR
   #define UDRE0 	UDRE
   #define RXC0		RXC
-  #define FE0           FE
+  #define FE0     FE
   #define TIFR1 	TIFR
   #define WDTCSR	WDTCR
 #endif
@@ -117,6 +119,26 @@
 #endif
 
 /* Ports for soft UART - left port only for now. TX/RX on PA2/PA3 */
+
+/* @NOTE Set to PORTx PINx and DDRx where X is the port, err, letter you want
+ *    to use.  For those not familiar, PORTx = output state, PINx = input state,
+ *    and DDRx = pin direction (read/write).
+ * 
+ * INPUT:         DDRx.Y=0, PORTx.Y=1, and read your result from PINx.Y
+ * INPUT_PULLUP:  DDRx.Y=0, PORTx.Y=0, and read your result from PINx.Y
+ * OUTPUT HIGH:   DDRx.Y=1, PORTx.Y=1
+ * OUTPUT LOW:    DDRx.Y=1, PORTx.Y=0,
+ * 
+ * UART_TX_BIT and RX_BIT are the bit numbers in the PORTx to use
+ * In this case for the ATtiny24/44/84/441/841 (note there is also 
+ * ATtiny20 with the same pinout, but it can't self program so bootloader
+ * is not possible on it)
+ * 
+ *   PORTA.2 = TX = Pin 11 on DIP/SOIC, Pin 3 on QFN/MLF
+ *   PORTA.3 = RX = Pin 10 on DIP/SOIC, Pin 2 on QFN/MLF
+ * 
+ */
+
 #ifdef SOFT_UART
 #define UART_PORT   PORTA
 #define UART_PIN    PINA

@@ -489,6 +489,46 @@ int main(void) {
   TCCR1B = _BV(CS12) | _BV(CS10); // div 1024
 #endif
 
+/*
+  @NOTE sleemanj: I think that we could check for U2X being defined
+    here instead of specific chips.
+    
+  Also we should use the /usr/lib/avr/include/utin/setbaud.h
+   to get USE_2X insted of just blindly setting it always to 2x
+   (I think).
+  
+  These are the machines that appear to define U2X instead of U2X0:
+  
+  io90pwm216.h
+  io90pwm2b.h
+  io90pwm316.h
+  io90pwm3b.h
+  io90pwmx.h
+  iocanxx.h
+  iom128.h
+  iom161.h
+  iom163.h
+  iom165.h
+  iom169.h
+  iom16a.h
+  iom16.h
+  iom323.h
+  iom32.h
+  iom64.h
+  iom8515.h
+  iom8535.h
+  iom8.h
+  iotn2313a.h
+  iotn2313.h
+  iotn4313.h
+
+  It's also a bit dodgy to always use the U2X0, RXEN0 etc even if we are 
+  not using USART0 on the chips with more than one, but we get away with 
+  it because all the U2Xn etc have the same value anyway.
+  
+  Probably this should be fixed better.
+*/
+  
 #ifndef SOFT_UART
 #if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__) || defined (__AVR_ATmega16__)
   UCSRA = _BV(U2X); //Double speed mode USART
