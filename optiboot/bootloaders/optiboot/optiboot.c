@@ -565,7 +565,7 @@ int main(void) {
     
   Probably this should be fixed better.
 */
-
+/*
 #ifndef SOFT_UART
 #if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__) || defined (__AVR_ATmega16__)
   UCSRA = _BV(U2X); //Double speed mode USART
@@ -578,6 +578,17 @@ int main(void) {
   UART_SRC = _BV(UCSZ00) | _BV(UCSZ01);
   UART_SRL = (uint8_t)( (F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1 );
 #endif
+#endif
+*/
+#ifndef SOFT_UART
+  UART_SRA = _BV(UART_U2X); //Double speed mode USART0
+  UART_SRB = _BV(UART_RXEN) | _BV(UART_TXEN);
+#ifdef URSEL
+  UART_SRC = BV(URSEL) | _BV(UART_UCSZ0) | _BV(UART_UCSZ1);
+#else  
+  UART_SRC = _BV(UART_UCSZ0) | _BV(UART_UCSZ1);
+#endif
+  UART_SRL = (uint8_t)( (F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1 );
 #endif
 
   // Set up watchdog to trigger after 1s

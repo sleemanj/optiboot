@@ -279,6 +279,10 @@
   #define RXC0    RXC
   #define FE0     FE  
   #define UBRR0L  UBRRL
+  #define U2X0    U2X
+  #define RXEN0   RXEN
+  #define TXEN0   TXEN
+  
 #endif
 
 #if !defined(TIFR1) && defined(TIFR)
@@ -323,6 +327,12 @@
 # define UART_SRL UBRR0L
 # define UART_UDR UDR0
 # define UART_DRE UDRE0
+# define UART_U2X U2X0
+# define UART_RXEN RXEN0
+# define UART_TXEN TXEN0
+# define UART_UCSZ0 UCSZ00
+# define UART_UCSZ1 UCSZ01
+# define UART_UCSZ2 UCSZ02
 #elif UART == 1
 #if !defined(UDR1)
 #error UART == 1, but no UART1 on device
@@ -333,6 +343,12 @@
 # define UART_SRL UBRR1L
 # define UART_UDR UDR1
 # define UART_DRE UDRE1
+# define UART_U2X U2X1
+# define UART_RXEN RXEN1
+# define UART_TXEN TXEN1
+# define UART_UCSZ0 UCSZ10
+# define UART_UCSZ1 UCSZ11
+# define UART_UCSZ2 UCSZ12
 #elif UART == 2
 #if !defined(UDR2)
 #error UART == 2, but no UART2 on device
@@ -343,6 +359,12 @@
 # define UART_SRL UBRR2L
 # define UART_UDR UDR2
 # define UART_DRE UDRE2
+# define UART_U2X U2X2
+# define UART_RXEN RXEN2
+# define UART_TXEN TXEN2
+# define UART_UCSZ0 UCSZ20
+# define UART_UCSZ1 UCSZ21
+# define UART_UCSZ2 UCSZ22
 #elif UART == 3
 #if !defined(UDR1)
 #error UART == 3, but no UART3 on device
@@ -353,6 +375,12 @@
 # define UART_SRL UBRR3L
 # define UART_UDR UDR3
 # define UART_DRE UDRE3
+# define UART_U2X U2X3
+# define UART_RXEN RXEN3
+# define UART_TXEN TXEN3
+# define UART_UCSZ0 UCSZ30
+# define UART_UCSZ1 UCSZ31
+# define UART_UCSZ2 UCSZ32
 #endif
 
 /* @NOTE Set to PORTx PINx and DDRx where X is the port, err, letter you want
