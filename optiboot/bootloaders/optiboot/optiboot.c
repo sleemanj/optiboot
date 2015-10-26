@@ -271,6 +271,29 @@ optiboot_version = 256*(OPTIBOOT_MAJVER + OPTIBOOT_CUSTOMVER) + OPTIBOOT_MINVER;
 #define LED_START_FLASHES 0
 #endif
 
+  // Wondering what is going on here with the different method of toggling?
+  // For some chips if you write a 1 to the PIN register of an pin configured
+  // as an output, it will toggle the pin.
+  //
+  //  Using this shorthand (LED_PIN) method probably shaves a couple bytes  
+  //  However not all chips support it.  The majority of them do, and those 
+  //  that don't if they are not excepted, probably nothing bad will happen
+  //  the LED just won't work.
+  //
+  //  You can search a datasheet for "toggling the pin" which usually turns
+  //  up a section if the chip supports it, and won't find anything it it doesn't
+  //
+  //  The TOGGLE_BY_PIN_REGISTER define is made in pin_defs.h
+  //
+  //  Only define it for chips which you know can support it!
+  
+#ifdef TOGGLE_BY_PIN_REGISTER
+  #define TOGGLE_LED() LED_PIN |= _BV(LED)
+#else
+  #define TOGGLE_LED() LED_PORT ^= _BV(LED)
+#endif
+  
+
 /* set the UART baud rate defaults */
 #ifndef BAUD_RATE
 #if F_CPU >= 8000000L
@@ -738,7 +761,7 @@ int main(void) {
 
 void putch(char ch) {
 #ifndef SOFT_UART
-  while (!(UART_SRA & _BV(UDRE0)));
+  while (!(UART_SRA & _BV(UART_DRE)));
   UART_UDR = ch;
 #else
   __asm__ __volatile__ (
@@ -770,11 +793,7 @@ uint8_t getch(void) {
   uint8_t ch;
 
 #ifdef LED_DATA_FLASH
-#if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__) || defined (__AVR_ATmega16__)
-  LED_PORT ^= _BV(LED);
-#else
-  LED_PIN |= _BV(LED);
-#endif
+TOGGLE_LED();
 #endif
 
 #ifdef SOFT_UART
@@ -821,11 +840,7 @@ uint8_t getch(void) {
 #endif
 
 #ifdef LED_DATA_FLASH
-#if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__) || defined (__AVR_ATmega16__)
-  LED_PORT ^= _BV(LED);
-#else
-  LED_PIN |= _BV(LED);
-#endif
+  TOGGLE_LED();
 #endif
 
   return ch;
@@ -870,11 +885,7 @@ void flash_led(uint8_t count) {
     TCNT1 = -(F_CPU/(1024*16));
     TIFR1 = _BV(TOV1);
     while(!(TIFR1 & _BV(TOV1)));
-#if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__) || defined (__AVR_ATmega16__)
-    LED_PORT ^= _BV(LED);
-#else
-    LED_PIN |= _BV(LED);
-#endif
+    TOGGLE_LED();
     watchdogReset();
   } while (--count);
 }

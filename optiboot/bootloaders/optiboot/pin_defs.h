@@ -12,23 +12,57 @@
  */
 
 /*------------------------------------------------------------------------ */
-#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168P__) || defined(__AVR_ATmega168PA__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega88) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega8A__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega88A__) || defined(__AVR_ATmega88P__) || defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega88PB__) || defined(__AVR_ATmega48__)  || defined(__AVR_ATmega48A__) || defined(__AVR_ATmega48P__) || defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega48PB__)
+#if    defined(__AVR_ATmega8__)   || defined(__AVR_ATmega8A__) \
+    || defined(__AVR_ATmega48__)  || defined(__AVR_ATmega48A__)  || defined(__AVR_ATmega48P__)  || defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega48PB__) \
+    || defined(__AVR_ATmega88__)  || defined(__AVR_ATmega88A__)  || defined(__AVR_ATmega88P__)  || defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega88PB__)  \
+    || defined(__AVR_ATmega168__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168P__) || defined(__AVR_ATmega168PA__) \
+    || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+    
 /*------------------------------------------------------------------------ */
 
-/* Onboard LED is connected to pin PB5 in Arduino NG, Diecimila, and Duemilanove
- */ 
-#if !defined(LED)
-#define LED B5
-#endif
+  // Denote these chips as ATMEGA8 series compatible
+  //  sure would ne nice if Atmel has nice "family" names we could use for 
+  //  all the pin compatible devices :-/
+  #define __OPTI_ATMEGA8_COMPAT__ 1
+  
+  /* Onboard LED is connected to pin PB5 in Arduino NG, Diecimila, and Duemilanove
+  */ 
+  #if !defined(LED)
+    #define LED B5
+  #endif
 
-/* Ports for soft UART */
-#ifdef SOFT_UART
-#define UART_PORT   PORTD
-#define UART_PIN    PIND
-#define UART_DDR    DDRD
-#define UART_TX_BIT 1
-#define UART_RX_BIT 0
-#endif
+  /* Defaults for soft UART
+   *  james@gogo.co.nz: The original defaults were PD0 and PD1, but that doesn't really make
+   *    much sense because PD0 and PD1 are the hardware uart, so you wouldn't need software
+   *    uart on those.  So I have moved the default software uart for this chip series to
+   *    PB0 and PB1  (correspond to Digiatl Pin 8 and Digital Pin 9 in arduino-speak)  
+   */
+  #ifdef SOFT_UART
+    #ifndef UART_PORT
+      #define UART_PORT   PORTB     
+      #define UART_PIN    PINB
+      #define UART_DDR    DDRB
+      #define UART_RX_BIT 0
+      #define UART_TX_BIT 1  
+    #endif  
+  #endif
+  
+  // These specific types of this family can toggle a pin by writing a 1
+  // to the appropriate bit of the appropriate PIN register, instead of 
+  // doing an xor on the PORT register.
+  //
+  // To locate if your chip can do this, search the datasheet for
+  // "toggling the pin", if it finds nothing, it doesn't support it
+  // (I don't know of any comprehensive database of this capability)
+  
+  #if    defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega48PB__)   \
+      || defined(__AVR_ATmega88A__)  || defined(__AVR_ATmega88PA__)   \
+      || defined(__AVR_ATmega168A__) ||  defined(__AVR_ATmega168PA__) \
+      || defined(__AVR_ATmega328P__)
+    
+    #define TOGGLE_BY_PIN_REGISTER 1
+  
+  #endif
 #endif
 
 
@@ -38,19 +72,245 @@
  */
 #if     defined (__AVR_ATmega32__)  || defined (__AVR_ATmega32A__) \
      || defined (__AVR_ATmega16__)  || defined (__AVR_ATmega16A__) \
-     || defined (__AVR_ATmega164__) || defined (__AVR_ATmega164P__) || defined (__AVR_ATmega164PA__) \
+     || defined (__AVR_ATmega164__) || defined (__AVR_ATmega164A__) || defined (__AVR_ATmega164P__) || defined (__AVR_ATmega164PA__) \
      || defined (__AVR_ATmega324__) || defined (__AVR_ATmega324A__) || defined (__AVR_ATmega324P__) || defined (__AVR_ATmega324PA__) \
      || defined (__AVR_ATmega644__) || defined (__AVR_ATmega644A__) || defined (__AVR_ATmega644P__) || defined (__AVR_ATmega644PA__) \
      || defined (__AVR_ATmega1284__) || defined (__AVR_ATmega1284P__)      
-#define __OPTI_XX4__ 1
+     
+  // Denote these chips as ATmega644 Compatible  (the Sanguino uses 644, hence why choosing it)
+  //  sure would ne nice if Atmel has nice "family" names we could use for 
+  //  all the pin compatible devices :-/
+  #define __OPTI_ATMEGA644_COMPAT__ 1
+    
+  /*------------------------------------------------------------------------ */
+  /* Onboard LED is connected to pin PB0 on Sanguino */ 
+  // @NOTE Sanguino probably most common "board" using this series, so this
+  //  seems a reasonable default.
+  #if !defined(LED)
+  #define LED         B0
+  #endif
+
+  /* Defaults for soft UART
+   *  james@gogo.co.nz: The original defaults were PD0 and PD1, but that doesn't really make
+   *    much sense because PD0 and PD1 are the hardware uart, so you wouldn't need software
+   *    uart on those.  So I have moved the default software uart for this chip series to
+   *    PD6 and PD7  (correspond to Digiatl Pin 14 and Digital Pin 15 in arduino-speak)  
+   */
+  #ifdef SOFT_UART
+    #ifndef UART_PORT
+      #define UART_PORT   PORTD     
+      #define UART_PIN    PIND
+      #define UART_DDR    DDRD
+      #define UART_RX_BIT 0
+      #define UART_TX_BIT 1  
+    #endif  
+  #endif
+  
+  // These specific types of this family can toggle a pin by writing a 1
+  // to the appropriate bit of the appropriate PIN register, instead of 
+  // doing an xor on the PORT register.
+  //
+  // To locate if your chip can do this, search the datasheet for
+  // "toggling the pin", if it finds nothing, it doesn't support it
+  // (I don't know of any comprehensive database of this capability)
+  
+  #if    defined (__AVR_ATmega164A__) || defined (__AVR_ATmega164PA__) \
+      || defined (__AVR_ATmega324A__) || defined (__AVR_ATmega324PA__) \
+      || defined (__AVR_ATmega644A__) || defined (__AVR_ATmega644PA__) \
+      || defined (__AVR_ATmega1284__) || defined (__AVR_ATmega1284P__)
+    
+    #define TOGGLE_BY_PIN_REGISTER 1
+  
+  #endif
+
 #endif
      
 #if    defined(__AVR_ATmega640__) \
     || defined (__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) \
     || defined (__AVR_ATmega2560__) || defined(__AVR_ATmega2561__) 
-#define __OPTI_1280_COMPAT__ 1
+  
+  #define __OPTI_ATMEGA2560_COMPAT__ 1
+
+  // Ardiuno Mega uses 2560, it has LED on PB7
+  #if !defined(LED)
+  #define LED         B7
+  #endif
+
+  // On the Arduino Mega the below defaults are "Digital Pin 10 for RX and Digital Pin 11
+  // for TX
+  #ifdef SOFT_UART
+    #ifndef UART_PORT
+      #define UART_PORT   PORTB     
+      #define UART_PIN    PINB
+      #define UART_DDR    DDRB
+      #define UART_RX_BIT 4
+      #define UART_TX_BIT 5  
+    #endif  
+  #endif  
+  
+  // These specific types of this family can toggle a pin by writing a 1
+  // to the appropriate bit of the appropriate PIN register, instead of 
+  // doing an xor on the PORT register.
+  //
+  // To locate if your chip can do this, search the datasheet for
+  // "toggling the pin", if it finds nothing, it doesn't support it
+  // (I don't know of any comprehensive database of this capability)
+  // 
+  // (For the 2560 series, it seems to be all the chips can support it)
+  #define TOGGLE_BY_PIN_REGISTER 1
+  
 #endif  
      
+
+#if    defined(__AVR_ATtiny84__) || defined(__AVR_ATtiny84A__) \
+    || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny44A__) \
+    || defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny24A__)
+
+  // Apparently something called "Luminet" uses A4 for an LED, but as below
+  // we want to use that for our soft uart RX, I'm not sure how well this 
+  // will work
+  //
+  // To be honest, I'm not so crazy about this whole flashing the led from
+  // a bootloader idea, toggling a pin without knowing what's conected to
+  // it seems like not a good idea to me.
+
+  #if !defined(LED)
+    #define LED         A4
+  #endif
+  
+  // This series of chips does not have hardware UART, but the very similar
+  // 441/841 do have two hardware uarts, UART0 on those chips however
+  // is split over port B and port A (seriously Atmel, seriously)
+  // so we use UART1 which is on PA4 (RX) and PA5 (TX)
+  
+  #define SOFT_UART 1
+  #ifndef UART_PORT
+    #define UART_PORT   PORTA     
+    #define UART_PIN    PINA
+    #define UART_DDR    DDRA
+    #define UART_RX_BIT 4
+    #define UART_TX_BIT 5  
+  #endif  
+
+    
+  // These specific types of this family can toggle a pin by writing a 1
+  // to the appropriate bit of the appropriate PIN register, instead of 
+  // doing an xor on the PORT register.
+  //
+  // To locate if your chip can do this, search the datasheet for
+  // "toggling the pin", if it finds nothing, it doesn't support it
+  // (I don't know of any comprehensive database of this capability)
+  
+  // (For the TinyX4 series, it seems to be all the chips can support it)
+  #define TOGGLE_BY_PIN_REGISTER 1
+  
+#endif
+
+#if    defined(__AVR_ATtiny841__) \
+    || defined(__AVR_ATtiny441__) 
+
+  // Apparently something called "Luminet" uses A4 for an LED, so that's a 
+  // reasonable default, I suppose.
+  //
+  // To be honest, I'm not so crazy about this whole flashing the led from
+  // a bootloader idea, toggling a pin without knowing what's conected to
+  // it seems like not a good idea to me.
+
+  #if !defined(LED)
+    #define LED         A4
+  #endif
+  
+  // This series of chips does not have hardware UART, but the very similar
+  // 441/841 do have two hardware uarts, UART0 on those chips however
+  // is split over port B and port A (seriously Atmel, seriously)
+  // so we use UART1 which is on PA4 (RX) and PA5 (TX)
+  
+  #define SOFT_UART 1
+  #ifndef UART_PORT
+    #define UART_PORT   PORTA     
+    #define UART_PIN    PINA
+    #define UART_DDR    DDRA
+    #define UART_RX_BIT 4
+    #define UART_TX_BIT 5  
+  #endif  
+
+  // These specific types of this family can toggle a pin by writing a 1
+  // to the appropriate bit of the appropriate PIN register, instead of 
+  // doing an xor on the PORT register.
+  //
+  // To locate if your chip can do this, search the datasheet for
+  // "toggling the pin", if it finds nothing, it doesn't support it
+  // (I don't know of any comprehensive database of this capability)
+  
+  // (For the TinyX41 series, it seems to be all the chips can support it)
+  #define TOGGLE_BY_PIN_REGISTER 1
+  
+#endif
+
+// =============================================================================
+// =============================================================================
+// =============================================================================
+// =============================================================================
+//
+// FINISH OF TYPICAL CONFIGURATION OPTIONS 
+//  
+// The rest of this file is implementational details.
+//
+// =============================================================================
+// =============================================================================
+// =============================================================================
+// =============================================================================
+     
+     
+// Some (older) devices have differently named registers for the UART
+// (but equivalent function) so we will rename them for consistency
+// in optiboot.c
+//
+// This is only going to be the case when there is a single UART.
+//
+// For brevity we assume if one is not set they all are not set
+
+#if defined(UCSRA)  && !defined(UCSR0A)
+  #define UCSR0A  UCSRA
+  #define UCSR0B  UCSRB
+  #define UCSR0C  UCSRC
+  #define UDR0    UDR
+  #define UDRE0   UDRE  
+  #define RXC0    RXC
+  #define FE0     FE  
+  #define UBRR0L  UBRRL
+#endif
+
+#if !defined(TIFR1) && defined(TIFR)
+  #define TIFR1 TIFR
+#endif
+
+// I'm not sure if these two WDT renamings are entirely kosher.
+#if !defined(WDTCSR) && defined(WDTCR)
+  #define WDTCSR WDTCR
+#endif
+
+#if !defined(WDCE) && defined(WDTOE)
+  #define WDCE    WDTOE
+#endif
+
+/*
+ * This may or may not be necessary, looking at the files in /usr/lib/avr/include/avr/io*.h
+ * some of them do not define WDE, but it appears to be universally standard that
+ * it is but 3 of the WDTCSR (WDTCR), I'm not sure why I didn't notice any compile
+ * errors before (maybe I didn't try)
+ */
+
+#if !defined(WDE)
+  #define WDE 3
+#endif
+
+// A few chips call the MCUSR "MCUCSR" instead
+//  some of them already alias it (eg mega8) in avr-libc
+#if !defined(MCUSR) && defined(MCUCSR)
+  #define MCUSR MCUCSR
+#endif
+
 /*
  * Handle devices with up to 4 uarts (eg m1280.)  Rather inelegantly.
  * Note that mega8/m32 still needs special handling, because ubrr is handled
@@ -62,6 +322,7 @@
 # define UART_SRC UCSR0C
 # define UART_SRL UBRR0L
 # define UART_UDR UDR0
+# define UART_DRE UDRE0
 #elif UART == 1
 #if !defined(UDR1)
 #error UART == 1, but no UART1 on device
@@ -71,6 +332,7 @@
 # define UART_SRC UCSR1C
 # define UART_SRL UBRR1L
 # define UART_UDR UDR1
+# define UART_DRE UDRE1
 #elif UART == 2
 #if !defined(UDR2)
 #error UART == 2, but no UART2 on device
@@ -80,6 +342,7 @@
 # define UART_SRC UCSR2C
 # define UART_SRL UBRR2L
 # define UART_UDR UDR2
+# define UART_DRE UDRE2
 #elif UART == 3
 #if !defined(UDR1)
 #error UART == 3, but no UART3 on device
@@ -89,43 +352,8 @@
 # define UART_SRC UCSR3C
 # define UART_SRL UBRR3L
 # define UART_UDR UDR3
+# define UART_DRE UDRE3
 #endif
-
-// @NOTE james@gogo.co.nz: I suspect that these renamings can be more generic, perhaps 
-//    should just  check for lack of the old definition being present and just go ahead 
-//    and define it these should also be moved above the UART defines above then some 
-//    stuff in .c can be simpler
-// 
-//   We should also set:
-//
-//     #define UCSR0B  UCSRB
-//     #define UCSR0C  UCSRC 
-//     #define UBRR0L  UBRRL
-//
-#if defined(__AVR_ATmega8__) || defined(__AVR_ATmega8A__) || ( !defined(WDTCSR) && defined (__OPTI_XX4__) )
-  //Name conversion R.Wiersma
-  #define UCSR0A	UCSRA
-  #define UDR0 		UDR
-  #define UDRE0 	UDRE
-  #define RXC0		RXC
-  #define FE0     FE
-  #define TIFR1 	TIFR
-  #define WDTCSR	WDTCR
-#endif
-#if defined (__OPTI_XX4__) && !defined(WDCE)
-  #define WDCE		WDTOE
-#endif
-
-/* Luminet support */
-/*------------------------------------------------------------------------ */
-#if defined(__AVR_ATtiny84__)
-/*------------------------------------------------------------------------ */
-/* Red LED is connected to pin PA4 */ 
-#if !defined(LED)
-#define LED         A4
-#endif
-
-/* Ports for soft UART - left port only for now. TX/RX on PA2/PA3 */
 
 /* @NOTE Set to PORTx PINx and DDRx where X is the port, err, letter you want
  *    to use.  For those not familiar, PORTx = output state, PINx = input state,
@@ -146,52 +374,10 @@
  * 
  */
 
-#ifdef SOFT_UART
-#define UART_PORT   PORTA
-#define UART_PIN    PINA
-#define UART_DDR    DDRA
-#define UART_TX_BIT 2
-#define UART_RX_BIT 3
-#endif
-#endif
-
-/*------------------------------------------------------------------------ */
-/* Sanguino support (and other 40pin DIP cpus) */
-#if defined(__OPTI_XX4__)
-/*------------------------------------------------------------------------ */
-/* Onboard LED is connected to pin PB0 on Sanguino */ 
-#if !defined(LED)
-#define LED         B0
-#endif
-
-/* Ports for soft UART */
-#ifdef SOFT_UART
-#define UART_PORT   PORTD
-#define UART_PIN    PIND
-#define UART_DDR    DDRD
-#define UART_TX_BIT 1
-#define UART_RX_BIT 0
-#endif
-#endif
-
-/*------------------------------------------------------------------------ */
-/* Mega support */
-//#if defined(__AVR_ATmega1280__)
-#if defined(__OPTI_1280_COMPAT__)
-/*------------------------------------------------------------------------ */
-/* Onboard LED is connected to pin PB7 on Arduino Mega */ 
-#if !defined(LED)
-#define LED         B7
-#endif
-
-/* Ports for soft UART */
-#ifdef SOFT_UART
-#define UART_PORT   PORTE
-#define UART_PIN    PINE
-#define UART_DDR    DDRE
-#define UART_TX_BIT 1
-#define UART_RX_BIT 0
-#endif
+#ifdef SOFT_UART  
+  #if ! ( defined(UART_PORT) && defined(UART_PIN) && defined(UART_DDR) && defined(UART_TX_BIT) && defined(UART_RX_BIT) )
+     #error "SOFT_UART requested but not fully defined, you must set UART_PORT/_PIN/_DDR/_TX_BIT/_RX_BIT"    
+  #endif  
 #endif
 
 /*
