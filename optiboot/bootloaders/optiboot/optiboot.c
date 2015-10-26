@@ -311,6 +311,11 @@ optiboot_version = 256*(OPTIBOOT_MAJVER + OPTIBOOT_CUSTOMVER) + OPTIBOOT_MINVER;
 #define UART 0
 #endif
 
+// These tests here are probably superfluous now that setbaud.h is used
+// since it does it's own test.  I'l leave them in because they don't 
+// actually effect the code at all.
+//------------------------------------------------------------------------------
+// {{{
 #define BAUD_SETTING (( (F_CPU + BAUD_RATE * 4L) / ((BAUD_RATE * 8L))) - 1 )
 #define BAUD_ACTUAL (F_CPU/(8 * ((BAUD_SETTING)+1)))
 #if BAUD_ACTUAL <= BAUD_RATE
@@ -337,6 +342,13 @@ optiboot_version = 256*(OPTIBOOT_MAJVER + OPTIBOOT_CUSTOMVER) + OPTIBOOT_MINVER;
 #error Unachievable baud rate (too fast) BAUD_RATE 
 #endif
 #endif // baud rate fastn check
+// }}}
+//------------------------------------------------------------------------------
+
+// Use the setbaud.h utility from avr-libc to calculate the
+//  UBRRL_VALUE, UBRRH_VALUE and if we need 2X UART speed 
+#define BAUD BAUD_RATE
+#include <util/setbaud.h>
 
 /* Watchdog settings */
 #define WATCHDOG_OFF    (0)
@@ -565,30 +577,35 @@ int main(void) {
     
   Probably this should be fixed better.
 */
-/*
+
 #ifndef SOFT_UART
-#if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__) || defined (__AVR_ATmega16__)
-  UCSRA = _BV(U2X); //Double speed mode USART
-  UCSRB = _BV(RXEN) | _BV(TXEN);  // enable Rx & Tx
-  UCSRC = _BV(URSEL) | _BV(UCSZ1) | _BV(UCSZ0);  // config USART; 8N1
-  UBRRL = (uint8_t)( (F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1 );
-#else
-  UART_SRA = _BV(U2X0); //Double speed mode USART0
-  UART_SRB = _BV(RXEN0) | _BV(TXEN0);
-  UART_SRC = _BV(UCSZ00) | _BV(UCSZ01);
-  UART_SRL = (uint8_t)( (F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1 );
-#endif
-#endif
-*/
-#ifndef SOFT_UART
+
+#if USE_2X
   UART_SRA = _BV(UART_U2X); //Double speed mode USART0
+#warning Double Speed
+#else
+#warning Single Speed
+  // Since this is a bootloader, the register should already be zero,
+  // right?  Hope so.  Saves us some bytes.
+#endif
+  
   UART_SRB = _BV(UART_RXEN) | _BV(UART_TXEN);
+  
 #ifdef URSEL
   UART_SRC = BV(URSEL) | _BV(UART_UCSZ0) | _BV(UART_UCSZ1);
 #else  
   UART_SRC = _BV(UART_UCSZ0) | _BV(UART_UCSZ1);
 #endif
-  UART_SRL = (uint8_t)( (F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1 );
+  
+  // UART_SRL = (uint8_t)( (F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1 );  
+  UART_SRL = UBRRL_VALUE;  
+  
+#if UBRRH_VALUE > 0L
+  UART_SRH = UBRRH_VALUE;
+  // Again, save some bytes by assuming that the register is already 
+  // zero so only set it if it's going non-zero
+#endif
+  
 #endif
 
   // Set up watchdog to trigger after 1s
