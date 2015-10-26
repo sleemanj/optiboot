@@ -13,7 +13,7 @@
         {
           "name": "DIY ATmega8, ATmega48, ATmega88, ATmega168, ATmega328",
           "architecture": "avr",
-          "version": "2015.10.25",
+          "version": "2015.10.26",
           "category": "Contributed",
           "help": {
 	            "online": "https://github.com/sleemanj/optiboot/dists/"
@@ -21,8 +21,8 @@
           "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/diy_atmega8_series_ARDUINO_1_6_x_BOARDS_MANAGER.zip",
           "archiveFileName": "diy_atmega8_series_ARDUINO_1_6_x_BOARDS_MANAGER.zip",
           
-          "checksum": "SHA-256:243bee70681f2227c5ba7394366bf7b709ba069110d23621ac12c14448ccbbb0",
-          "size": "65933",
+          "checksum": "SHA-256:a3b5ee9ef2d419771834fbfdc3fe7120dbf01a64f15f7c4fa88d948597a3808a",
+          "size": "65912",
 
           "boards": [
             {"name": "ATmega8"},
