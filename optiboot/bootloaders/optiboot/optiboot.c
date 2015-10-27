@@ -592,7 +592,7 @@ int main(void) {
   UART_SRB = _BV(UART_RXEN) | _BV(UART_TXEN);
   
 #ifdef URSEL
-  UART_SRC = BV(URSEL) | _BV(UART_UCSZ0) | _BV(UART_UCSZ1);
+  UART_SRC = _BV(URSEL) | _BV(UART_UCSZ0) | _BV(UART_UCSZ1);
 #else  
   UART_SRC = _BV(UART_UCSZ0) | _BV(UART_UCSZ1);
 #endif

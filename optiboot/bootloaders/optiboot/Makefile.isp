@@ -57,8 +57,8 @@ endif
 #
 # avrdude commands to erase chip, unlock memory, and program fuses.
 #
-ISPFUSES =	-e -u -U lock:w:0x3f:m $(EFUSE_CMD) \
-	 	-U hfuse:w:0x$(HFUSE):m -U lfuse:w:0x$(LFUSE):m
+ISPFUSES =	-e -u -U lock:w:0x3f:m \
+	 	-U lfuse:w:0x$(LFUSE):m -U hfuse:w:0x$(HFUSE):m $(EFUSE_CMD)
 
 
 #
@@ -88,8 +88,40 @@ ISPFLASH =	-U flash:w:$(PROGRAM)_$(TARGET).hex $(LOCK_CMD)
 # lock it), but since the high two bits of the lock byte are
 # unused, avrdude would get confused.
 
-isp: $(PROGRAM)_$(TARGET).hex
+isp: $(PROGRAM)_$(TARGET).hex  
 	$(AVRDUDE_ROOT)avrdude $(AVRDUDE_CONF) -c $(ISPTOOL) \
               -p $(MCU_TARGET) -P $(ISPPORT) $(ISPSPEED) \
 	$(ISPFUSES) \
 	$(ISPFLASH)
+	@echo
+	@echo
+	@echo
+	@echo
+	@echo
+	@echo "#################################################################################"
+	@echo "# FUSE REMINDER FOR FREQUENCY                                                    "
+	@echo "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	@echo "#                                                                                "
+	@echo "# IF you have specified a non-default frequency of AVR_FREQ=________L,           "
+	@echo "# please remember to provide an LFUSE= which is correct for this frequency type. "
+	@echo "#                                                                                "
+	@echo "# For reasons I don't understand, LFUSE= has to go AFTER make on the command line"
+	@echo "# while AVR_FREQ= and BAUD_RATE= go before it.  Make is so damn weird.           "
+	@echo "#                                                                                "
+	@echo "# eg: AVR_FREQ=xxxxxxL BAUD_RATE=xxxxx make $(TARGET) LFUSE=xx"
+	@echo "#                                                                                "
+	@echo "# The usual symptom of an mis-matched AVR_FREQ and LFUSE is stk500 not in sync   "
+	@echo "# type errors in the Arduino IDE when you try to program the chip using optiboot "
+	@echo "#                                                                                "
+	@echo "# The following fuses were written:                                              "
+ifdef EFUSE
+	@echo "#     LFUSE: $(LFUSE) ; HFUSE: $(HFUSE) ; EFUSE: $(EFUSE)  "
+else
+	@echo "#     LFUSE: $(LFUSE) ; HFUSE: $(HFUSE)                    "
+endif
+	@echo "#                                                                                "
+	@echo "#################################################################################"
+	@echo
+	@echo
+	@echo
+	@echo

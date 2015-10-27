@@ -282,7 +282,8 @@
   #define U2X0    U2X
   #define RXEN0   RXEN
   #define TXEN0   TXEN
-  
+  #define UCSZ00  UCSZ0
+  #define UCSZ01  UCSZ1  
 #endif
 
 #if !defined(TIFR1) && defined(TIFR)
