@@ -23,6 +23,11 @@ function package_for
   PACKAGENAME="$2"
   IDE10X_LIMIT_TO="$3"
   
+  local VERSION_FILE_NAME="$(echo "$VERSION" | sed "s/\./_/g")"
+  local BOARD_MANAGER_PACKAGE="${PACKAGENAME}_${VERSION_FILE_NAME}.zip"
+  
+  # This is used by makeall to determine which
+  #  chips we want to compile for (compiles all in those makefiles)
   export USINGMAKEFILES
   
   rm $DIST/$PACKAGENAME/avr/bootloaders/*.hex
@@ -87,6 +92,9 @@ After installation, restart your Arduino IDE and you can then select the
   popd 
   
   pushd dists/$PACKAGENAME
+  # For the board manager, the mid-level "platform" folder (avr) is omitted
+  #  so we copy it to have the same name as the upper folder and zip that.
+  #  Stupid board manager.  Annoying duplication.
   cp -rp avr $PACKAGENAME
     echo "Arduino 1.6.x boards.txt - AUTOMATIC INSTALLATION PACKAGE
 --------------------------------------------------------------------------------
@@ -102,9 +110,9 @@ See the following URL for the automatic installation instructions
   http://github.com/sleemanj/optiboot/dists/README.md
      
 " >>$PACKAGENAME/README.TXT
-  zip -r ${PACKAGENAME}_ARDUINO_1_6_x_BOARDS_MANAGER.zip $PACKAGENAME   
+  zip -r $BOARD_MANAGER_PACKAGE $PACKAGENAME   
   rm $PACKAGENAME/README.TXT
-  mv ${PACKAGENAME}_ARDUINO_1_6_x_BOARDS_MANAGER.zip ../
+  mv $BOARD_MANAGER_PACKAGE ../board_manager_packages/
   
   # That makes the 1.6.x package now we create a boards.txt for 1.0.x
   #  except we comment out all the boards  
@@ -163,20 +171,48 @@ menu, open {$PACKAGENAME}/boards.txt and search for it, then you can uncomment
   
   # Update the json file for this package with the new hash, size and 
   #  updated version information
-  pushd dists
-  HASH=$(cat ${PACKAGENAME}_ARDUINO_1_6_x_BOARDS_MANAGER.zip | sha256sum | sed "s/ .*//")
-  SIZE=$(stat -c %s ${PACKAGENAME}_ARDUINO_1_6_x_BOARDS_MANAGER.zip)
+  pushd dists/board_manager_packages
+  HASH=$(cat $BOARD_MANAGER_PACKAGE | sha256sum | sed "s/ .*//")
+  SIZE=$(stat -c %s $BOARD_MANAGER_PACKAGE)
   
-  PACKAGEFILE=$(ls *_${PACKAGENAME}_index.json | head -1)
+  # Locate the most recent platform JSON for this package and use it as
+  # a template for the data of this new package
+  PACKAGEFILE=$(ls ${PACKAGENAME}_*_platform.json | sort | head -1)  
   cat $PACKAGEFILE | sed -r "s/SHA-256:([^\"]+)/SHA-256:$HASH/" \
-                   | sed -r "s/\"size\":.*/\"size\": \"$SIZE\",/" \
-                   | sed -r "s/\"version\":.*,/\"version\": \"$VERSION\",/" \
-                   > $PACKAGEFILE.$VERSION.json  
-  mv $PACKAGEFILE.$VERSION.json $PACKAGEFILE        
+                  | sed -r "s/\"size\":.*/\"size\": \"$SIZE\",/" \
+                  | sed -r "s/\"version\":.*,/\"version\": \"$VERSION\",/" \
+                  | sed -r "s/\"archiveFileName\":.*,/\"archiveFileName\": \"$BOARD_MANAGER_PACKAGE\",/" \
+                  | sed -r "s/(\"url\":.*\/)[^\/]+\.zip/\1$BOARD_MANAGER_PACKAGE/" \
+                  > "${PACKAGENAME}_${VERSION_FILE_NAME}_platform.json.tmp"
+  mv ${PACKAGENAME}_${VERSION_FILE_NAME}_platform.json.tmp ${PACKAGENAME}_${VERSION_FILE_NAME}_platform.json
   popd
   
+  pushd dists
+  # Locate the package index for this package and replace the platforms with
+  #  the platform json's
+  local INDEXFILE=$(ls *_${PACKAGENAME}_index.json | head -1)
+  local PACKAGEHEADER="$(head -n $(cat $INDEXFILE | grep -n \"platforms\" | sed "s/:.*//") *json)"
+  local PACKAGEFOOTER="$(tail -n +$(expr $(cat $INDEXFILE | grep -n \"tools\" | sed "s/:.*//" ) - 1) *json)"
+  echo "$PACKAGEHEADER" >> $INDEXFILE.tmp
+  echo >> $INDEXFILE.tmp
+  local X=0
+  for file in $(ls -t board_manager_packages/${PACKAGENAME}_*_platform.json)
+  do
+    if [ $X = 0 ]
+    then
+      X=1
+    else
+      echo ",">> $INDEXFILE.tmp
+    fi
+    echo >> $INDEXFILE.tmp
+    cat $file >> $INDEXFILE.tmp
+  done
+  echo >> $INDEXFILE.tmp
+  echo "$PACKAGEFOOTER" >> $INDEXFILE.tmp
+  mv $INDEXFILE.tmp $INDEXFILE
+  popd
   
-  
+    
 }
 
 
