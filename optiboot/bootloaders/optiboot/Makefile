@@ -164,7 +164,13 @@ ifdef LED_START_FLASHES
 LED_START_FLASHES_CMD = -DLED_START_FLASHES=$(LED_START_FLASHES)
 dummy = FORCE
 else
-LED_START_FLASHES_CMD = -DLED_START_FLASHES=3
+#LED_START_FLASHES_CMD = -DLED_START_FLASHES=3
+# Flashing the LED by default is a bad idea IMHO, because we, the bootloader
+#  don't know what is connected to that default LED pin we specified.
+#
+# Also dumping this flashing stuff saves us over 40 bytes, that's really
+#  important on virtual boot platforms especially.
+LED_START_FLASHES_CMD = 
 endif
 
 # BIG_BOOT: Include extra features, up to 1K.
@@ -435,7 +441,6 @@ include Makefile.custom
 include Makefile.atmega8
 include Makefile.atmegaxx4-16-32
 include Makefile.atmega640-1280-1281-2560-2561
-
 #---------------------------------------------------------------------------
 #
 # Generic build instructions

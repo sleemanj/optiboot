@@ -267,8 +267,22 @@ optiboot_version = 256*(OPTIBOOT_MAJVER + OPTIBOOT_CUSTOMVER) + OPTIBOOT_MINVER;
  */
 #include "stk500.h"
 
+// Just make sure that if we haven't specified an LED that 
+//  we have disabled the stuff that might use it.
+#if ! (defined(LED) && defined(LED_PIN))
+#undef LED 
+#undef LED_DATA_FLASH 
+#define LED_START_FLASHES 0
+#endif
+
 #ifndef LED_START_FLASHES
 #define LED_START_FLASHES 0
+#endif
+
+// And again, make sure the led stuff is disabled totally if we 
+// don't use it.
+#if ! (defined(LED_DATA_FLASH) || (LED_START_FLASHES > 0))
+  #undef LED
 #endif
 
   // Wondering what is going on here with the different method of toggling?
@@ -394,7 +408,9 @@ void __attribute__((noinline)) verifySpace();
 void __attribute__((noinline)) watchdogConfig(uint8_t x);
 
 static inline void getNch(uint8_t);
+#if defined(LED) && defined(LED_START_FLASHES)
 static inline void flash_led(uint8_t);
+#endif
 static inline void watchdogReset();
 static inline void writebuffer(int8_t memtype, uint8_t *mybuff,
 			       uint16_t address, pagelen_t len);
@@ -519,7 +535,7 @@ int main(void) {
   if (ch & (_BV(WDRF) | _BV(BORF) | _BV(PORF)))
       appStart(ch);
 
-#if LED_START_FLASHES > 0
+#if defined(LED) && (LED_START_FLASHES > 0)
   // Set up Timer 1 for timeout counter
   TCCR1B = _BV(CS12) | _BV(CS10); // div 1024
 #endif
@@ -611,7 +627,7 @@ int main(void) {
   // Set up watchdog to trigger after 1s
   watchdogConfig(WATCHDOG_1S);
 
-#if (LED_START_FLASHES > 0) || defined(LED_DATA_FLASH)
+#if defined(LED) && ((LED_START_FLASHES > 0) || defined(LED_DATA_FLASH))
   /* Set LED pin as output */
   LED_DDR |= _BV(LED);
 #endif
@@ -621,7 +637,7 @@ int main(void) {
   UART_DDR |= _BV(UART_TX_BIT);
 #endif
 
-#if LED_START_FLASHES > 0
+#if defined(LED) && (LED_START_FLASHES > 0)
   /* Flash onboard LED to signal entering of bootloader */
   flash_led(LED_START_FLASHES * 2);
 #endif
@@ -820,7 +836,7 @@ void putch(char ch) {
 uint8_t getch(void) {
   uint8_t ch;
 
-#ifdef LED_DATA_FLASH
+#if defined(LED) && defined(LED_DATA_FLASH)
 TOGGLE_LED();
 #endif
 
@@ -867,7 +883,7 @@ TOGGLE_LED();
   ch = UART_UDR;
 #endif
 
-#ifdef LED_DATA_FLASH
+#if defined(LED) && defined(LED_DATA_FLASH)
   TOGGLE_LED();
 #endif
 
@@ -907,7 +923,7 @@ void verifySpace() {
   putch(STK_INSYNC);
 }
 
-#if LED_START_FLASHES > 0
+#if defined(LED) && (LED_START_FLASHES > 0)
 void flash_led(uint8_t count) {
   do {
     TCNT1 = -(F_CPU/(1024*16));
