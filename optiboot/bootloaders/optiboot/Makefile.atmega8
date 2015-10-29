@@ -381,11 +381,15 @@ atmega8a_isp: isp
 # The 48 does not have a protected boot section of flash, so we have to use the 
 #  virtual boot method of optiboot.  
 #
-#  Vector 26 is SPM_READY, optiboot.c indicates that this is little used and is
-#   the default for optiboot to use (that is, SPM_READY, not necessarily that
-#   it is vector number 26).  I'm not sure that it's entirely ok to use 26...
+# NOTE! In the datasheet "Interrupt vectors in ATmega48" the "Vector no." is 
+#        counted 1 to 26, but we want to use the program address 0 to 25.  Sigh.
+#       Hello, Atmel datasheet authors, WE PROGRAMMERS COUNT FROM FREAKING ZERO.
 #
-#  Vector 23 is analog comparator, if 26 does funky stuff, then 23 would be a
+#  Vector 25 is SPM_READY, optiboot.c indicates that this is little used and is
+#   the default for optiboot to use (that is, SPM_READY, not necessarily that
+#   it is vector number 25).  I'm not sure that it's entirely ok to use 25...
+#
+#  Vector 23 is analog comparator, if 25 does funky stuff, then 23 would be a
 #   good choice, few people would use the analog comparator in Arduino world.
 #
 # Take care to also set the fuse to enable self programming, unlike the other
@@ -400,7 +404,7 @@ atmega8a_isp: isp
 
 atmega48p: TARGET = atmega48p
 atmega48p: MCU_TARGET = atmega48p
-atmega48p: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=23
+atmega48p: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=25
 atmega48p: AVR_FREQ ?= 8000000L
 # My system compiles to 602 bytes for 48p, so .text is 4096 - 602 - 2 - 10 (futureproofing) = 0x0D9A
 atmega48p: LDSECTIONS = -Wl,--section-start=.text=0x0D9A -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
@@ -418,7 +422,7 @@ atmega48p_isp: isp
 # avr-libc doesn't know about the 48PA, we use 48P instead
 atmega48pa: TARGET = atmega48pa
 atmega48pa: MCU_TARGET = atmega48p
-atmega48pa: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=23
+atmega48pa: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=25
 atmega48pa: AVR_FREQ ?= 8000000L
 # My system compiles to 602 bytes for 48p, so .text is 4096 - 602 - 2 - 10 (futureproofing) = 0x0D9A
 atmega48pa: LDSECTIONS = -Wl,--section-start=.text=0x0D9A -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
@@ -436,7 +440,7 @@ atmega48pa_isp: isp
 # avr-gcc doesn't know about the 48PB, we use 48P instead
 atmega48pb: TARGET = atmega48pb
 atmega48pb: MCU_TARGET = atmega48p
-atmega48pb: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=23
+atmega48pb: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=25
 atmega48pb: AVR_FREQ ?= 8000000L
 # My system compiles to 602 bytes for 48p, so .text is 4096 - 602 - 2 - 10 (futureproofing) = 0x0D9A
 atmega48pb: LDSECTIONS = -Wl,--section-start=.text=0x0D9A -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
@@ -454,7 +458,7 @@ atmega48pb_isp: isp
 
 atmega48: TARGET = atmega48
 atmega48: MCU_TARGET = atmega48
-atmega48: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=23
+atmega48: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=25
 atmega48: AVR_FREQ ?= 8000000L
 # My system compiles to 592 bytes for 48, so .text is 4096 - 592 - 2 - 10 (futureproofing) = 0x0DA4
 atmega48: LDSECTIONS = -Wl,--section-start=.text=0x0DA4 -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
@@ -471,7 +475,7 @@ atmega48_isp: isp
 
 atmega48a: TARGET = atmega48a
 atmega48a: MCU_TARGET = atmega48a
-atmega48a: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=23
+atmega48a: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=25
 atmega48a: AVR_FREQ ?= 8000000L
 # My system compiles to 592 bytes for 48, so .text is 4096 - 592 - 2 - 10 (futureproofing) = 0x0DA4
 atmega48a: LDSECTIONS = -Wl,--section-start=.text=0x0DA4 -Wl,--section-start=.version=0x0ffe -Wl,--gc-sections -Wl,--undefined=optiboot_version
