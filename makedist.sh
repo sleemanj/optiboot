@@ -17,22 +17,15 @@ then
   exit 1
 fi
 
-function package_for
+function build_hexs
 {
   USINGMAKEFILES="$1" 
   PACKAGENAME="$2"
-  IDE10X_LIMIT_TO="$3"
-  
-  local VERSION_FILE_NAME="$(echo "$VERSION" | sed "s/\./_/g")"
-  local BOARD_MANAGER_PACKAGE="${PACKAGENAME}_${VERSION_FILE_NAME}.zip"
-  
-  # This is used by makeall to determine which
-  #  chips we want to compile for (compiles all in those makefiles)
   export USINGMAKEFILES
-  
+
   rm $DIST/$PACKAGENAME/avr/bootloaders/*.hex
   pushd optiboot/bootloaders/optiboot   
-  
+
   AVR_FREQ=1000000L BAUD_RATE=9600 ./makeall
   cp *hex $DIST/$PACKAGENAME/avr/bootloaders
   make clean 
@@ -45,7 +38,25 @@ function package_for
   cp *hex $DIST/$PACKAGENAME/avr/bootloaders
   make clean 
   popd
+}
 
+function package_for
+{  
+  PACKAGENAME="$2"
+  IDE10X_LIMIT_TO="$3"
+  
+  local VERSION_FILE_NAME="$(echo "$VERSION" | sed "s/\./_/g")"
+  local BOARD_MANAGER_PACKAGE="${PACKAGENAME}_${VERSION_FILE_NAME}.zip"
+  
+  # This is used by makeall to determine which
+  #  chips we want to compile for (compiles all in those makefiles)
+  if ! type "$1" | grep -q 'function'
+  then    
+    build_hexs "$1" "$2"
+  else        
+    $1 "$2"
+  fi
+  
   # Make a "manual install" package suitable for sketchbook/hardware/[whatever]
   #  in Arduino 1.6
   pushd dists
@@ -215,6 +226,21 @@ menu, open {$PACKAGENAME}/boards.txt and search for it, then you can uncomment
     
 }
 
+function build_atmega8_hexs
+{
+  PACKAGENAME="$1"
+  
+  # Make the standard 1MHz at 9600, 8MHz at 57600 and 16MHz at 57600
+  build_hexs Makefile.atmega8 "$PACKAGENAME"
+  
+  # And any extra ones we need
+  pushd optiboot/bootloaders/optiboot
+  AVR_FREQ=20000000L BAUD_RATE=57600 make atmega328p
+  AVR_FREQ=20000000L BAUD_RATE=57600 make atmega328
+  cp *hex $DIST/$PACKAGENAME/avr/bootloaders
+  make clean
+  popd
+}
 
 # Because of the menu-size in 1.0.x boards, we limit to only the 
 #  most common ones, where most common has been determined by me 
@@ -225,4 +251,4 @@ menu, open {$PACKAGENAME}/boards.txt and search for it, then you can uncomment
 #  (well, most) by way of sub menus for variant, speed and boot
 #  so we don't need a long menu in 1.6.x
 
-package_for Makefile.atmega8 diy_atmega8_series "atmega328p atmega128a atmega88 atmega8a atmega48pa"
+package_for build_atmega8_hexs diy_atmega8_series "atmega328p atmega128a atmega88 atmega8a atmega48pa"
