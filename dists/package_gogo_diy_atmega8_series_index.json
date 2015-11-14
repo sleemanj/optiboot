@@ -15,6 +15,51 @@
 {
   "name": "DIY ATmega8, ATmega48, ATmega88, ATmega168, ATmega328",
   "architecture": "avr",
+  "version": "2015.11.15",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/dists/"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_atmega8_series_2015_11_15.zip",
+  "archiveFileName": "diy_atmega8_series_2015_11_15.zip",
+  
+  "checksum": "SHA-256:d813ce48dcf0c2ff1813d09dc6001eced3e310eea720c2d1113efa3e6ce4d123",
+  "size": "64468",
+
+  "boards": [
+    {"name": "ATmega8"},
+    {"name": "ATmega8A"},
+    {"name": "ATmega48"},
+    {"name": "ATmega48A"},
+    {"name": "Atmega48P"},
+    {"name": "ATmega48PA"},
+    {"name": "ATmega48PB"},
+    {"name": "ATmega88"},
+    {"name": "ATmega88A"},
+    {"name": "Atmega88P"},
+    {"name": "Atmega88PA"},
+    {"name": "ATmega88PB"},
+    {"name": "ATmega168"},
+    {"name": "ATmega168A"},
+    {"name": "Atmega168P"},
+    {"name": "Atmega168PA"},
+    {"name": "ATmega168PB"},
+    {"name": "ATmega328"},
+    {"name": "ATmega328P"},
+    {"name": "ATmega328PB"}                                    
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.0.1-arduino5"
+    }
+  ]
+},
+
+{
+  "name": "DIY ATmega8, ATmega48, ATmega88, ATmega168, ATmega328",
+  "architecture": "avr",
   "version": "2015.11.13",
   "category": "Contributed",
   "help": {
