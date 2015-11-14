@@ -344,7 +344,7 @@ atmega328_diy.menu.boot.optiboot.bootloader.high_fuses=0xDE
 atmega328_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 atmega328_diy.menu.boot.none=No (ISP Programmer Upload)
-atmega328_diy.menu.boot.none.upload.maximum_size=4096
+atmega328_diy.menu.boot.none.upload.maximum_size=32768
 atmega328_diy.menu.boot.none.bootloader.high_fuses=0xDF
 atmega328_diy.menu.boot.none.upload.tool=arduino:avrdude
 atmega328_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
