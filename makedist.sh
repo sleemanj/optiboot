@@ -7,6 +7,8 @@ else
   VERSION="$(date +%Y.%m.%d)"
 fi
 
+export VERSION
+
 # Create Arduino 1.6.x Format Distribution
 #  we need 1MHz @ 9600, 8MHz and 16MHz at 57600
 REPOROOT="$(pwd)"
@@ -46,6 +48,14 @@ function package_for
   make clean 
   popd
 
+  # Pull in external sources if any
+  if [ -x $DIST/$PACKAGENAME/avr/sources.sh ]
+  then
+    pushd $DIST/$PACKAGENAME/avr
+    ./sources.sh
+    popd
+  fi  
+  
   # Make a "manual install" package suitable for sketchbook/hardware/[whatever]
   #  in Arduino 1.6
   pushd dists
@@ -117,24 +127,38 @@ See the following URL for the automatic installation instructions
   # That makes the 1.6.x package now we create a boards.txt for 1.0.x
   #  except we comment out all the boards  
   #  and then uncomment the ones we want
-  
+  echo "Generating 1.0.x boards.txt"
   local LOOKING_FOR="(_(($(echo "$IDE10X_LIMIT_TO" | sed "s/ /)|(/g")))_[^.]*((optiboot|none))\.)"  
-  $REPOROOT/1.6-to-1.0.sh "avr/boards.txt" | sed "s/^\([a-z0-9_\.]\)/# \1/" \
+  echo "$LOOKING_FOR"
+  $REPOROOT/1.6-to-1.0.sh "avr/boards.txt" | sed -r "s/^([a-z0-9_\.])/# \1/" \
     | sed -r "s/^# (.*${LOOKING_FOR}.*)$/\1/" \
     >$PACKAGENAME/boards.txt
+  echo "...generation complete."
+  
+  
+  # We will copy this into the package distribution source
+  # just to help debugging really
+  cp $PACKAGENAME/boards.txt avr/1_0_x_boards.txt
   
   # 1.0.x doesn't need platform.txt
   rm $PACKAGENAME/platform.txt
+  rm $PACKAGENAME/platform.*.txt
+    
+  # A readme will be necessary, you can make one in 
+  # the distrubution source called 1_0_x_README.1.txt
+  # or if not then the automatic one will be created below
+  # any further 1_0_x_README.x.txt will be concatenated
   
-  # A readme will be necessary
-  echo "Arduino 1.0.x boards.txt
+  if [ ! -f $PACKAGENAME/1_0_x_readme.1.txt ]
+  then
+  echo "Arduino 1.0.x Installation
 --------------------------------------------------------------------------------
 
 This file contains boards.txt and optiboot bootloaders for various 
 microcontrollers and is made for the 1.0.x IDE (or rather, 1.0.5 or later, I
 have not tested in older).
 
-To install this, copy the entire {$PACKAGENAME} folder into your Arduino 
+To install this, copy the entire ${PACKAGENAME} folder into your Arduino 
 Sketchbook \"hardware\" sub folder.
 
 You can find what your sketchbook folder is by opening the Preferences in the 
@@ -146,7 +170,7 @@ folder is...
   * In Linux \`$HOME/sketchbook\`
 
 So for example, if your sketchbook folder is \`Documents\Arduino\` you would copy
-the {$PACKAGENAME} folder to become \`Documents\Arduino\hardware\{$PACKAGENAME}\`
+the ${PACKAGENAME} folder to become \`Documents\\Arduino\\hardware\\${PACKAGENAME}\`
 
 When you have copied the folder, restart the Arduino IDE and you should be able
 to choose from new items in the Boards menu.  Note that configurations have been
@@ -159,13 +183,23 @@ the boards.txt which have been disabled in order to not have your Boards menu
 too long.  The most common chips have been left enabled.
 
 So if you find your particular chip is not present in the Boards 
-menu, open {$PACKAGENAME}/boards.txt and search for it, then you can uncomment
+menu, open ${PACKAGENAME}/boards.txt and search for it, then you can uncomment
 (remove the # marks) from the settings for that board to enable it.
 " >$PACKAGENAME/README.TXT
+  else 
+    echo -n "" >$PACKAGENAME/README.TXT
+  fi
+  
+  # May be some extra information there too
+  cat $PACKAGENAME/1_0_x_readme.*.txt >>$PACKAGENAME/README.TXT
+  rm  $PACKAGENAME/1_0_x_readme.*.txt
+  
+  # And for debugging ease only we copy this across
+  cp $PACKAGENAME/README.TXT avr/1_0_x_README.TXT
   
   zip -r "${PACKAGENAME}_ARDUINO_1_0_x.zip" $PACKAGENAME   
   mv  "${PACKAGENAME}_ARDUINO_1_0_x.zip" ../
-  rm -r $PACKAGENAME
+  rm -rf $PACKAGENAME
   popd 
   
   
@@ -191,8 +225,8 @@ menu, open {$PACKAGENAME}/boards.txt and search for it, then you can uncomment
   # Locate the package index for this package and replace the platforms with
   #  the platform json's
   local INDEXFILE=$(ls *_${PACKAGENAME}_index.json | head -1)
-  local PACKAGEHEADER="$(head -n $(cat $INDEXFILE | grep -n \"platforms\" | sed "s/:.*//") *json)"
-  local PACKAGEFOOTER="$(tail -n +$(expr $(cat $INDEXFILE | grep -n \"tools\" | sed "s/:.*//" ) - 1) *json)"
+  local PACKAGEHEADER="$(head -n $(cat $INDEXFILE | grep -n \"platforms\" | sed "s/:.*//") $INDEXFILE)"
+  local PACKAGEFOOTER="$(tail -n +$(expr $(cat $INDEXFILE | grep -n \"tools\" | sed "s/:.*//" ) - 1) $INDEXFILE)"
   echo "$PACKAGEHEADER" >> $INDEXFILE.tmp
   echo >> $INDEXFILE.tmp
   local X=0
@@ -226,3 +260,4 @@ menu, open {$PACKAGENAME}/boards.txt and search for it, then you can uncomment
 #  so we don't need a long menu in 1.6.x
 
 package_for Makefile.atmega8 diy_atmega8_series "atmega328p atmega128a atmega88 atmega8a atmega48pa"
+package_for "Makefile.attinyx5  Makefile.attinyx4"  diy_attiny "attiny8[45]_[^.]*_FullCore attiny4[45]_[^.]*_FullCore attiny2[45]_[^.]*_SmallerCore attiny13_1_2MHz"

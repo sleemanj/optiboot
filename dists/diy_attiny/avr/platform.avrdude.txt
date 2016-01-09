@@ -1,0 +1,115 @@
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Standard avrdude.conf has some bugs with the tiny series, so we have to supply
+# our own unfortunately this means duplicating all the below from the arduino 
+# IDE's own file just to change the avrdude config path :-(
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tools.avrdude.path={runtime.tools.avrdude.path}
+tools.avrdude.cmd.path={path}/bin/avrdude
+tools.avrdude.config.path={runtime.platform.path}/avrdude.conf
+
+tools.avrdude.upload.params.verbose=-v
+tools.avrdude.upload.params.quiet=-q -q
+tools.avrdude.upload.pattern="{cmd.path}" "-C{config.path}" {upload.verbose} -p{build.mcu} -c{upload.protocol} -P{serial.port} -b{upload.speed} -D "-Uflash:w:{build.path}/{build.project_name}.hex:i"
+
+tools.avrdude.program.params.verbose=-v
+tools.avrdude.program.params.quiet=-q -q
+tools.avrdude.program.pattern="{cmd.path}" "-C{config.path}" {program.verbose} -p{build.mcu} -c{protocol} {program.extra_params} "-Uflash:w:{build.path}/{build.project_name}.hex:i"
+
+tools.avrdude.erase.params.verbose=-v
+tools.avrdude.erase.params.quiet=-q -q
+tools.avrdude.erase.pattern="{cmd.path}" "-C{config.path}" {erase.verbose} -p{build.mcu} -c{protocol} {program.extra_params} -e -Ulock:w:{bootloader.unlock_bits}:m -Uefuse:w:{bootloader.extended_fuses}:m -Uhfuse:w:{bootloader.high_fuses}:m -Ulfuse:w:{bootloader.low_fuses}:m
+
+tools.avrdude.bootloader.params.verbose=-v
+tools.avrdude.bootloader.params.quiet=-q -q
+tools.avrdude.bootloader.pattern="{cmd.path}" "-C{config.path}" {bootloader.verbose} -p{build.mcu} -c{protocol} {program.extra_params} "-Uflash:w:{runtime.platform.path}/bootloaders/{bootloader.file}:i" -Ulock:w:{bootloader.lock_bits}:m
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# When uploading with no bootloader, we only want to set the fuses, Arduino IDE 
+# 1.6.x assumes you will always have a bootloader.file, so we have to make a
+# special avrdude tool case for that (including the same conf file as above)
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tools.avrdude_nobootloader.path={runtime.tools.avrdude.path}
+tools.avrdude_nobootloader.cmd.path={path}/bin/avrdude
+tools.avrdude_nobootloader.config.path={runtime.platform.path}/avrdude.conf
+
+tools.avrdude_nobootloader.upload.params.verbose=-v
+tools.avrdude_nobootloader.upload.params.quiet=-q -q
+tools.avrdude_nobootloader.upload.pattern="{cmd.path}" "-C{config.path}" {upload.verbose} -p{build.mcu} -c{upload.protocol} -P{serial.port} -b{upload.speed} -D "-Uflash:w:{build.path}/{build.project_name}.hex:i"
+
+tools.avrdude_nobootloader.program.params.verbose=-v
+tools.avrdude_nobootloader.program.params.quiet=-q -q
+tools.avrdude_nobootloader.program.pattern="{cmd.path}" "-C{config.path}" {program.verbose} -p{build.mcu} -c{protocol} {program.extra_params} "-Uflash:w:{build.path}/{build.project_name}.hex:i"
+
+tools.avrdude_nobootloader.erase.params.verbose=-v
+tools.avrdude_nobootloader.erase.params.quiet=-q -q
+tools.avrdude_nobootloader.erase.pattern="{cmd.path}" "-C{config.path}" {erase.verbose} -p{build.mcu} -c{protocol} {program.extra_params} -e -Ulock:w:{bootloader.unlock_bits}:m -Uefuse:w:{bootloader.extended_fuses}:m -Uhfuse:w:{bootloader.high_fuses}:m -Ulfuse:w:{bootloader.low_fuses}:m
+
+tools.avrdude_nobootloader.bootloader.params.verbose=-v
+tools.avrdude_nobootloader.bootloader.params.quiet=-q -q
+tools.avrdude_nobootloader.bootloader.pattern="{cmd.path}" "-C{config.path}" {bootloader.verbose} -p{build.mcu} -c{protocol} {program.extra_params} -Ulock:w:{bootloader.lock_bits}:m
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#  Some chips do not have ext fuses, and the Arduino IDE 1.6.x assumes that all
+#  avr have efuse, so in order to support the atmega8 we have to create a special
+#  avrdude tool case for that too  (including the same conf file as above)
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tools.avrdude_noefuse.path={runtime.tools.avrdude.path}
+tools.avrdude_noefuse.cmd.path={path}/bin/avrdude
+tools.avrdude_noefuse.config.path={runtime.platform.path}/avrdude.conf
+
+tools.avrdude_noefuse.upload.params.verbose=-v
+tools.avrdude_noefuse.upload.params.quiet=-q -q
+tools.avrdude_noefuse.upload.pattern="{cmd.path}" "-C{config.path}" {upload.verbose} -p{build.mcu} -c{upload.protocol} -P{serial.port} -b{upload.speed} -D "-Uflash:w:{build.path}/{build.project_name}.hex:i"
+
+tools.avrdude_noefuse.program.params.verbose=-v
+tools.avrdude_noefuse.program.params.quiet=-q -q
+tools.avrdude_noefuse.program.pattern="{cmd.path}" "-C{config.path}" {program.verbose} -p{build.mcu} -c{protocol} {program.extra_params} "-Uflash:w:{build.path}/{build.project_name}.hex:i"
+
+tools.avrdude_noefuse.erase.params.verbose=-v
+tools.avrdude_noefuse.erase.params.quiet=-q -q
+tools.avrdude_noefuse.erase.pattern="{cmd.path}" "-C{config.path}" {erase.verbose} -p{build.mcu} -c{protocol} {program.extra_params} -e -Ulock:w:{bootloader.unlock_bits}:m -Uhfuse:w:{bootloader.high_fuses}:m -Ulfuse:w:{bootloader.low_fuses}:m
+
+tools.avrdude_noefuse.bootloader.params.verbose=-v
+tools.avrdude_noefuse.bootloader.params.quiet=-q -q
+tools.avrdude_noefuse.bootloader.pattern="{cmd.path}" "-C{config.path}" {bootloader.verbose} -p{build.mcu} -c{protocol} {program.extra_params} "-Uflash:w:{runtime.platform.path}/bootloaders/{bootloader.file}:i" -Ulock:w:{bootloader.lock_bits}:m
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#  And we might want to use no bootloader with a no efuse chip, so we need 
+#  yet another pile of copy-pasted duplication :-(
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tools.avrdude_nobootloader_noefuse.path={runtime.tools.avrdude.path}
+tools.avrdude_nobootloader_noefuse.cmd.path={path}/bin/avrdude
+tools.avrdude_nobootloader_noefuse.config.path={runtime.platform.path}/avrdude.conf
+
+tools.avrdude_nobootloader_noefuse.upload.params.verbose=-v
+tools.avrdude_nobootloader_noefuse.upload.params.quiet=-q -q
+tools.avrdude_nobootloader_noefuse.upload.pattern="{cmd.path}" "-C{config.path}" {upload.verbose} -p{build.mcu} -c{upload.protocol} -P{serial.port} -b{upload.speed} -D "-Uflash:w:{build.path}/{build.project_name}.hex:i"
+
+tools.avrdude_nobootloader_noefuse.program.params.verbose=-v
+tools.avrdude_nobootloader_noefuse.program.params.quiet=-q -q
+tools.avrdude_nobootloader_noefuse.program.pattern="{cmd.path}" "-C{config.path}" {program.verbose} -p{build.mcu} -c{protocol} {program.extra_params} "-Uflash:w:{build.path}/{build.project_name}.hex:i"
+
+tools.avrdude_nobootloader_noefuse.erase.params.verbose=-v
+tools.avrdude_nobootloader_noefuse.erase.params.quiet=-q -q
+tools.avrdude_nobootloader_noefuse.erase.pattern="{cmd.path}" "-C{config.path}" {erase.verbose} -p{build.mcu} -c{protocol} {program.extra_params} -e -Ulock:w:{bootloader.unlock_bits}:m -Uhfuse:w:{bootloader.high_fuses}:m -Ulfuse:w:{bootloader.low_fuses}:m
+
+tools.avrdude_nobootloader_noefuse.bootloader.params.verbose=-v
+tools.avrdude_nobootloader_noefuse.bootloader.params.quiet=-q -q
+tools.avrdude_nobootloader_noefuse.bootloader.pattern="{cmd.path}" "-C{config.path}" {bootloader.verbose} -p{build.mcu} -c{protocol} {program.extra_params} -Ulock:w:{bootloader.lock_bits}:m
+
