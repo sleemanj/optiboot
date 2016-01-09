@@ -1,0 +1,138 @@
+################################################################################
+#
+#  ATtiny(x)5 Series Pin Compatible Microcontrollers
+#
+#   ATtiny25
+#   ATtiny45
+#   ATtiny85
+#
+#  These microcontrollers are essentially pin compatible in a DIP 8, SOIC 8,
+#  and QFN/MLF 20.
+#
+#  A number of the updated ("A", "B") versions are not known about by 
+#  avr-gcc so we are just treating them as the original version - this should
+#  be fine, as long as the signature bytes are not changing (usually don't).
+#
+# Note we do not support any silly flashing of an LED on this series of 
+#  chip because we only have one 8 bit timer, and no pins to spare anyway.
+#
+# Also, flashing an LED is silly.
+#
+################################################################################
+################################################################################
+#
+# Usage and General Development Notes 
+# (See Further Comments for Chip Specific Notes)
+#
+#  WARNING: DO NOT GENERATE MULTIPLE TARGETS IN A SINGLE MAKE INVOCATION
+#   DO NOT DO: `make X Y Z`
+#   INSTEAD  : for i in X Y Z; do AVR_FREQ=16000000L BAUD_RATE=57600 make $i; done
+#   REASON   : I hate gnu make and it hates me, if you try to do `make X Y Z` it
+#              *appears* to work, but actually the generated hex files are 
+#              wrong. 
+#   
+#     AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328p
+#
+# to produce
+#
+#    optiboot_atmega328p_16000000L_57600.hex
+#
+# Note that if you use the _isp targets (eg atmega8_isp) the default 
+# fuses are for 8MHz internal oscillator for safety.
+#
+# If make were easier to write for occasionally, then I'd have included suggested
+# fuse values in the file names, but it's too hard (would have to look at AVR_FREQ
+# and choose fuse values from a table based on that).#
+#
+# WHAT IS THE .TEXT and .VERSION SECTION ADDRESSES
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# .text is the byte address of the start of the boot area, as determined by
+#  your (intended) fuse settings, if we assume that the boot section is at the
+#  top of the flash memory and you will use a 256 WORD (512 BYTE) boot section
+#  then the address should be CONVERT_TO_HEX(TOTAL_FLASH - 512)
+#
+# .version is CONVERT_TO_HEX(TOTAL_FLASH - 2) 
+#   - that is, the last 2 bytes of flash, I don't claim to know why, but it is
+#
+#  Eg: ATMega8 is 8192 bytes of Flash, we use a 256 Word Boot Area (512 Byte)
+#    .text    = 8192-512 = 7680 = 0x1E00
+#    .version = 8192-2   = 8190 = 0x1FFE
+#
+# Note that the 25/45/85 series does not have a hardware UART, we use SOFT_UART
+# TODO - Can we make use of the "Universal Serial Interface" (USI) here?
+#        see AVR307 Application Note.
+#
+################################################################################
+
+
+
+################################################################################
+# {{{
+
+## ATtiny25/45/85
+#
+# The ATtinyx5 does not have a seperate boot section.  We allocate 580 bytes
+#  for the "virtual" boot section, plus 2 for the version.
+#
+# We have to use one of the interrupt vectors for our own purposes
+#  which will make it unavailable for use in the main program, so make it 
+#  something few will use.
+#
+# The interrupt vectors are in "9.1 Interrupt Vectors in ATtiny25/45/85" 
+#  of the datasheet.
+#
+# We hijack EE_READY - I don't think that the avr libraries eeprom functions
+#  make use of this interrupt, so we should still be able to use EEPROM.h 
+#  arduino library even when we have used this vector.
+#
+# EE_RDY is vector 0x0006, which is 6 in decimal, ignore the stupid "from 1"
+#  counting of the Vector No. column in the datasheet.  Thanks for that Atmel.
+#
+
+################################################################################
+
+attiny25: TARGET = attiny25
+attiny25: MCU_TARGET = attiny25
+attiny25: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=6
+attiny25: AVR_FREQ ?= 8000000L
+attiny25: LDSECTIONS  = -Wl,--section-start=.text=0x05BC -Wl,--section-start=.version=0x07FE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny25: $(PROGRAM)_attiny25_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny25_isp: attiny25
+attiny25_isp: TARGET = attiny25_$(AVR_FREQ)_$(BAUD_RATE)
+attiny25_isp: MCU_TARGET ?= attiny25
+attiny25_isp: LFUSE ?= E2
+attiny25_isp: HFUSE ?= DD
+attiny25_isp: EFUSE ?= 00
+attiny25_isp: isp
+
+attiny45: TARGET = attiny45
+attiny45: MCU_TARGET = attiny45
+attiny45: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=6
+attiny45: AVR_FREQ ?= 8000000L
+attiny45: LDSECTIONS  = -Wl,--section-start=.text=0x0DBA -Wl,--section-start=.version=0x0FFE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny45: $(PROGRAM)_attiny45_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny45_isp: attiny45
+attiny45_isp: TARGET = attiny45_$(AVR_FREQ)_$(BAUD_RATE)
+attiny45_isp: MCU_TARGET ?= attiny45
+attiny45_isp: LFUSE ?= E2
+attiny45_isp: HFUSE ?= DD
+attiny45_isp: EFUSE ?= 00
+attiny45_isp: isp
+
+attiny85: TARGET = attiny85
+attiny85: MCU_TARGET = attiny85
+attiny85: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=6
+attiny85: AVR_FREQ ?= 8000000L
+attiny85: LDSECTIONS  = -Wl,--section-start=.text=0x1DBA -Wl,--section-start=.version=0x1FFE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny85: $(PROGRAM)_attiny85_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny85_isp: attiny85
+attiny85_isp: TARGET = attiny85_$(AVR_FREQ)_$(BAUD_RATE)
+attiny85_isp: MCU_TARGET ?= attiny85
+attiny85_isp: LFUSE ?= E2
+attiny85_isp: HFUSE ?= DD
+attiny85_isp: EFUSE ?= 00
+attiny85_isp: isp

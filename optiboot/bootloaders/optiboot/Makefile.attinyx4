@@ -1,0 +1,179 @@
+################################################################################
+#
+#  ATtiny(x)4 Series Pin Compatible Microcontrollers
+#
+#   ATtiny24/A
+#   ATtiny44/A
+#   ATtiny84/A
+#
+#  These microcontrollers are essentially pin compatible in a DIP 14, SOIC 14,
+#  and QFN/MLF 20.
+#
+#  A number of the updated ("A", "B") versions are not known about by 
+#  avrdude so we are just treating them as the original version - this should
+#  be fine, as long as the signature bytes are not changing (usually don't).
+#
+################################################################################
+################################################################################
+#
+# Usage and General Development Notes 
+# (See Further Comments for Chip Specific Notes)
+#
+#  WARNING: DO NOT GENERATE MULTIPLE TARGETS IN A SINGLE MAKE INVOCATION
+#   DO NOT DO: `make X Y Z`
+#   INSTEAD  : for i in X Y Z; do AVR_FREQ=16000000L BAUD_RATE=57600 make $i; done
+#   REASON   : I hate gnu make and it hates me, if you try to do `make X Y Z` it
+#              *appears* to work, but actually the generated hex files are 
+#              wrong. 
+#   
+#     AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328p
+#
+# to produce
+#
+#    optiboot_atmega328p_16000000L_57600.hex
+#
+# Note that if you use the _isp targets (eg atmega8_isp) the default 
+# fuses are for 8MHz internal oscillator for safety.
+#
+# If make were easier to write for occasionally, then I'd have included suggested
+# fuse values in the file names, but it's too hard (would have to look at AVR_FREQ
+# and choose fuse values from a table based on that).#
+#
+# WHAT IS THE .TEXT and .VERSION SECTION ADDRESSES
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# .text is the byte address of the start of the boot area, as determined by
+#  your (intended) fuse settings, if we assume that the boot section is at the
+#  top of the flash memory and you will use a 256 WORD (512 BYTE) boot section
+#  then the address should be CONVERT_TO_HEX(TOTAL_FLASH - 512)
+#
+# .version is CONVERT_TO_HEX(TOTAL_FLASH - 2) 
+#   - that is, the last 2 bytes of flash, I don't claim to know why, but it is
+#
+#  Eg: ATMega8 is 8192 bytes of Flash, we use a 256 Word Boot Area (512 Byte)
+#    .text    = 8192-512 = 7680 = 0x1E00
+#    .version = 8192-2   = 8190 = 0x1FFE
+#
+# Note that the 24/44/84 series does not have a hardware UART, we use SOFT_UART
+# TODO - Can we make use of the "Universal Serial Interface" (USI) here?
+#        see AVR307 Application Note.
+#
+################################################################################
+
+
+
+################################################################################
+# {{{
+
+## ATtiny24/44/84
+#
+# The ATtinyx4 does not have a seperate boot section.  We allocate 580 bytes
+#  for the "virtual" boot section, plus 2 for the version.
+#
+# We have to use one of the interrupt vectors for our own purposes
+#  which will make it unavailable for use in the main program, so make it 
+#  something few will use.
+#
+# The interrupt vectors are in "9.1 Interrupt Vectors"
+#  of the datasheet for the ATtiny24/44/84
+#
+# We hijack EE_RDY - I don't think that the avr libraries eeprom functions
+#  make use of this interrupt, so we should still be able to use EEPROM.h 
+#  arduino library even when we have used this vector.
+#
+# EE_RDY is vector 0x000E, which is 14 in decimal, ignore the stupid "from 1"
+#  counting of the Vector No. column in the datasheet.  Thanks for that Atmel.
+#
+
+################################################################################
+
+attiny24: TARGET = attiny24
+attiny24: MCU_TARGET = attiny24
+attiny24: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
+attiny24: AVR_FREQ ?= 8000000L
+attiny24: LDSECTIONS  = -Wl,--section-start=.text=0x05BC -Wl,--section-start=.version=0x07FE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny24: $(PROGRAM)_attiny24_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny24_isp: attiny24
+attiny24_isp: TARGET = attiny24_$(AVR_FREQ)_$(BAUD_RATE)
+attiny24_isp: MCU_TARGET ?= attiny24
+attiny24_isp: LFUSE ?= E2
+attiny24_isp: HFUSE ?= DD
+attiny24_isp: EFUSE ?= FE
+attiny24_isp: isp
+
+attiny44: TARGET = attiny44
+attiny44: MCU_TARGET = attiny44
+attiny44: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
+attiny44: AVR_FREQ ?= 8000000L
+attiny44: LDSECTIONS  = -Wl,--section-start=.text=0x0DBA -Wl,--section-start=.version=0x0FFE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny44: $(PROGRAM)_attiny44_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny44_isp: attiny44
+attiny44_isp: TARGET = attiny44_$(AVR_FREQ)_$(BAUD_RATE)
+attiny44_isp: MCU_TARGET ?= attiny44
+attiny44_isp: LFUSE ?= E2
+attiny44_isp: HFUSE ?= DD
+attiny44_isp: EFUSE ?= FE
+attiny44_isp: isp
+
+attiny84: TARGET = attiny84
+attiny84: MCU_TARGET = attiny84
+attiny84: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
+attiny84: AVR_FREQ ?= 8000000L
+attiny84: LDSECTIONS  = -Wl,--section-start=.text=0x1DBA -Wl,--section-start=.version=0x1FFE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny84: $(PROGRAM)_attiny84_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny84_isp: attiny84
+attiny84_isp: TARGET = attiny84_$(AVR_FREQ)_$(BAUD_RATE)
+attiny84_isp: MCU_TARGET ?= attiny84
+attiny84_isp: LFUSE ?= E2
+attiny84_isp: HFUSE ?= DD
+attiny84_isp: EFUSE ?= FE
+attiny84_isp: isp
+
+
+attiny24a: TARGET = attiny24a
+attiny24a: MCU_TARGET = attiny24a
+attiny24a: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
+attiny24a: AVR_FREQ ?= 8000000L
+attiny24a: LDSECTIONS  = -Wl,--section-start=.text=0x05BC -Wl,--section-start=.version=0x07FE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny24a: $(PROGRAM)_attiny24a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny24a_isp: attiny24a
+attiny24a_isp: TARGET = attiny24a_$(AVR_FREQ)_$(BAUD_RATE)
+attiny24a_isp: MCU_TARGET ?= attiny24
+attiny24a_isp: LFUSE ?= E2
+attiny24a_isp: HFUSE ?= DD
+attiny24a_isp: EFUSE ?= FE
+attiny24a_isp: isp
+
+attiny44a: TARGET = attiny44a
+attiny44a: MCU_TARGET = attiny44a
+attiny44a: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
+attiny44a: AVR_FREQ ?= 8000000L
+attiny44a: LDSECTIONS  = -Wl,--section-start=.text=0x0DBA -Wl,--section-start=.version=0x0FFE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny44a: $(PROGRAM)_attiny44a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny44a_isp: attiny44
+attiny44a_isp: TARGET = attiny44a_$(AVR_FREQ)_$(BAUD_RATE)
+attiny44a_isp: MCU_TARGET ?= attiny44a
+attiny44a_isp: LFUSE ?= E2
+attiny44a_isp: HFUSE ?= DD
+attiny44a_isp: EFUSE ?= FE
+attiny44a_isp: isp
+
+attiny84a: TARGET = attiny84a
+attiny84a: MCU_TARGET = attiny84a
+attiny84a: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
+attiny84a: AVR_FREQ ?= 8000000L
+attiny84a: LDSECTIONS  = -Wl,--section-start=.text=0x1DBA -Wl,--section-start=.version=0x1FFE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny84a: $(PROGRAM)_attiny84a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny84a_isp: attiny84a
+attiny84a_isp: TARGET = attiny84a_$(AVR_FREQ)_$(BAUD_RATE)
+attiny84a_isp: MCU_TARGET ?= attiny84
+attiny84a_isp: LFUSE ?= E2
+attiny84a_isp: HFUSE ?= DD
+attiny84a_isp: EFUSE ?= FE
+attiny84a_isp: isp
