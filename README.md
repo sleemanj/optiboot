@@ -9,7 +9,15 @@ Currenly supported are:
  * ATmega168, ATmega168A, ATmega168P, ATmega168PA, ATmega168PB
  * ATmega328, ATmega328P, ATmega328PB
  * ATmega48,  ATmega48A,  ATmega48P, ATmega48PA, ATmega48PB
-
+ 
+ * ATtiny13,  ATtiny13A
+ * ATtiny25
+ * ATtiny45
+ * ATtiny85
+ * ATtiny24, ATtiny24A
+ * ATtiny44, ATtiny44A
+ * ATtiny84, ATtiny84A
+ 
 ### I Just Want To Use This!
 
 See [dists/README.md](dists/README.md) for the installation and usage instructions for your specific Arduino IDE Version (currently tested 1.0.5 and 1.6.5)
