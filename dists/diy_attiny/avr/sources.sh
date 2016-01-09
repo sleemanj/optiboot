@@ -13,7 +13,7 @@ function main
 {
   # Ensure we have certain directories
   [ -d cores ]    || mkdir cores
-  [ -d variants ] || mkdir cores
+  [ -d variants ] || mkdir variants
   
   # github https://github.com/damellis/attiny/tree/master/attiny/variants/tiny8    variants/tiny8
   # github https://github.com/damellis/attiny/tree/master/attiny/variants/tiny14   variants/tiny14
