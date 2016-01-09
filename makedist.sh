@@ -4,7 +4,7 @@ if [ -n "$1" ]
 then
   VERSION=$1
 else
-  VERSION="$(date +%Y.%m.%d)"
+  VERSION="$(date +%Y.%-m.%-d)"
 fi
 
 export VERSION

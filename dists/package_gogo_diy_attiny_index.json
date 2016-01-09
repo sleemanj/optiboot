@@ -15,7 +15,7 @@
 {
   "name": "DIY ATtiny",
   "architecture": "avr",
-  "version": "2016.01.09",
+  "version": "2016.1.9",
   "category": "Contributed",
   "help": {
       "online": "https://github.com/sleemanj/optiboot/dists/"
