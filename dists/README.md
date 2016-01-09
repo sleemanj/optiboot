@@ -12,7 +12,7 @@ Presently the list of included chips is as follows:
 
 ## ATmega8 Series
 
-[IDE 1.6.x Board Manager JSON for ATmega 8/48/88/168/328](package_gogo_diy_atmega8_series_index.json?raw=true)
+[IDE 1.6.x Board Manager JSON for ATmega 8/48/88/168/328](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_atmega8_series_index.json)
 
 This series of chips are pin compatible in both 28 pin DIP (through hole) and
 32 pin surface mount packages.  Consult the datasheets for the specific 
@@ -30,7 +30,7 @@ should work too, open an issue if not.
 
 ## ATtiny
 
-[IDE 1.6.x Board Manager JSON for ATtiny 25/45/85/24/44/84/13](package_gogo_diy_attiny_index.json?raw=true)
+[IDE 1.6.x Board Manager JSON for ATtiny 25/45/85/24/44/84/13](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_attiny_index.json)
 
 ### ATtiny x5 Series
 
