@@ -2,6 +2,29 @@
 
 IN_16_BOARDS="$1"
 
+function sed
+{  
+  
+  if ! /bin/sed "$@"
+  then
+    echo "#### Error above was produced by..." >&2
+    echo "#### /bin/sed $1 $2" >&2
+    echo "#### Most common mistake is having two duplicate entries in boards.txt with different values, by mistake." >&2
+    echo "#### For example; " >&2
+    echo "####    attiny25_diy.menu.version.attiny25 = ATtiny25" >&2
+    echo "####    attiny25_diy.menu.version.attiny25 = ATtiny25a" >&2
+    echo "#### where you should have had the second one called .version.attiny25a but you forgot :-)" >&2
+    echo "####" >&2
+    echo "#### Anyway, here is a stack trace to help you find the problem in 1.6-to-1.0.sh"     >&2
+    
+    local frame=0
+    while caller $frame >&2; do
+      ((frame++));
+    done
+  fi
+  
+}
+
 function usage
 {
   echo "$0 /path/to/boards.txt"

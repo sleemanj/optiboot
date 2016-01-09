@@ -1,0 +1,31 @@
+{
+  "name": "DIY ATtiny",
+  "architecture": "avr",
+  "version": "2016.01.09",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/dists/"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2016_01_09.zip",
+  "archiveFileName": "diy_attiny_2016_01_09.zip",
+  
+  "checksum": "SHA-256:3602ebad4f11c61a905892e488fab80be700a0d9990f6b654e60d5bc27fbb5e6",
+  "size": "218482",
+
+  "boards": [
+    {"name": "ATtiny13"},    
+    {"name": "ATtiny13A"},
+    {"name": "ATtiny45"},
+    {"name": "ATtiny85"},
+    {"name": "ATtiny24"},
+    {"name": "ATtiny44"},
+    {"name": "ATtiny84"},    
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.0.1-arduino5"
+    }
+  ]
+}
