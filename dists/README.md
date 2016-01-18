@@ -54,7 +54,7 @@ Note only 84A has been tested, but the others should work too, open an issue if 
 
 ### ATtiny13
 
-This series of chips is pin compatible with the ATtinyx5 series, but have only 1K of flash and 64 Bytes of SRAM,  as a result they are a tight squeeze for the Arduino environment.  There is no room for bootloaders so you need an ISP programmer.  The core used for this series of chips is much more limited ("core13") and you may find that some functions do not operate, for example, the "Serial" interface is somewhat limited (directly speaking, it is HalfDuplex, there is no buffer, it's good-enough for debug output).
+This series of chips is pin compatible with the ATtinyx5 series, but have only 1K of flash and 64 Bytes of SRAM,  as a result they are a tight squeeze for the Arduino environment.  There is no room for bootloaders so you need an ISP programmer.  The core used for this series of chips is more limited and you may find that some functions do not operate, for example, the "Serial" interface is somewhat limited (directly speaking, it is HalfDuplex, there is no buffer, it's good-enough for debug output).
 
  * ATtiny13, ATtiny13A
 
