@@ -262,6 +262,56 @@
   
 #endif
 
+#if    defined(__AVR_ATtiny87__) \
+    || defined(__AVR_ATtiny167__) 
+
+  // We only have 1 timer on this series, and pins are so limited, 
+  // so we won't support having a flashing LED On this series of chip
+  #ifdef LED_START_FLASHES
+    #undef LED_START_FLASHES
+    #define LED_START_FLASHES 0
+  #endif
+  
+  #ifdef LED
+    #warning "Sorry, the ATtiny87/167 do not support a flashing LED."
+    #undef LED
+  #endif
+  
+  
+  // This series of chips does not have hardware UART, best we can do
+  // is software UART.
+  //
+  // The TinySoftwareSerial code used in the ATTiny core
+  //  https://github.com/TCWORLD/ATTinyCore/tree/master/tiny/cores/tiny
+  // uses the analog comparator interrupt for the serial handling
+  // and so we need to use AIN0 as TX (which corresponds to MOSI)
+  // and AIN1 as RX (which corresponds to MISO)  
+  
+  //#define SOFT_UART 1
+  #ifndef UART_PORT
+    #define UART_PORT   PORTA     
+    #define UART_PIN    PINA
+    #define UART_DDR    DDRA
+    
+    // TX = MOSI (PB.0, Pin 5 of IC), RX = MISO (PB.1, Pin 6 of IC)
+    #define UART_RX_BIT 0
+    #define UART_TX_BIT 1  
+  #endif  
+
+    
+  // These specific types of this family can toggle a pin by writing a 1
+  // to the appropriate bit of the appropriate PIN register, instead of 
+  // doing an xor on the PORT register.
+  //
+  // To locate if your chip can do this, search the datasheet for
+  // "toggling the pin", if it finds nothing, it doesn't support it
+  // (I don't know of any comprehensive database of this capability)
+  
+  // (For the TinyX5 series, it seems to be all the chips can support it)
+  #define TOGGLE_BY_PIN_REGISTER 1
+  
+#endif
+
 #if    defined(__AVR_ATtiny841__) \
     || defined(__AVR_ATtiny441__) 
 

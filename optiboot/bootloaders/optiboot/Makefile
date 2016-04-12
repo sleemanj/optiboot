@@ -441,6 +441,7 @@ include Makefile.custom
 include Makefile.atmega8
 include Makefile.attinyx5
 include Makefile.attinyx4
+include Makefile.attinyx7
 include Makefile.atmegaxx4-16-32
 include Makefile.atmega640-1280-1281-2560-2561
 #---------------------------------------------------------------------------
