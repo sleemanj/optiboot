@@ -66,15 +66,15 @@
 
 ## ATtiny167
 #
-# The ATtinyx4 does not have a seperate boot section.  We allocate 580 bytes
+# The ATtinyx7 does not have a seperate boot section.  We allocate 580 bytes
 #  for the "virtual" boot section, plus 2 for the version.
 #
 # We have to use one of the interrupt vectors for our own purposes
 #  which will make it unavailable for use in the main program, so make it 
 #  something few will use.
 #
-# The interrupt vectors are in "9.1 Interrupt Vectors"
-#  of the datasheet for the ATtiny24/44/84
+# The interrupt vectors are in "7.1 Interrupt Vectors"
+#  of the datasheet for the ATtiny87/167
 #
 # We hijack EE_RDY - I don't think that the avr libraries eeprom functions
 #  make use of this interrupt, so we should still be able to use EEPROM.h 
@@ -94,10 +94,54 @@ attiny167: AVR_FREQ ?= 8000000L
 attiny167: LDSECTIONS  = -Wl,--section-start=.text=0x3DBC -Wl,--section-start=.version=0x3FFE -Wl,--gc-sections -Wl,--undefined=optiboot_version
 attiny167: $(PROGRAM)_attiny167_$(AVR_FREQ)_$(BAUD_RATE).hex
 
-attiny167_isp: attiny24
-attiny167_isp: TARGET = attiny24_$(AVR_FREQ)_$(BAUD_RATE)
-attiny167_isp: MCU_TARGET ?= attiny24
+attiny167_isp: attiny167
+attiny167_isp: TARGET = attiny167_$(AVR_FREQ)_$(BAUD_RATE)
+attiny167_isp: MCU_TARGET ?= attiny167
 attiny167_isp: LFUSE ?= E2
 attiny167_isp: HFUSE ?= DF
 attiny167_isp: EFUSE ?= 00
 attiny167_isp: isp
+
+# }}}
+
+# {{{
+
+## ATtiny87
+#
+# The ATtinyx7 does not have a seperate boot section.  We allocate 580 bytes
+#  for the "virtual" boot section, plus 2 for the version.
+#
+# We have to use one of the interrupt vectors for our own purposes
+#  which will make it unavailable for use in the main program, so make it 
+#  something few will use.
+#
+# The interrupt vectors are in "7.1 Interrupt Vectors"
+#  of the datasheet for the ATtiny87/167
+#
+# We hijack EE_RDY - I don't think that the avr libraries eeprom functions
+#  make use of this interrupt, so we should still be able to use EEPROM.h 
+#  arduino library even when we have used this vector.
+#
+# EE_RDY is vector 0x0010, which is 16 in decimal, ignore the stupid "from 1"
+#  counting of the Vector No. column in the datasheet.  Thanks for that Atmel.
+#
+
+################################################################################
+
+attiny87: TARGET = attiny87
+attiny87: MCU_TARGET = attiny87
+attiny87: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=16
+#attiny87: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=32
+attiny87: AVR_FREQ ?= 8000000L
+attiny87: LDSECTIONS  = -Wl,-section-start=.text=0x1DBA -Wl,--section-start=.version=0x1FFE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny87: $(PROGRAM)_attiny87_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny87_isp: attiny87
+attiny87_isp: TARGET = attiny87_$(AVR_FREQ)_$(BAUD_RATE)
+attiny87_isp: MCU_TARGET ?= attiny87
+attiny87_isp: LFUSE ?= E2
+attiny87_isp: HFUSE ?= DF
+attiny87_isp: EFUSE ?= 00
+attiny87_isp: isp
+
+# }}}
