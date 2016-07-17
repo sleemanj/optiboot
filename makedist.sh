@@ -212,8 +212,8 @@ See the following URL for the automatic installation instructions
     
     zip -r "${PACKAGENAME}_ARDUINO_1_0_x.zip" $PACKAGENAME   
     mv  "${PACKAGENAME}_ARDUINO_1_0_x.zip" ../
-    rm -rf $PACKAGENAME
   fi
+  rm -rf $PACKAGENAME
   popd   
   
   # Update the json file for this package with the new hash, size and 
