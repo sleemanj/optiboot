@@ -55,7 +55,7 @@ should work too, open an issue if not.
 
 ## ATtiny
 
-[IDE 1.6.x Board Manager JSON for ATtiny 25/45/85/24/44/84/13](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_attiny_index.json)
+[IDE 1.6.x Board Manager JSON for ATtiny 25/45/85/24/44/84/13/10/5](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_attiny_index.json)
 
 ### ATtiny x5 Series
 
