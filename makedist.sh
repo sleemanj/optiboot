@@ -52,7 +52,7 @@ function package_for
   
   # This is used by makeall to determine which
   #  chips we want to compile for (compiles all in those makefiles)
-  if ! type "$1" | grep -q 'function'
+  if ! type "$1" | grep -q 'function' 2>/dev/null
   then    
     build_hexs "$1" "$2"
   else        
@@ -135,84 +135,86 @@ See the following URL for the automatic installation instructions
   rm $PACKAGENAME/README.TXT
   mv $BOARD_MANAGER_PACKAGE ../board_manager_packages/
   
-  # That makes the 1.6.x package now we create a boards.txt for 1.0.x
-  #  except we comment out all the boards  
-  #  and then uncomment the ones we want
-  echo "Generating 1.0.x boards.txt"
-  local LOOKING_FOR="(_(($(echo "$IDE10X_LIMIT_TO" | sed "s/ /)|(/g")))_[^.]*((optiboot|none))\.)"  
-  echo "$LOOKING_FOR"
-  $REPOROOT/1.6-to-1.0.sh "avr/boards.txt" | sed -r "s/^([a-z0-9_\.])/# \1/" \
-    | sed -r "s/^# (.*${LOOKING_FOR}.*)$/\1/" \
-    >$PACKAGENAME/boards.txt
-  echo "...generation complete."
-  
-  
-  # We will copy this into the package distribution source
-  # just to help debugging really
-  cp $PACKAGENAME/boards.txt avr/1_0_x_boards.txt
-  
-  # 1.0.x doesn't need platform.txt
-  rm $PACKAGENAME/platform.txt
-  rm $PACKAGENAME/platform.*.txt
-    
-  # A readme will be necessary, you can make one in 
-  # the distrubution source called 1_0_x_README.1.txt
-  # or if not then the automatic one will be created below
-  # any further 1_0_x_README.x.txt will be concatenated
-  
-  if [ ! -f $PACKAGENAME/1_0_x_readme.1.txt ]
+  if [ 0 = 1 ]
   then
-  echo "Arduino 1.0.x Installation
---------------------------------------------------------------------------------
+    # That makes the 1.6.x package now we create a boards.txt for 1.0.x
+    #  except we comment out all the boards  
+    #  and then uncomment the ones we want
+    echo "Generating 1.0.x boards.txt"
+    local LOOKING_FOR="(_(($(echo "$IDE10X_LIMIT_TO" | sed "s/ /)|(/g")))_[^.]*((optiboot|none))\.)"  
+    echo "$LOOKING_FOR"
+    $REPOROOT/1.6-to-1.0.sh "avr/boards.txt" | sed -r "s/^([a-z0-9_\.])/# \1/" \
+      | sed -r "s/^# (.*${LOOKING_FOR}.*)$/\1/" \
+      >$PACKAGENAME/boards.txt
+    echo "...generation complete."
+    
+    
+    # We will copy this into the package distribution source
+    # just to help debugging really
+    cp $PACKAGENAME/boards.txt avr/1_0_x_boards.txt
+    
+    # 1.0.x doesn't need platform.txt
+    rm $PACKAGENAME/platform.txt
+    rm $PACKAGENAME/platform.*.txt
+      
+    # A readme will be necessary, you can make one in 
+    # the distrubution source called 1_0_x_README.1.txt
+    # or if not then the automatic one will be created below
+    # any further 1_0_x_README.x.txt will be concatenated
+    
+    if [ ! -f $PACKAGENAME/1_0_x_readme.1.txt ]
+    then
+    echo "Arduino 1.0.x Installation
+  --------------------------------------------------------------------------------
 
-This file contains boards.txt and optiboot bootloaders for various 
-microcontrollers and is made for the 1.0.x IDE (or rather, 1.0.5 or later, I
-have not tested in older).
+  This file contains boards.txt and optiboot bootloaders for various 
+  microcontrollers and is made for the 1.0.x IDE (or rather, 1.0.5 or later, I
+  have not tested in older).
 
-To install this, copy the entire ${PACKAGENAME} folder into your Arduino 
-Sketchbook \"hardware\" sub folder.
+  To install this, copy the entire ${PACKAGENAME} folder into your Arduino 
+  Sketchbook \"hardware\" sub folder.
 
-You can find what your sketchbook folder is by opening the Preferences in the 
-Arduino IDE and you will see the \"sketchbook location\", commonly the sketchbook
-folder is...
+  You can find what your sketchbook folder is by opening the Preferences in the 
+  Arduino IDE and you will see the \"sketchbook location\", commonly the sketchbook
+  folder is...
 
-  * In Windows \`Documents\Arduino\`
-  * In Mac  \`Documents/Arduino\`
-  * In Linux \`$HOME/sketchbook\`
+    * In Windows \`Documents\Arduino\`
+    * In Mac  \`Documents/Arduino\`
+    * In Linux \`$HOME/sketchbook\`
 
-So for example, if your sketchbook folder is \`Documents\Arduino\` you would copy
-the ${PACKAGENAME} folder to become \`Documents\\Arduino\\hardware\\${PACKAGENAME}\`
+  So for example, if your sketchbook folder is \`Documents\Arduino\` you would copy
+  the ${PACKAGENAME} folder to become \`Documents\\Arduino\\hardware\\${PACKAGENAME}\`
 
-When you have copied the folder, restart the Arduino IDE and you should be able
-to choose from new items in the Boards menu.  Note that configurations have been
-made for chips both with and without bootloader, the \"Upload Bootloader\"
-function for those without bootloaders just erases the chip and sets appropriate 
-fuses.
+  When you have copied the folder, restart the Arduino IDE and you should be able
+  to choose from new items in the Boards menu.  Note that configurations have been
+  made for chips both with and without bootloader, the \"Upload Bootloader\"
+  function for those without bootloaders just erases the chip and sets appropriate 
+  fuses.
 
-Due to limitations of the Arduino 1.0.x IDE, there are likely many chips in
-the boards.txt which have been disabled in order to not have your Boards menu
-too long.  The most common chips have been left enabled.
+  Due to limitations of the Arduino 1.0.x IDE, there are likely many chips in
+  the boards.txt which have been disabled in order to not have your Boards menu
+  too long.  The most common chips have been left enabled.
 
-So if you find your particular chip is not present in the Boards 
-menu, open ${PACKAGENAME}/boards.txt and search for it, then you can uncomment
-(remove the # marks) from the settings for that board to enable it.
-" >$PACKAGENAME/README.TXT
-  else 
-    echo -n "" >$PACKAGENAME/README.TXT
+  So if you find your particular chip is not present in the Boards 
+  menu, open ${PACKAGENAME}/boards.txt and search for it, then you can uncomment
+  (remove the # marks) from the settings for that board to enable it.
+  " >$PACKAGENAME/README.TXT
+    else 
+      echo -n "" >$PACKAGENAME/README.TXT
+    fi
+    
+    # May be some extra information there too
+    cat $PACKAGENAME/1_0_x_readme.*.txt >>$PACKAGENAME/README.TXT
+    rm  $PACKAGENAME/1_0_x_readme.*.txt
+    
+    # And for debugging ease only we copy this across
+    cp $PACKAGENAME/README.TXT avr/1_0_x_README.TXT
+    
+    zip -r "${PACKAGENAME}_ARDUINO_1_0_x.zip" $PACKAGENAME   
+    mv  "${PACKAGENAME}_ARDUINO_1_0_x.zip" ../
+    rm -rf $PACKAGENAME
   fi
-  
-  # May be some extra information there too
-  cat $PACKAGENAME/1_0_x_readme.*.txt >>$PACKAGENAME/README.TXT
-  rm  $PACKAGENAME/1_0_x_readme.*.txt
-  
-  # And for debugging ease only we copy this across
-  cp $PACKAGENAME/README.TXT avr/1_0_x_README.TXT
-  
-  zip -r "${PACKAGENAME}_ARDUINO_1_0_x.zip" $PACKAGENAME   
-  mv  "${PACKAGENAME}_ARDUINO_1_0_x.zip" ../
-  rm -rf $PACKAGENAME
-  popd 
-  
+  popd   
   
   # Update the json file for this package with the new hash, size and 
   #  updated version information
@@ -286,4 +288,4 @@ function build_atmega8_hexs
 #  so we don't need a long menu in 1.6.x
 
 package_for build_atmega8_hexs diy_atmega8_series "atmega328p atmega128a atmega88 atmega8a atmega48pa"
-package_for "Makefile.attinyx5  Makefile.attinyx4"  diy_attiny "attiny8[45]_[^.]*_FullCore attiny4[45]_[^.]*_FullCore attiny2[45]_[^.]*_SmallerCore attiny13_1_2MHz"
+package_for "Makefile.attinyx5  Makefile.attinyx4"  diy_attiny "attiny8[45]_[^.]*_FullCore attiny4[45]_[^.]*_FullCore attiny2[45]_[^.]*_SmallerCore attiny13_1_2MHz_[^.]*1p6"

@@ -100,6 +100,14 @@ function build_settings
     # Find the options that our board knows about in our menu
     local OUR_MENU_OPTIONS="$(cat $IN_16_BOARDS | grep -oP "^\s*$BOARD_NAME.menu.$OUR_MENU.([A-Za-z0-9_]+)(?:\s*=)" | sed "s/.*menu.$OUR_MENU.//" | sed "s/\s*=//" | sort | uniq )"
    # echo "$OUR_MENU:" $OUR_MENU_OPTIONS
+    
+    if [ -z "$OUR_MENU_OPTIONS" ]
+    then
+      # There are no options for this menu for this board selection
+      # so just pass through 
+      build_settings "$BOARD_NAME" "$FULL_NAME_FOR_BOARD" "$CURRENT_SETTINGS" "$FOLLOWING_MENUS"      
+    fi
+    
     local THISOPT
     for THISOPT in $OUR_MENU_OPTIONS
     do
@@ -145,6 +153,7 @@ $(cat $IN_16_BOARDS | grep -P "^\s*$BOARD_NAME\.menu\.$OUR_MENU\.$THISOPT\.$OVER
       
       build_settings "$BOARD_NAME" "${FULL_NAME_FOR_BOARD}_${THISOPT}" "$NEW_SETTINGS" "$FOLLOWING_MENUS"
     done
+    
   fi  
 }
 

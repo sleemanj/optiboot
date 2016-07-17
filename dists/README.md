@@ -1,12 +1,35 @@
-DIY AVR in the Arduino for both 1.6.x and 1.0.x IDE
---------------------------------------------------------------------------------
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [DIY AVR in the Arduino IDE](#diy-avr-in-the-arduino-ide)
+  - [Supported Chips](#supported-chips)
+  - [ATmega8 Series](#atmega8-series)
+  - [ATtiny](#attiny)
+    - [ATtiny x5 Series](#attiny-x5-series)
+    - [ATtiny x4 Series](#attiny-x4-series)
+    - [ATtiny13](#attiny13)
+    - [ATtiny5, ATtiny10](#attiny5-attiny10)
+  - [Installation & Usage](#installation-&-usage)
+    - [Automatic Installation through Board Manager (Recommended)](#automatic-installation-through-board-manager-recommended)
+    - [Manual Installation (Not Recommended)](#manual-installation-not-recommended)
+    - [Usage](#usage)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+DIY AVR in the Arduino IDE
+================================================================================
 
 Included here are a large set of convenient boards.txt and bootloaders to handle
 many Atmel AVR Microcontrollers in the Arduino IDE for people making their own
 DIY Arduino based stuff.
 
-Installing these is a breeze, especially in IDE 1.6.x, but also in 1.0.x (1.0.5 
-tested)
+:warning: Arduino Version 1.0.x support has now ended in this package, 1.0.x 
+  users should upgrade to 1.6.x without further delay, 
+  [download for free here](https://www.arduino.cc/en/Main/Software).
+
+Supported Chips
+--------------------------------------------------------------------------------
 
 Presently the list of included chips is as follows:
 
@@ -54,20 +77,27 @@ Note only 84A has been tested, but the others should work too, open an issue if 
 
 ### ATtiny13
 
-This series of chips is pin compatible with the ATtinyx5 series, but have only 1K of flash and 64 Bytes of SRAM,  as a result they are a tight squeeze for the Arduino environment.  There is no room for bootloaders so you need an ISP programmer.  The core used for this series of chips is more limited and you may find that some functions do not operate, for example, the "Serial" interface is somewhat limited (directly speaking, it is HalfDuplex, there is no buffer, it's good-enough for debug output).
+This series of chips is pin compatible with the ATtinyx5 series, but have only 1K of flash and 64 Bytes of SRAM,  as a result they are a tight squeeze for the Arduino environment.  There is no room for bootloaders so you need an ISP programmer.
 
  * ATtiny13, ATtiny13A
 
 [See Arduino Pinout Diagram](diy_attiny/avr/Pin_Mapping_ATtiny13.svg)
 
 Remember that although there is no bootloader, you still want to "Burn Bootloader" in order to set the fuses for your chosen clock speed etc.
- 
+
+A number of examples are available in `File > Examples > ATTinyCore > Tiny13` which will help you to get the hang of special considerations about writing code for the Tiny13.
+
+### ATtiny5, ATtiny10
+
+These chips are extremely small 6 pin chips and work a bit differently, please read this [extended information about how to use the Tiny4/5/9/10](https://github.com/sleemanj/ATTinyCore/blob/master/avr/variants/tiny5_10/README.md) as it does require some extra setup.
+
+The 4/5 only have 512K of Flash, and all of them only have 32 bytes of SRAM, you can forget about anything to do with Print (that includes Serial) as it's not practically useful in such limitations. But all the basic functions, that is, digitalRead/Write, analogRead/Write and pinMode are good.
+
+
 Installation & Usage
 --------------------------------------------------------------------------------
 
-## IDE Version 1.6.x
-
-Note that this has been tested with 1.6.5, older versions your milage may vary.
+Note that this has been tested with 1.6.9, older versions your milage may vary.
 
 ### Automatic Installation through Board Manager (Recommended)
 
@@ -103,27 +133,4 @@ Note that this has been tested with 1.6.5, older versions your milage may vary.
  
 If you need to burn a bootloader (if it hasn't already been done on your chip or you want to change the chip settings) or set fuses, you can then use the "Burn Bootloader" option to do so, if you selected to use a non-bootloaded setup, then Burn Bootloader will set the appropriate fuses for that too, so make sure you still do it!
 
-The ATtiny series also include a "Core Size vs. Capability" menu, using this you can elect to have a smaller core at the expense of losing out on some functionality.  This is useful on the small chips.
-
-## IDE Version 1.0.x
-
-Note that this has been tested with 1.0.5, older versions your milage may vary.
-
-### Manual Installation
-
-  * Download the following zip file(s) as you desire them.
-    * [ATmega8 Series (8/48/88/168/328)](diy_atmega8_series_ARDUINO_1_0_x.zip?raw=true)
-    * [ATtiny](diy_attiny_ARDUINO_1_0_x.zip?raw=true)
-  * Unzip the file(s)
-  * Move the folder you unzipped into a folder called "hardware" inside your Arduino Sketchbook (create one if it doesn't exist) - see the README.TXT in the file for full instructions on where to find your sketchbook folder and any special instructions.
-  * Restart your Arduino IDE
-
-See the README.TXT file in the zip file for full install instructions.
-  
-### Usage
-
-  * Select Tools > Board > [the chip, version, speed and bootloader settings you want]
-  
-If you need to burn a bootloader (if it hasn't already been done on your chip or you want to change the chip settings) or set fuses, you can then use the "Burn Bootloader" option to do so, if you selected to use a non-bootloaded setup, then Burn Bootloader will set the appropriate fuses for that too, so make sure you still do it!
-
-Due to limitations of the 1.0.x IDE, only the most common chips have been enabled in boards.txt, if the chip you want is not found in the Board menu, you will need to edit the boards.txt you downloaded in the zip file, locate the section for the chip you want, and uncomment it.  
+The ATtiny series also include additional menus under the Tools which allow you to trade-off certain features for more code space.
