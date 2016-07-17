@@ -60,7 +60,7 @@ tools.avrdude_nobootloader.bootloader.pattern="{cmd.path}" "-C{config.path}" {bo
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 #  Some chips do not have ext fuses, and the Arduino IDE 1.6.x assumes that all
-#  avr have efuse, so in order to support the atmega8 we have to create a special
+#  avr have efuse, so in order to support the attiny13 we have to create a special
 #  avrdude tool case for that too  (including the same conf file as above)
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,3 +113,30 @@ tools.avrdude_nobootloader_noefuse.bootloader.params.verbose=-v
 tools.avrdude_nobootloader_noefuse.bootloader.params.quiet=-q -q
 tools.avrdude_nobootloader_noefuse.bootloader.pattern="{cmd.path}" "-C{config.path}" {bootloader.verbose} -p{build.mcu} -c{protocol} {program.extra_params} -Ulock:w:{bootloader.lock_bits}:m
 
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#  Hello ATtiny4 through 10 with your only having one little fuse
+#  we need to make another copy just for you too.
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tools.avrdude_nobootloader_onefuse.path={runtime.tools.avrdude.path}
+tools.avrdude_nobootloader_onefuse.cmd.path={path}/bin/avrdude
+tools.avrdude_nobootloader_onefuse.config.path={runtime.platform.path}/avrdude.conf
+
+tools.avrdude_nobootloader_onefuse.upload.params.verbose=-v
+tools.avrdude_nobootloader_onefuse.upload.params.quiet=-q -q
+tools.avrdude_nobootloader_onefuse.upload.pattern="{cmd.path}" "-C{config.path}" {upload.verbose} -p{build.mcu} -c{upload.protocol} -P{serial.port} -b{upload.speed} -D "-Uflash:w:{build.path}/{build.project_name}.hex:i"
+
+tools.avrdude_nobootloader_onefuse.program.params.verbose=-v
+tools.avrdude_nobootloader_onefuse.program.params.quiet=-q -q
+tools.avrdude_nobootloader_onefuse.program.pattern="{cmd.path}" "-C{config.path}" {program.verbose} -p{build.mcu} -c{protocol} {program.extra_params} "-Uflash:w:{build.path}/{build.project_name}.hex:i"
+
+tools.avrdude_nobootloader_onefuse.erase.params.verbose=-v
+tools.avrdude_nobootloader_onefuse.erase.params.quiet=-q -q
+tools.avrdude_nobootloader_onefuse.erase.pattern="{cmd.path}" "-C{config.path}" {erase.verbose} -p{build.mcu} -c{protocol} {program.extra_params} -e -Ulock:w:{bootloader.unlock_bits}:m -Ufuse:w:{bootloader.fuse}:m
+
+tools.avrdude_nobootloader_onefuse.bootloader.params.verbose=-v
+tools.avrdude_nobootloader_onefuse.bootloader.params.quiet=-q -q
+tools.avrdude_nobootloader_onefuse.bootloader.pattern="{cmd.path}" "-C{config.path}" {bootloader.verbose} -p{build.mcu} -c{protocol} {program.extra_params} -Ulock:w:{bootloader.lock_bits}:m

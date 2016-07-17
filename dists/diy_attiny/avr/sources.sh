@@ -23,6 +23,10 @@ function main
   #github https://github.com/sleemanj/ATTinyCore/tree/master/avr/variants/tinyX4      variants/tinyX4
   
   github https://github.com/sleemanj/ATTinyCore/tree/master/avr/variants/tiny13      variants/tiny13
+  github https://github.com/sleemanj/ATTinyCore/tree/master/avr/variants/tiny5_10    variants/tiny5_10
+  
+  # Libraries, these include examples for ATTinyCore chips
+  github https://github.com/sleemanj/ATTinyCore/tree/master/avr/libraries      libraries
   
   # We need to grab most of the platform.txt information from the ATTinyCore 
   #  except we want to use our own avrdude stuff
