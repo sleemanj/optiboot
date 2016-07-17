@@ -51,6 +51,8 @@ of memory.
 Note at current time only 8A, 48P and 328P have been tested, but the others 
 should work too, open an issue if not.
 
+:star: [See Arduino Pinout Diagram](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328.jpg)
+
 ## ATtiny
 
 [IDE 1.6.x Board Manager JSON for ATtiny 25/45/85/24/44/84/13](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_attiny_index.json)
@@ -63,7 +65,7 @@ should work too, open an issue if not.
  
 Note only 85 has been tested, but the others should work too, open an issue if not.
 
-[See Arduino Pinout Diagram](diy_attiny/avr/Pin_Mapping_ATtiny25_45_85.svg)
+:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x5.jpg)
 
 ### ATtiny x4 Series
 
@@ -73,7 +75,7 @@ Note only 85 has been tested, but the others should work too, open an issue if n
  
 Note only 84A has been tested, but the others should work too, open an issue if not.
 
-[See Arduino Pinout Diagram](diy_attiny/avr/Pin_Mapping_ATtiny24_44_84.svg)
+:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x4.jpg)
 
 ### ATtiny13
 
@@ -81,7 +83,7 @@ This series of chips is pin compatible with the ATtinyx5 series, but have only 1
 
  * ATtiny13, ATtiny13A
 
-[See Arduino Pinout Diagram](diy_attiny/avr/Pin_Mapping_ATtiny13.svg)
+:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/13.jpg)
 
 Remember that although there is no bootloader, you still want to "Burn Bootloader" in order to set the fuses for your chosen clock speed etc.
 
@@ -92,6 +94,8 @@ A number of examples are available in `File > Examples > ATTinyCore > Tiny13` wh
 These chips are extremely small 6 pin chips and work a bit differently, please read this [extended information about how to use the Tiny4/5/9/10](https://github.com/sleemanj/ATTinyCore/blob/master/avr/variants/tiny5_10/README.md) as it does require some extra setup.
 
 The 4/5 only have 512K of Flash, and all of them only have 32 bytes of SRAM, you can forget about anything to do with Print (that includes Serial) as it's not practically useful in such limitations. But all the basic functions, that is, digitalRead/Write, analogRead/Write and pinMode are good.
+
+:star: [See Arduino Pinout Diagram](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/tiny5%2C10.jpg)
 
 
 Installation & Usage
