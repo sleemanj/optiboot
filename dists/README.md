@@ -57,6 +57,13 @@ should work too, open an issue if not.
 
 [IDE 1.6.x Board Manager JSON for ATtiny 25/45/85/24/44/84/13/10/5](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_attiny_index.json)
 
+The ATtiny series of chips use (installed automatically for you with the JSON above) a [fork of ATTinyCore](https://github.com/sleemanj/ATTinyCore) which has further optimisations for core code size reduction so you can fit (_considerably_) more useful code into your ATtiny and still maintain all the functions you are used to.
+
+:boom: Because it doesn't use the "official" Arduino core files (which really don't support ATtiny at all properly) there may be some differences you will notice along the way, and some libraries may not be available.  The main issues will be when using the very small ATtiny13, 4, 5, 9 and 10 which have to sacrifice some functionality.
+
+:warning: It is important that you only use the `A0`, `A1` ... `An` constants with `analogRead()` especially when using ATtiny chips, do **not** do something like `digitalRead(A0)`, that will not do what you want.  Consult the pinout diagrams for each chip and it will show you clearly which numbers to use for each pin!
+
+
 ### ATtiny x5 Series
 
  * ATtiny25
