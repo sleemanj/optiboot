@@ -4,12 +4,12 @@
 
 - [DIY AVR in the Arduino IDE](#diy-avr-in-the-arduino-ide)
   - [Supported Chips](#supported-chips)
-  - [ATmega8 Series](#atmega8-series)
+  - [ATmega x8 Series (8,48,88,168,328)](#atmega-x8-series-84888168328)
   - [ATtiny](#attiny)
-    - [ATtiny x5 Series](#attiny-x5-series)
-    - [ATtiny x4 Series](#attiny-x4-series)
+    - [ATtiny25, ATtiny45, ATtiny85](#attiny25-attiny45-attiny85)
+    - [ATtiny24, ATtiny44, ATtiny84](#attiny24-attiny44-attiny84)
     - [ATtiny13](#attiny13)
-    - [ATtiny5, ATtiny10](#attiny5-attiny10)
+    - [ATtiny4, ATtiny5, ATtiny9, ATtiny10](#attiny4-attiny5-attiny9-attiny10)
   - [Installation & Usage](#installation-&-usage)
     - [Automatic Installation through Board Manager (Recommended)](#automatic-installation-through-board-manager-recommended)
     - [Manual Installation (Not Recommended)](#manual-installation-not-recommended)
@@ -34,7 +34,7 @@ Supported Chips
 
 Presently the list of included chips is as follows:
 
-## ATmega8 Series
+## ATmega x8 Series (8,48,88,168,328)
 
 [IDE 1.6.x Board Manager JSON for ATmega 8/48/88/168/328](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_atmega8_series_index.json)
 
@@ -44,10 +44,10 @@ differences, but for most people the biggest difference is simply the amount
 of memory.  
 
  * ATmega8,   ATmega8A,
+ * ATmega48,  ATmega48A,  ATmega48P, ATmega48PA, ATmega48PB
  * ATmega88,  ATmega88A,  ATmega88P,  ATmega88PA, ATmega88PB 
  * ATmega168, ATmega168A, ATmega168P, ATmega168PA, ATmega168PB
  * ATmega328, ATmega328P, ATmega328PB
- * ATmega48,  ATmega48A,  ATmega48P, ATmega48PA, ATmega48PB
  
 Note at current time only 8A, 48P and 328P have been tested, but the others 
 should work too, open an issue if not.
@@ -65,7 +65,7 @@ The ATtiny series of chips use (installed automatically for you with the JSON ab
 :warning: It is important that you only use the `A0`, `A1` ... `An` constants with `analogRead()` especially when using ATtiny chips, do **not** do something like `digitalRead(A0)`, that will not do what you want.  Consult the pinout diagrams for each chip and it will show you clearly which numbers to use for each pin!
 
 
-### ATtiny x5 Series
+### ATtiny25, ATtiny45, ATtiny85
 
  * ATtiny25
  * ATtiny45
@@ -75,7 +75,7 @@ Note only 85 has been tested, but the others should work too, open an issue if n
 
 :star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x5.jpg)
 
-### ATtiny x4 Series
+### ATtiny24, ATtiny44, ATtiny84
 
  * ATtiny24, ATtiny24A
  * ATtiny44, ATtiny44A
@@ -97,14 +97,19 @@ Remember that although there is no bootloader, you still want to "Burn Bootloade
 
 A number of examples are available in `File > Examples > ATTinyCore > Tiny13` which will help you to get the hang of special considerations about writing code for the Tiny13.
 
-### ATtiny5, ATtiny10
+### ATtiny4, ATtiny5, ATtiny9, ATtiny10
 
 These chips are extremely small 6 pin chips and work a bit differently, please read this [extended information about how to use the Tiny4/5/9/10](https://github.com/sleemanj/ATTinyCore/blob/master/avr/variants/tiny5_10/README.md) as it does require some extra setup.
 
-The 4/5 only have 512K of Flash, and all of them only have 32 bytes of SRAM, you can forget about anything to do with Print (that includes Serial) as it's not practically useful in such limitations. But all the basic functions, that is, digitalRead/Write, analogRead/Write and pinMode are good.
+The 4 and 5 only have 512K of Flash, and all of them only have 32 bytes of SRAM, you can forget about anything to do with Print (that includes Serial) as it's not practically useful in such limitations. But all the basic functions, that is, digitalRead/Write, analogRead/Write and pinMode are good.
+
+The 4 and 9 do not have an ADC, so analogRead() is not available on those chips.
+
+You will find it useful to select `Tools > Millis, Tone Support > No Millis, No Tone` when ever possible on these chips, as that will save a lot of space - you can still use `delay()` even if you don't have `millis()` enabled so it's not entirely useless!
+
+Due to these chips being what Atmel calls "Reduced Core TinyAVR" the compiler can not make the code as efficient on 4/5/9/10, so even code that fits for example in a Tiny13 may not fit in a Tiny10 even though they have the same amount (1024 bytes) of code space.  **Think small!**
 
 :star: [See Arduino Pinout Diagram](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/tiny5%2C10.jpg)
-
 
 Installation & Usage
 --------------------------------------------------------------------------------
@@ -139,13 +144,15 @@ Note that this has been tested with 1.6.9, older versions your milage may vary.
 ### Usage
  
  * Select Tools > Board > [the chip you want to program]
- * Select Tools > Processor Version > [the specific version of the chip]
+ * Select Tools > Processor Version > [the specific version of the chip]^(1)
  * Select Tools > Processor Speed > [the speed to run the chip at]
  * Select Tools > Bootloader > [ if you want/have a bootloader or not ]
  
 If you need to burn a bootloader (if it hasn't already been done on your chip or you want to change the chip settings) or set fuses, you can then use the "Burn Bootloader" option to do so, if you selected to use a non-bootloaded setup, then Burn Bootloader will set the appropriate fuses for that too, so make sure you still do it!
 
 The ATtiny series also include additional menus under the Tools which allow you to trade-off certain features for more code space.
+
+^(1) Not all "boards" have a Processor Version menu.
 
 ### :boom: Upload Using Programmer - Important Note!
 
