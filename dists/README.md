@@ -144,7 +144,7 @@ Note that this has been tested with 1.6.9, older versions your milage may vary.
 ### Usage
  
  * Select Tools > Board > [the chip you want to program]
- * Select Tools > Processor Version > [the specific version of the chip]^(1)
+ * Select Tools > Processor Version > [the specific version of the chip]<sup>1</sup>
  * Select Tools > Processor Speed > [the speed to run the chip at]
  * Select Tools > Bootloader > [ if you want/have a bootloader or not ]
  
@@ -152,7 +152,7 @@ If you need to burn a bootloader (if it hasn't already been done on your chip or
 
 The ATtiny series also include additional menus under the Tools which allow you to trade-off certain features for more code space.
 
-^(1) Not all "boards" have a Processor Version menu.
+<sup>1</sup> Not all "boards" have a Processor Version menu.
 
 ### :boom: Upload Using Programmer - Important Note!
 
