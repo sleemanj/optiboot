@@ -210,6 +210,14 @@ atmega48_diy.menu.boot.optiboot.upload.maximum_size=3520
 atmega48_diy.menu.boot.optiboot.bootloader.high_fuses=0xDD
 atmega48_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
+atmega48_diy.menu.boot.AISP=Arduino as ISP
+atmega48_diy.menu.boot.AISP.upload.protocol=stk500v1
+atmega48_diy.menu.boot.AISP.upload.speed=19200
+atmega48_diy.menu.boot.AISP.upload.maximum_size=3520
+atmega48_diy.menu.boot.AISP.bootloader.high_fuses=0xDD
+atmega48_diy.menu.boot.AISP.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+
 atmega48_diy.menu.boot.none=No (ISP Programmer Upload)
 atmega48_diy.menu.boot.none.upload.maximum_size=4096
 atmega48_diy.menu.boot.none.bootloader.high_fuses=0xDD
