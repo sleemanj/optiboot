@@ -4,13 +4,50 @@
       "name": "diy_attiny",
       
       "maintainer": "James Sleeman, http://sparks.gogo.co.nz/",
-      "websiteURL": "https://github.com/sleemanj/optiboot/dists/",
+      "websiteURL": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md",
       "email": "sparks@gogo.co.nz",
       "help": {
-        "online": "https://github.com/sleemanj/optiboot/dists/"
+        "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md"
       },
       "platforms": [
 
+
+{
+  "name": "DIY ATtiny",
+  "architecture": "avr",
+  "version": "2016.7.21",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#attiny"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2016_7_21.zip",  
+  "archiveFileName": "diy_attiny_2016_7_21.zip",
+  
+  "checksum": "SHA-256:9a391920558067831d714e3ee1584e8b757ad02ae5e6adfdf751a667df63a7e7",
+  "size": "501992",
+
+  "boards": [
+    {"name": "ATtiny4"},    
+    {"name": "ATtiny5"},    
+    {"name": "ATtiny9"},    
+    {"name": "ATtiny10"},    
+    {"name": "ATtiny13"},    
+    {"name": "ATtiny24"},
+    {"name": "ATtiny44"},
+    {"name": "ATtiny84"},
+    {"name": "ATtiny25"},
+    {"name": "ATtiny45"},
+    {"name": "ATtiny85"},
+    {"name": "and variants thereof"}
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.0.1-arduino5"
+    }
+  ]
+},
 
 {
   "name": "DIY ATtiny",
@@ -28,7 +65,7 @@
 
   "boards": [
     {"name": "ATtiny5"},    
-    {"name": "ATtiny10"},  
+    {"name": "ATtiny10"},    
     {"name": "ATtiny13"},    
     {"name": "ATtiny13A"},
     {"name": "ATtiny45"},

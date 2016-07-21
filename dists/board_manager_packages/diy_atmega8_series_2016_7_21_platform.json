@@ -1,0 +1,30 @@
+{
+  "name": "DIY ATmega",
+  "architecture": "avr",
+  "version": "2016.7.21",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#atmega-x8-series-84888168328"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_atmega8_series_2016_7_21.zip",
+  "archiveFileName": "diy_atmega8_series_2016_7_21.zip",
+  
+  "checksum": "SHA-256:ac1f646a3e458c71e79e34bb558ddafc59c9c20179918ca625ab47e19f8fd8f3",
+  "size": "66738",
+
+  "boards": [
+    {"name": "ATmega8"},
+    {"name": "ATmega48"},
+    {"name": "ATmega88"},
+    {"name": "ATmega168"},
+    {"name": "ATmega328"},
+    {"name": "and variants thereof"}
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.0.1-arduino5"
+    }
+  ]
+}
