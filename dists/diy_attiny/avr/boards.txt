@@ -4,6 +4,7 @@
 #
 #  ATtiny Series Microcontrollers
 #
+#   ATtiny4,  ATtiny9              (6 pin)
 #   ATtiny5,  ATtiny10             (6 pin)
 #   ATtiny13, ATtiny13A            (8 pin)
 #   ATtiny25, ATtiny45, ATtiny85   (8 pin)
@@ -86,6 +87,7 @@ attiny25_diy.build.variant=tiny8
 attiny25_diy.build.board=ATTINY25_DIY
 attiny25_diy.upload.tool=diy_attiny:avrdude
 attiny25_diy.bootloader.tool=diy_attiny:avrdude
+attiny25_diy.upload.maximum_data_size=128
 
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -213,6 +215,7 @@ attiny45_diy.build.variant=tiny8
 attiny45_diy.build.board=ATTINY45_DIY
 attiny45_diy.upload.tool=diy_attiny:avrdude
 attiny45_diy.bootloader.tool=diy_attiny:avrdude
+attiny45_diy.upload.maximum_data_size=256
 
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -340,6 +343,7 @@ attiny85_diy.build.variant=tiny8
 attiny85_diy.build.board=ATTINY85_DIY
 attiny85_diy.upload.tool=diy_attiny:avrdude
 attiny85_diy.bootloader.tool=diy_attiny:avrdude
+attiny84_diy.upload.maximum_data_size=512
 
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -480,7 +484,7 @@ attiny85_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILL
 #
 # Note, there is no bootloader section, so we can not do any locking.
 #
-# Lock Buts Note
+# Lock Bits Note
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #  avrdude DOES NOT mask the lock bits on the x4, therefore
 #
@@ -512,6 +516,7 @@ attiny24_diy.build.variant=tiny8
 attiny24_diy.build.board=ATTINY24_DIY
 attiny24_diy.upload.tool=diy_attiny:avrdude
 attiny24_diy.bootloader.tool=diy_attiny:avrdude
+attiny24_diy.upload.maximum_data_size=128
 
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -592,6 +597,39 @@ attiny24_diy.menu.print.Oct.build.custom_flags.print.use_base=-DPRINT_USE_BASE_O
 
 attiny24_diy.menu.print.Bin=Bin Only Supported (Smallest)
 attiny24_diy.menu.print.Bin.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN
+
+
+# Millis Accuracy
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny24_diy.menu.millis_ppm.1p6=Better Or Equal 1.666% Error (Default)
+attiny24_diy.menu.millis_ppm.1p6.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=16666UL
+
+attiny24_diy.menu.millis_ppm.50p=Better Or Equal 50% Error (Lowest Code Use)
+attiny24_diy.menu.millis_ppm.50p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=500000UL
+
+attiny24_diy.menu.millis_ppm.25p=Better Or Equal 25% Error
+attiny24_diy.menu.millis_ppm.25p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=250000UL
+
+attiny24_diy.menu.millis_ppm.10p=Better Or Equal 10% Error
+attiny24_diy.menu.millis_ppm.10p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=100000UL
+
+attiny24_diy.menu.millis_ppm.5p=Better Or Equal 5% Error
+attiny24_diy.menu.millis_ppm.5p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=50000UL
+
+attiny24_diy.menu.millis_ppm.2p5=Better Or Equal 2.5% Error
+attiny24_diy.menu.millis_ppm.2p5.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=25000UL
+
+attiny24_diy.menu.millis_ppm.1p=Better Or Equal 1% Error
+attiny24_diy.menu.millis_ppm.1p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=10000UL
+
+attiny24_diy.menu.millis_ppm.0p5=Better Or Equal 0.5% Error
+attiny24_diy.menu.millis_ppm.0p5.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=5000UL
+
+attiny24_diy.menu.millis_ppm.0p25=Better Or Equal 0.25% Error
+attiny24_diy.menu.millis_ppm.0p25.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=2500UL
+
+attiny24_diy.menu.millis_ppm.0p1=Better Or Equal 0.1% Error (Highest Code Use)
+attiny24_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=1000UL
 # }}}
 
 # {{{ ############### ATtiny44 #################################################
@@ -610,6 +648,7 @@ attiny44_diy.build.variant=tiny8
 attiny44_diy.build.board=ATTINY44_DIY
 attiny44_diy.upload.tool=diy_attiny:avrdude
 attiny44_diy.bootloader.tool=diy_attiny:avrdude
+attiny44_diy.upload.maximum_data_size=256
 
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -690,6 +729,38 @@ attiny44_diy.menu.print.Oct.build.custom_flags.print.use_base=-DPRINT_USE_BASE_O
 
 attiny44_diy.menu.print.Bin=Bin Only Supported (Smallest)
 attiny44_diy.menu.print.Bin.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN
+
+# Millis Accuracy
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny44_diy.menu.millis_ppm.1p6=Better Or Equal 1.666% Error (Default)
+attiny44_diy.menu.millis_ppm.1p6.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=16666UL
+
+attiny44_diy.menu.millis_ppm.50p=Better Or Equal 50% Error (Lowest Code Use)
+attiny44_diy.menu.millis_ppm.50p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=500000UL
+
+attiny44_diy.menu.millis_ppm.25p=Better Or Equal 25% Error
+attiny44_diy.menu.millis_ppm.25p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=250000UL
+
+attiny44_diy.menu.millis_ppm.10p=Better Or Equal 10% Error
+attiny44_diy.menu.millis_ppm.10p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=100000UL
+
+attiny44_diy.menu.millis_ppm.5p=Better Or Equal 5% Error
+attiny44_diy.menu.millis_ppm.5p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=50000UL
+
+attiny44_diy.menu.millis_ppm.2p5=Better Or Equal 2.5% Error
+attiny44_diy.menu.millis_ppm.2p5.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=25000UL
+
+attiny44_diy.menu.millis_ppm.1p=Better Or Equal 1% Error
+attiny44_diy.menu.millis_ppm.1p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=10000UL
+
+attiny44_diy.menu.millis_ppm.0p5=Better Or Equal 0.5% Error
+attiny44_diy.menu.millis_ppm.0p5.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=5000UL
+
+attiny44_diy.menu.millis_ppm.0p25=Better Or Equal 0.25% Error
+attiny44_diy.menu.millis_ppm.0p25.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=2500UL
+
+attiny44_diy.menu.millis_ppm.0p1=Better Or Equal 0.1% Error (Highest Code Use)
+attiny44_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=1000UL
 # }}}
 
 # {{{ ############### ATtiny84 #################################################
@@ -708,6 +779,7 @@ attiny84_diy.build.variant=tiny8
 attiny84_diy.build.board=ATTINY84_DIY
 attiny84_diy.upload.tool=diy_attiny:avrdude
 attiny84_diy.bootloader.tool=diy_attiny:avrdude
+attiny84_diy.upload.maximum_data_size=512
 
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -789,6 +861,38 @@ attiny84_diy.menu.print.Oct.build.custom_flags.print.use_base=-DPRINT_USE_BASE_O
 attiny84_diy.menu.print.Bin=Bin Only Supported (Smallest)
 attiny84_diy.menu.print.Bin.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN
 
+# Millis Accuracy
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny84_diy.menu.millis_ppm.1p6=Better Or Equal 1.666% Error (Default)
+attiny84_diy.menu.millis_ppm.1p6.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=16666UL
+
+attiny84_diy.menu.millis_ppm.50p=Better Or Equal 50% Error (Lowest Code Use)
+attiny84_diy.menu.millis_ppm.50p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=500000UL
+
+attiny84_diy.menu.millis_ppm.25p=Better Or Equal 25% Error
+attiny84_diy.menu.millis_ppm.25p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=250000UL
+
+attiny84_diy.menu.millis_ppm.10p=Better Or Equal 10% Error
+attiny84_diy.menu.millis_ppm.10p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=100000UL
+
+attiny84_diy.menu.millis_ppm.5p=Better Or Equal 5% Error
+attiny84_diy.menu.millis_ppm.5p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=50000UL
+
+attiny84_diy.menu.millis_ppm.2p5=Better Or Equal 2.5% Error
+attiny84_diy.menu.millis_ppm.2p5.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=25000UL
+
+attiny84_diy.menu.millis_ppm.1p=Better Or Equal 1% Error
+attiny84_diy.menu.millis_ppm.1p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=10000UL
+
+attiny84_diy.menu.millis_ppm.0p5=Better Or Equal 0.5% Error
+attiny84_diy.menu.millis_ppm.0p5.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=5000UL
+
+attiny84_diy.menu.millis_ppm.0p25=Better Or Equal 0.25% Error
+attiny84_diy.menu.millis_ppm.0p25.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=2500UL
+
+attiny84_diy.menu.millis_ppm.0p1=Better Or Equal 0.1% Error (Highest Code Use)
+attiny84_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=1000UL
+
 # }}}
 
 
@@ -807,7 +911,7 @@ attiny84_diy.menu.print.Bin.build.custom_flags.print.use_base=-DPRINT_USE_BASE_B
 #
 # Note, there is no bootloader section, so we can not do any locking.
 #
-# Lock Buts Note
+# Lock Bits Note
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #  avrdude DOES mask the two high bits of the lock byte on the 13, therefore
 #
@@ -837,6 +941,7 @@ attiny13_diy.build.variant=tiny13
 attiny13_diy.build.board=ATTINY13_DIY
 attiny13_diy.upload.tool=diy_attiny:avrdude_noefuse
 attiny13_diy.bootloader.tool=diy_attiny:avrdude_nobootloader_noefuse
+attiny13_diy.upload.maximum_data_size=64
 
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -880,22 +985,27 @@ attiny13_diy.menu.clock.1_2MHz.bootloader.low_fuses=0x62
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#attiny13_diy.menu.core.FullCore=Millis and Tone Available
-#attiny13_diy.menu.core.FullCore.build.variant=tiny13
-#attiny13_diy.menu.core.FullCore.build.core=tiny
-#attiny13_diy.menu.core.FullCore.build.extra_flags=
 
-# tone() is not supported on tiny13, we only have one timer
-# and millis() needs it
-attiny13_diy.menu.core.SmallerCore=Millis Available, No Tone
-attiny13_diy.menu.core.SmallerCore.build.variant=tiny13
-attiny13_diy.menu.core.SmallerCore.build.core=tiny
-attiny13_diy.menu.core.SmallerCore.build.extra_flags=-DNO_TONE
+attiny13_diy.menu.core.MillisCore=Millis Available, No Tone
+attiny13_diy.menu.core.MillisCore.build.variant=tiny13
+attiny13_diy.menu.core.MillisCore.build.core=tiny
+attiny13_diy.menu.core.MillisCore.build.extra_flags=-DNO_TONE
+
+attiny13_diy.menu.core.ToneCore=Tone Available, No Millis
+attiny13_diy.menu.core.ToneCore.build.variant=tiny13
+attiny13_diy.menu.core.ToneCore.build.core=tiny
+attiny13_diy.menu.core.ToneCore.build.extra_flags=-DNO_MILLIS
 
 attiny13_diy.menu.core.SmallestCore=No Millis, No Tone
 attiny13_diy.menu.core.SmallestCore.build.variant=tiny13
 attiny13_diy.menu.core.SmallestCore.build.core=tiny
 attiny13_diy.menu.core.SmallestCore.build.extra_flags=-DNO_MILLIS -DNO_TONE
+
+attiny13_diy.menu.core.FullCore=Millis and Tone Available
+attiny13_diy.menu.core.FullCore.build.variant=tiny13
+attiny13_diy.menu.core.FullCore.build.core=tiny
+attiny13_diy.menu.core.FullCore.build.extra_flags=
+
 
 # Millis Accuracy
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -977,6 +1087,382 @@ attiny13_diy.menu.serial.HalfDuplexWStream.build.custom_flags.serial.use_serial_
 
 
 
+################################################################################
+# ATtiny4
+#
+# There is only 1 fuse on this series of chips, it really doesn't do much.
+#
+# Fuse
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  See page 154 of Datasheet
+#
+#   avrdude DOES NOT mask the fuse bits
+#
+#   0xFF = Default (Reset Enabled, WDT Not Always On, Clock Not Output)
+#
+# Lock Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  See page 153 of Datasheet
+#
+#  avrdude DOES NOT mask the lock bits
+#
+#    0xFF = No Locking
+#    0xFE = Write Locked
+#    0xFC = Read and Write Locked
+#
+# Important: Lock bits must be set after setting the fuse.
+#
+################################################################################
+
+# {{{ ############### ATtiny4 ##################################################
+
+attiny4_diy.name=ATtiny4
+attiny4_diy.build.mcu=attiny4
+attiny4_diy.bootloader.fuse=0xFF
+attiny4_diy.bootloader.unlock_bits=0xFF
+attiny4_diy.bootloader.lock_bits=0xFF
+attiny4_diy.build.f_cpu=8000000L
+attiny4_diy.upload.speed=57600
+attiny4_diy.build.core=tiny
+attiny4_diy.build.variant=tiny4_9
+attiny4_diy.build.board=ATTINY4_DIY
+attiny4_diy.upload.tool=diy_attiny:avrdude_nobootloader_onefuse
+attiny4_diy.bootloader.tool=diy_attiny:avrdude_nobootloader_onefuse
+attiny4_diy.upload.maximum_data_size=32
+
+# Version Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Only one version, no sense including this menu
+# attiny4_diy.menu.version.attiny4 = ATtiny4
+# attiny4_diy.menu.version.attiny4.build.mcu = attiny4
+
+# Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# The frequency on the Reduced Core tinyAVR is set at runtime by way of a 
+# prescaler (power of 2) on the internal 8MHz oscillator.
+#
+# See pins_arduino.h setCPUFrequency()
+
+attiny4_diy.menu.clock.8MHz=8MHz
+attiny4_diy.menu.clock.8MHz.build.f_cpu=8000000L
+
+attiny4_diy.menu.clock.4MHz=4MHz
+attiny4_diy.menu.clock.4MHz.build.f_cpu=4000000L
+
+attiny4_diy.menu.clock.2MHz=2MHz
+attiny4_diy.menu.clock.2MHz.build.f_cpu=2000000L
+
+attiny4_diy.menu.clock.1MHz=1MHz
+attiny4_diy.menu.clock.1MHz.build.f_cpu=1000000L
+
+# These frequencies under 1MHz need some work
+#  something is wrong with delayMicroSecondsAdjusted, running too fast
+#  could be a memory issue maybe.
+
+# attiny4_diy.menu.clock.500kHz=500kHz
+# attiny4_diy.menu.clock.500kHz.build.f_cpu=500000L
+
+# attiny4_diy.menu.clock.250kHz=250kHz
+# attiny4_diy.menu.clock.250kHz.build.f_cpu=250000L
+
+# attiny4_diy.menu.clock.125kHz=125kHz
+# attiny4_diy.menu.clock.125kHz.build.f_cpu=125000L
+
+
+# Bootloader Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Sorry attiny4, you're too small for bootloaders.
+#
+# attiny4_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
+# attiny4_diy.menu.boot.optiboot.upload.protocol=arduino
+# attiny4_diy.menu.boot.optiboot.upload.maximum_size=457
+# attiny4_diy.menu.boot.optiboot.bootloader.extended_fuses=0xEB
+# attiny4_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+attiny4_diy.menu.boot.none=No (TPI Programmer Upload)
+attiny4_diy.menu.boot.none.upload.maximum_size=512
+attiny4_diy.menu.boot.none.bootloader.tool=diy_attiny:avrdude_nobootloader_onefuse
+
+# Core Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#attiny4_diy.menu.core.FullCore=Millis and Tone Available
+#attiny4_diy.menu.core.FullCore.build.core=tiny
+#attiny4_diy.menu.core.FullCore.build.extra_flags=
+
+# tone() is not supported on tiny4
+attiny4_diy.menu.core.SmallerCore=Millis Available, No Tone
+attiny4_diy.menu.core.SmallerCore.build.core=tiny
+attiny4_diy.menu.core.SmallerCore.build.extra_flags=-DNO_TONE
+
+attiny4_diy.menu.core.SmallestCore=No Millis, No Tone
+attiny4_diy.menu.core.SmallestCore.build.core=tiny
+attiny4_diy.menu.core.SmallestCore.build.extra_flags=-DNO_MILLIS -DNO_TONE
+
+# Millis Accuracy
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny4_diy.menu.millis_ppm.1p6=Better Or Equal 1.666% Error (Default)
+attiny4_diy.menu.millis_ppm.1p6.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=16666UL
+
+attiny4_diy.menu.millis_ppm.50p=Better Or Equal 50% Error (Lowest Code Use)
+attiny4_diy.menu.millis_ppm.50p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=500000UL
+
+attiny4_diy.menu.millis_ppm.25p=Better Or Equal 25% Error
+attiny4_diy.menu.millis_ppm.25p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=250000UL
+
+attiny4_diy.menu.millis_ppm.10p=Better Or Equal 10% Error
+attiny4_diy.menu.millis_ppm.10p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=100000UL
+
+attiny4_diy.menu.millis_ppm.5p=Better Or Equal 5% Error
+attiny4_diy.menu.millis_ppm.5p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=50000UL
+
+attiny4_diy.menu.millis_ppm.2p5=Better Or Equal 2.5% Error
+attiny4_diy.menu.millis_ppm.2p5.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=25000UL
+
+attiny4_diy.menu.millis_ppm.1p=Better Or Equal 1% Error
+attiny4_diy.menu.millis_ppm.1p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=10000UL
+
+attiny4_diy.menu.millis_ppm.0p5=Better Or Equal 0.5% Error
+attiny4_diy.menu.millis_ppm.0p5.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=5000UL
+
+attiny4_diy.menu.millis_ppm.0p25=Better Or Equal 0.25% Error
+attiny4_diy.menu.millis_ppm.0p25.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=2500UL
+
+attiny4_diy.menu.millis_ppm.0p1=Better Or Equal 0.1% Error (Highest Code Use)
+attiny4_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=1000UL
+
+
+# Print Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny4_diy.menu.print.default=Bin Only Supported (Smallest)
+attiny4_diy.menu.print.default.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN
+
+attiny4_diy.menu.print.Arbitrary=Full Support For Arbitrary Bases (Biggest)
+attiny4_diy.menu.print.Arbitrary.build.custom_flags.print.use_base=-DPRINT_USE_BASE_ARBITRARY
+
+attiny4_diy.menu.print.BinHexDecOct=Bin, Hex, Dec, Oct Supported
+attiny4_diy.menu.print.BinHexDecOct.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN -DPRINT_USE_BASE_DEC -DPRINT_USE_BASE_HEX -DPRINT_USE_BASE_OCT
+
+attiny4_diy.menu.print.BinHexDec=Bin, Hex, Dec Supported
+attiny4_diy.menu.print.BinHexDec.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN -DPRINT_USE_BASE_DEC -DPRINT_USE_BASE_HEX
+
+attiny4_diy.menu.print.Dec=Dec Only Supported
+attiny4_diy.menu.print.Dec.build.custom_flags.print.use_base=-DPRINT_USE_BASE_DEC
+
+attiny4_diy.menu.print.Hex=Hex Only Supported
+attiny4_diy.menu.print.Hex.build.custom_flags.print.use_base=-DPRINT_USE_BASE_HEX
+
+attiny4_diy.menu.print.Oct=Oct Only Supported
+attiny4_diy.menu.print.Oct.build.custom_flags.print.use_base=-DPRINT_USE_BASE_OCT
+
+attiny4_diy.menu.print.Bin=Bin Only Supported (Smallest)
+attiny4_diy.menu.print.Bin.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN
+
+# Serial Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny4_diy.menu.serial.HalfDuplexRW=Half Duplex, Read+Write
+attiny4_diy.menu.serial.HalfDuplexRW.build.custom_flags.serial.use_serial_type=-DUSE_SERIAL_TYPE=SERIAL_TYPE_HALF_DUPLEX
+
+attiny4_diy.menu.serial.HalfDuplexRWStream=Half Duplex, Read+Write Inherits Stream
+attiny4_diy.menu.serial.HalfDuplexRWStream.build.custom_flags.serial.use_serial_type=-DUSE_SERIAL_TYPE=SERIAL_TYPE_HALF_DUPLEX -DHALFDUPLEXSERIAL_INHERIT_FROM=Stream
+
+attiny4_diy.menu.serial.HalfDuplexRStream=Half Duplex, Read Only Inherits Stream
+attiny4_diy.menu.serial.HalfDuplexRStream.build.custom_flags.serial.use_serial_type=-DUSE_SERIAL_TYPE=SERIAL_TYPE_HALF_DUPLEX -DHALF_DUPLEX_SERIAL_DISABLE_WRITE -DHALFDUPLEXSERIAL_INHERIT_FROM=Stream
+
+attiny4_diy.menu.serial.HalfDuplexWStream=Half Duplex, Write Only Inherits Stream
+attiny4_diy.menu.serial.HalfDuplexWStream.build.custom_flags.serial.use_serial_type=-DUSE_SERIAL_TYPE=SERIAL_TYPE_HALF_DUPLEX -DHALF_DUPLEX_SERIAL_DISABLE_READ
+
+# }}}
+
+
+
+################################################################################
+# ATtiny9
+#
+# There is only 1 fuse on this series of chips, it really doesn't do much.
+#
+# Fuse
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  See page 154 of Datasheet
+#
+#   avrdude DOES NOT mask the fuse bits
+#
+#   0xFF = Default (Reset Enabled, WDT Not Always On, Clock Not Output)
+#
+# Lock Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  See page 153 of Datasheet
+#
+#  avrdude DOES NOT mask the lock bits
+#
+#    0xFF = No Locking
+#    0xFE = Write Locked
+#    0xFC = Read and Write Locked
+#
+# Important: Lock bits must be set after setting the fuse.
+#
+################################################################################
+
+# {{{ ############### ATtiny9 #################################################
+
+attiny9_diy.name=ATtiny9
+attiny9_diy.build.mcu=attiny9
+attiny9_diy.bootloader.fuse=0xFF
+attiny9_diy.bootloader.unlock_bits=0xFF
+attiny9_diy.bootloader.lock_bits=0xFF
+attiny9_diy.build.f_cpu=8000000L
+attiny9_diy.upload.speed=57600
+attiny9_diy.build.core=tiny
+attiny9_diy.build.variant=tiny4_9
+attiny9_diy.build.board=ATTINY9_DIY
+attiny9_diy.upload.tool=diy_attiny:avrdude_nobootloader_onefuse
+attiny9_diy.bootloader.tool=diy_attiny:avrdude_nobootloader_onefuse
+attiny9_diy.upload.maximum_data_size=32
+
+# Version Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Only one version, no sense including this menu
+# attiny9_diy.menu.version.attiny9 = ATtiny9
+# attiny9_diy.menu.version.attiny9.build.mcu = attiny9
+
+# Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# The frequency on the Reduced Core tinyAVR is set at runtime by way of a 
+# prescaler (power of 2) on the internal 8MHz oscillator.
+#
+# See pins_arduino.h setCPUFrequency()
+
+attiny9_diy.menu.clock.8MHz=8MHz
+attiny9_diy.menu.clock.8MHz.build.f_cpu=8000000L
+
+attiny9_diy.menu.clock.4MHz=4MHz
+attiny9_diy.menu.clock.4MHz.build.f_cpu=4000000L
+
+attiny9_diy.menu.clock.2MHz=2MHz
+attiny9_diy.menu.clock.2MHz.build.f_cpu=2000000L
+
+attiny9_diy.menu.clock.1MHz=1MHz
+attiny9_diy.menu.clock.1MHz.build.f_cpu=1000000L
+
+# These frequencies under 1MHz need some work
+#  something is wrong with delayMicroSecondsAdjusted, running too fast
+#  could be a memory issue maybe.
+
+# attiny9_diy.menu.clock.500kHz=500kHz
+# attiny9_diy.menu.clock.500kHz.build.f_cpu=500000L
+
+# attiny9_diy.menu.clock.250kHz=250kHz
+# attiny9_diy.menu.clock.250kHz.build.f_cpu=250000L
+
+# attiny9_diy.menu.clock.125kHz=125kHz
+# attiny9_diy.menu.clock.125kHz.build.f_cpu=125000L
+
+
+# Bootloader Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Sorry attiny9, you're too small for bootloaders.
+#
+# attiny9_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
+# attiny9_diy.menu.boot.optiboot.upload.protocol=arduino
+# attiny9_diy.menu.boot.optiboot.upload.maximum_size=457
+# attiny9_diy.menu.boot.optiboot.bootloader.extended_fuses=0xEB
+# attiny9_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+attiny9_diy.menu.boot.none=No (TPI Programmer Upload)
+attiny9_diy.menu.boot.none.upload.maximum_size=1024
+attiny9_diy.menu.boot.none.bootloader.tool=diy_attiny:avrdude_nobootloader_onefuse
+
+# Core Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#attiny9_diy.menu.core.FullCore=Millis and Tone Available
+#attiny9_diy.menu.core.FullCore.build.core=tiny
+#attiny9_diy.menu.core.FullCore.build.extra_flags=
+
+# tone() is not supported on tiny10, we only have one timer
+# and millis() needs it
+attiny9_diy.menu.core.SmallerCore=Millis Available, No Tone
+attiny9_diy.menu.core.SmallerCore.build.core=tiny
+attiny9_diy.menu.core.SmallerCore.build.extra_flags=-DNO_TONE
+
+attiny9_diy.menu.core.SmallestCore=No Millis, No Tone
+attiny9_diy.menu.core.SmallestCore.build.core=tiny
+attiny9_diy.menu.core.SmallestCore.build.extra_flags=-DNO_MILLIS -DNO_TONE
+
+# Millis Accuracy
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny9_diy.menu.millis_ppm.1p6=Better Or Equal 1.666% Error (Default)
+attiny9_diy.menu.millis_ppm.1p6.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=16666UL
+
+attiny9_diy.menu.millis_ppm.50p=Better Or Equal 50% Error (Lowest Code Use)
+attiny9_diy.menu.millis_ppm.50p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=500000UL
+
+attiny9_diy.menu.millis_ppm.25p=Better Or Equal 25% Error
+attiny9_diy.menu.millis_ppm.25p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=250000UL
+
+attiny9_diy.menu.millis_ppm.10p=Better Or Equal 10% Error
+attiny9_diy.menu.millis_ppm.10p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=100000UL
+
+attiny9_diy.menu.millis_ppm.5p=Better Or Equal 5% Error
+attiny9_diy.menu.millis_ppm.5p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=50000UL
+
+attiny9_diy.menu.millis_ppm.2p5=Better Or Equal 2.5% Error
+attiny9_diy.menu.millis_ppm.2p5.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=25000UL
+
+attiny9_diy.menu.millis_ppm.1p=Better Or Equal 1% Error
+attiny9_diy.menu.millis_ppm.1p.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=10000UL
+
+attiny9_diy.menu.millis_ppm.0p5=Better Or Equal 0.5% Error
+attiny9_diy.menu.millis_ppm.0p5.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=5000UL
+
+attiny9_diy.menu.millis_ppm.0p25=Better Or Equal 0.25% Error
+attiny9_diy.menu.millis_ppm.0p25.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=2500UL
+
+attiny9_diy.menu.millis_ppm.0p1=Better Or Equal 0.1% Error (Highest Code Use)
+attiny9_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=1000UL
+
+
+# Print Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny9_diy.menu.print.default=Bin Only Supported (Smallest)
+attiny9_diy.menu.print.default.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN
+
+attiny9_diy.menu.print.Arbitrary=Full Support For Arbitrary Bases (Biggest)
+attiny9_diy.menu.print.Arbitrary.build.custom_flags.print.use_base=-DPRINT_USE_BASE_ARBITRARY
+
+attiny9_diy.menu.print.BinHexDecOct=Bin, Hex, Dec, Oct Supported
+attiny9_diy.menu.print.BinHexDecOct.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN -DPRINT_USE_BASE_DEC -DPRINT_USE_BASE_HEX -DPRINT_USE_BASE_OCT
+
+attiny9_diy.menu.print.BinHexDec=Bin, Hex, Dec Supported
+attiny9_diy.menu.print.BinHexDec.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN -DPRINT_USE_BASE_DEC -DPRINT_USE_BASE_HEX
+
+attiny9_diy.menu.print.Dec=Dec Only Supported
+attiny9_diy.menu.print.Dec.build.custom_flags.print.use_base=-DPRINT_USE_BASE_DEC
+
+attiny9_diy.menu.print.Hex=Hex Only Supported
+attiny9_diy.menu.print.Hex.build.custom_flags.print.use_base=-DPRINT_USE_BASE_HEX
+
+attiny9_diy.menu.print.Oct=Oct Only Supported
+attiny9_diy.menu.print.Oct.build.custom_flags.print.use_base=-DPRINT_USE_BASE_OCT
+
+attiny9_diy.menu.print.Bin=Bin Only Supported (Smallest)
+attiny9_diy.menu.print.Bin.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN
+
+# Serial Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny9_diy.menu.serial.HalfDuplexRW=Half Duplex, Read+Write
+attiny9_diy.menu.serial.HalfDuplexRW.build.custom_flags.serial.use_serial_type=-DUSE_SERIAL_TYPE=SERIAL_TYPE_HALF_DUPLEX
+
+attiny9_diy.menu.serial.HalfDuplexRWStream=Half Duplex, Read+Write Inherits Stream
+attiny9_diy.menu.serial.HalfDuplexRWStream.build.custom_flags.serial.use_serial_type=-DUSE_SERIAL_TYPE=SERIAL_TYPE_HALF_DUPLEX -DHALFDUPLEXSERIAL_INHERIT_FROM=Stream
+
+attiny9_diy.menu.serial.HalfDuplexRStream=Half Duplex, Read Only Inherits Stream
+attiny9_diy.menu.serial.HalfDuplexRStream.build.custom_flags.serial.use_serial_type=-DUSE_SERIAL_TYPE=SERIAL_TYPE_HALF_DUPLEX -DHALF_DUPLEX_SERIAL_DISABLE_WRITE -DHALFDUPLEXSERIAL_INHERIT_FROM=Stream
+
+attiny9_diy.menu.serial.HalfDuplexWStream=Half Duplex, Write Only Inherits Stream
+attiny9_diy.menu.serial.HalfDuplexWStream.build.custom_flags.serial.use_serial_type=-DUSE_SERIAL_TYPE=SERIAL_TYPE_HALF_DUPLEX -DHALF_DUPLEX_SERIAL_DISABLE_READ
+
+# }}}
 
 
 
@@ -1023,6 +1509,7 @@ attiny5_diy.build.variant=tiny5_10
 attiny5_diy.build.board=ATTINY5_DIY
 attiny5_diy.upload.tool=diy_attiny:avrdude_nobootloader_onefuse
 attiny5_diy.bootloader.tool=diy_attiny:avrdude_nobootloader_onefuse
+attiny5_diy.upload.maximum_data_size=32
 
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1084,8 +1571,7 @@ attiny5_diy.menu.boot.none.bootloader.tool=diy_attiny:avrdude_nobootloader_onefu
 #attiny5_diy.menu.core.FullCore.build.core=tiny
 #attiny5_diy.menu.core.FullCore.build.extra_flags=
 
-# tone() is not supported on tiny13, we only have one timer
-# and millis() needs it
+# tone() is not supported on tiny5
 attiny5_diy.menu.core.SmallerCore=Millis Available, No Tone
 attiny5_diy.menu.core.SmallerCore.build.core=tiny
 attiny5_diy.menu.core.SmallerCore.build.extra_flags=-DNO_TONE
@@ -1211,6 +1697,7 @@ attiny10_diy.build.variant=tiny5_10
 attiny10_diy.build.board=ATTINY10_DIY
 attiny10_diy.upload.tool=diy_attiny:avrdude_nobootloader_onefuse
 attiny10_diy.bootloader.tool=diy_attiny:avrdude_nobootloader_onefuse
+attiny10_diy.upload.maximum_data_size=32
 
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1263,7 +1750,7 @@ attiny10_diy.menu.clock.1MHz.build.f_cpu=1000000L
 # attiny10_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny10_diy.menu.boot.none=No (TPI Programmer Upload)
-attiny10_diy.menu.boot.none.upload.maximum_size=512
+attiny10_diy.menu.boot.none.upload.maximum_size=1024
 attiny10_diy.menu.boot.none.bootloader.tool=diy_attiny:avrdude_nobootloader_onefuse
 
 # Core Menu
@@ -1272,8 +1759,7 @@ attiny10_diy.menu.boot.none.bootloader.tool=diy_attiny:avrdude_nobootloader_onef
 #attiny10_diy.menu.core.FullCore.build.core=tiny
 #attiny10_diy.menu.core.FullCore.build.extra_flags=
 
-# tone() is not supported on tiny10, we only have one timer
-# and millis() needs it
+# tone() is not supported on tiny10
 attiny10_diy.menu.core.SmallerCore=Millis Available, No Tone
 attiny10_diy.menu.core.SmallerCore.build.core=tiny
 attiny10_diy.menu.core.SmallerCore.build.extra_flags=-DNO_TONE
@@ -1356,3 +1842,5 @@ attiny10_diy.menu.serial.HalfDuplexWStream=Half Duplex, Write Only Inherits Stre
 attiny10_diy.menu.serial.HalfDuplexWStream.build.custom_flags.serial.use_serial_type=-DUSE_SERIAL_TYPE=SERIAL_TYPE_HALF_DUPLEX -DHALF_DUPLEX_SERIAL_DISABLE_READ
 
 # }}}
+
+

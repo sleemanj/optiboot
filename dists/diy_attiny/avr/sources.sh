@@ -24,6 +24,7 @@ function main
   
   github https://github.com/sleemanj/ATTinyCore/tree/master/avr/variants/tiny13      variants/tiny13
   github https://github.com/sleemanj/ATTinyCore/tree/master/avr/variants/tiny5_10    variants/tiny5_10
+  github https://github.com/sleemanj/ATTinyCore/tree/master/avr/variants/tiny4_9     variants/tiny4_9
   
   # Libraries, these include examples for ATTinyCore chips
   github https://github.com/sleemanj/ATTinyCore/tree/master/avr/libraries      libraries
