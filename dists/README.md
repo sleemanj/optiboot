@@ -38,6 +38,10 @@ Presently the list of included chips is as follows:
 
 [IDE 1.6.x Board Manager JSON for ATmega 8/48/88/168/328](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_atmega8_series_index.json)
 
+:star: [See Arduino Pinout Diagram (DIP)](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328-dip.jpg) 
+:star: [See Arduino Pinout Diagram (SMD-32)](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328.jpg) 
+:star: [See Arduino Pinout Diagram (SMD-28)](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328-mlf28.jpg) 
+
 This series of chips are pin compatible in both 28 pin DIP (through hole) and
 32 pin surface mount packages.  Consult the datasheets for the specific 
 differences, but for most people the biggest difference is simply the amount
@@ -52,8 +56,6 @@ of memory.
 Note at current time only 8A, 48P and 328P have been tested, but the others 
 should work too, open an issue if not.
 
-:star: [See Arduino Pinout Diagram](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328.jpg)
-
 ## ATtiny
 
 [IDE 1.6.x Board Manager JSON for ATtiny 25/45/85/24/44/84/13/10/5](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_attiny_index.json)
@@ -67,15 +69,17 @@ The ATtiny series of chips use (installed automatically for you with the JSON ab
 
 ### ATtiny25, ATtiny45, ATtiny85
 
+:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x5.jpg)
+
  * ATtiny25
  * ATtiny45
  * ATtiny85
  
 Note only 85 has been tested, but the others should work too, open an issue if not.
 
-:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x5.jpg)
-
 ### ATtiny24, ATtiny44, ATtiny84
+
+:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x4.jpg)
 
  * ATtiny24, ATtiny24A
  * ATtiny44, ATtiny44A
@@ -83,21 +87,21 @@ Note only 85 has been tested, but the others should work too, open an issue if n
  
 Note only 84A has been tested, but the others should work too, open an issue if not.
 
-:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x4.jpg)
-
 ### ATtiny13
+
+:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/13.jpg)
 
 This series of chips is pin compatible with the ATtinyx5 series, but have only 1K of flash and 64 Bytes of SRAM,  as a result they are a tight squeeze for the Arduino environment.  There is no room for bootloaders so you need an ISP programmer.
 
  * ATtiny13, ATtiny13A
-
-:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/13.jpg)
 
 Remember that although there is no bootloader, you still want to "Burn Bootloader" in order to set the fuses for your chosen clock speed etc.
 
 A number of examples are available in `File > Examples > ATTinyCore > Tiny13` which will help you to get the hang of special considerations about writing code for the Tiny13.
 
 ### ATtiny4, ATtiny5, ATtiny9, ATtiny10
+
+:star: [See Arduino Pinout Diagram](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/tiny5%2C10.jpg)
 
 These chips are extremely small 6 pin chips and work a bit differently, please read this [extended information about how to use the Tiny4/5/9/10](https://github.com/sleemanj/ATTinyCore/blob/master/avr/variants/tiny5_10/README.md) as it does require some extra setup.
 
@@ -108,8 +112,6 @@ The 4 and 9 do not have an ADC, so analogRead() is not available on those chips.
 You will find it useful to select `Tools > Millis, Tone Support > No Millis, No Tone` when ever possible on these chips, as that will save a lot of space - you can still use `delay()` even if you don't have `millis()` enabled so it's not entirely useless!
 
 Due to these chips being what Atmel calls "Reduced Core TinyAVR" the compiler can not make the code as efficient on 4/5/9/10, so even code that fits for example in a Tiny13 may not fit in a Tiny10 even though they have the same amount (1024 bytes) of code space.  **Think small!**
-
-:star: [See Arduino Pinout Diagram](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/tiny5%2C10.jpg)
 
 Installation & Usage
 --------------------------------------------------------------------------------
