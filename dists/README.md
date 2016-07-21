@@ -14,6 +14,7 @@
     - [Automatic Installation through Board Manager (Recommended)](#automatic-installation-through-board-manager-recommended)
     - [Manual Installation (Not Recommended)](#manual-installation-not-recommended)
     - [Usage](#usage)
+    - [:boom: Upload Using Programmer - Important Note!](#boom-upload-using-programmer---important-note)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -145,3 +146,8 @@ Note that this has been tested with 1.6.9, older versions your milage may vary.
 If you need to burn a bootloader (if it hasn't already been done on your chip or you want to change the chip settings) or set fuses, you can then use the "Burn Bootloader" option to do so, if you selected to use a non-bootloaded setup, then Burn Bootloader will set the appropriate fuses for that too, so make sure you still do it!
 
 The ATtiny series also include additional menus under the Tools which allow you to trade-off certain features for more code space.
+
+### :boom: Upload Using Programmer - Important Note!
+
+Due to [a bug in Arduino](https://github.com/arduino/Arduino/issues/2886) if you Upload Using Programmer you may need to choose an alias of your Programmer from the `Tools > Programmer` menu, you will find there that aliases are present, for example if you normally use "USBAsp" as your programmer and it isn't working then you may need to choose instead one of the aliases, "DIY ATmega: USBAsp" or "DIY ATtiny: USBAsp" (depending if you are programming an ATmega or an ATtiny).
+
