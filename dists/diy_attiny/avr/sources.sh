@@ -31,7 +31,7 @@ function main
   
   # We need to grab most of the platform.txt information from the ATTinyCore 
   #  except we want to use our own avrdude stuff
-  github https://github.com/sleemanj/ATTinyCore/tree/master/avr/platform.txt         platform.tmp.txt
+  github https://github.com/sleemanj/ATTinyCore/tree/master/avr/platform.txt         platform.tmp.txt  
   echo "
   
 ###############################################################################
@@ -51,6 +51,14 @@ version=${VERSION}
   cat platform.tmp.txt | grep -v "name=" | grep -v "version=" | grep -v tools.avrdude >>platform.txt
   rm platform.tmp.txt      
   cat platform.avrdude.txt >>platform.txt
+  
+  
+  # Because of:
+  #   https://github.com/arduino/Arduino/issues/4619
+  # it is best that we duplicate programmers.txt and make a unique name for each one in it    
+  wget https://raw.githubusercontent.com/arduino/Arduino/master/hardware/arduino/avr/programmers.txt -O programmers.tmp.txt
+  cat programmers.tmp.txt | sed -r 's/\.name=(.*)/.name=DIY ATtiny: \1/' >programmers.txt
+  rm programmers.tmp.txt
 }
 
 function github

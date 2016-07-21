@@ -44,6 +44,25 @@ menu.millis_ppm  = Millis Accuracy
 menu.print      = Print Support
 menu.serial     = Serial Support
 
+
+# The names are put here in the order they will appear in the boards menu
+#  you can repeat these definitions in each board section for completeness
+#  it doesn't appear to matter.
+
+attiny4_diy.name=ATtiny4
+attiny5_diy.name=ATtiny5
+attiny9_diy.name=ATtiny9
+attiny10_diy.name=ATtiny10
+attiny13_diy.name=ATtiny13
+attiny24_diy.name=ATtiny24
+attiny44_diy.name=ATtiny44
+attiny84_diy.name=ATtiny84
+attiny25_diy.name=ATtiny25
+attiny45_diy.name=ATtiny45
+attiny85_diy.name=ATtiny85
+
+
+
 ################################################################################
 # ATtiny25, ATtiny45, ATtiny85
 #
