@@ -1,3 +1,10 @@
+:warning: :warning: :warning: DO NOT USE ARDUINO IDE 1.6.10 :warning: :warning: :warning:
+===
+
+Due to (as is not uncommon) serious bugs in the 1.6.10 Release of the Arduino IDE, **DO NOT** use any of the distribution below with that version of the IDE. Using IDE version 1.6.9 is recommended, do not use 1.6.10 which is more broken than a very broken thing on breaking things day.
+
+Now, read on.
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
