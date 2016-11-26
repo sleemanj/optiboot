@@ -38,7 +38,7 @@ function main
 #
 # This platform.txt has been created from the combination of 
 #  https://github.com/sleemanj/ATTinyCore/tree/master/avr/platform.txt
-# and the platform.avrdude.txt in this folder
+# and the platform.local.txt in this folder
 #
 # This file is created automatically by \`sources.sh\` when the diy_attiny
 # distribution is updated with \`makdedist.sh\`
@@ -50,15 +50,28 @@ version=${VERSION}
 " >platform.txt 
   cat platform.tmp.txt | grep -v "name=" | grep -v "version=" | grep -v tools.avrdude >>platform.txt
   rm platform.tmp.txt      
-  cat platform.avrdude.txt >>platform.txt
+  cat platform.local.txt >>platform.txt
   
   
   # Because of:
   #   https://github.com/arduino/Arduino/issues/4619
   # it is best that we duplicate programmers.txt and make a unique name for each one in it    
-  wget https://raw.githubusercontent.com/arduino/Arduino/master/hardware/arduino/avr/programmers.txt -O programmers.tmp.txt
-  cat programmers.tmp.txt | sed -r 's/\.name=(.*)/.name=DIY ATtiny: \1/' >programmers.txt
-  rm programmers.tmp.txt
+  if grep -F "#define" avrdude.local.conf >/dev/null
+  then  
+    cp avrdude.local.conf avrdude.conf
+    wget https://raw.githubusercontent.com/arduino/Arduino/master/hardware/arduino/avr/programmers.txt -O programmers.tmp.txt
+    cat programmers.tmp.txt | sed -r 's/\.name=(.*)/.name=DIY ATtiny: \1/' >programmers.txt  
+    rm programmers.tmp.txt
+  else
+    # Not using a custom avrdude.conf
+    rm -f avrdude.conf programmers.txt
+    cp programmers.local.txt programmers.txt
+    
+    # Out platform.txt will also need modification to set the avrdude.conf back to the builtin
+    cat platform.txt | sed -r 's/\{runtime.platform.path\}\/avrdude.conf/{path}\/avrdude.conf/' >platform.tmp.txt
+    mv platform.tmp.txt platform.txt
+  fi
+  
 }
 
 function github

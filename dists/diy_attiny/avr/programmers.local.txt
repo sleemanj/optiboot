@@ -1,0 +1,8 @@
+# This file is used in part to create programmers.txt in the diy_attiny distribution
+
+ee_usbasp.name=USBasp + Upload EEPROM
+ee_usbasp.communication=usb
+ee_usbasp.protocol=usbasp
+ee_usbasp.program.protocol=usbasp
+ee_usbasp.program.tool=avrdude
+ee_usbasp.program.extra_params=-Pusb "-Ueeprom:w:{build.path}/{build.project_name}.eep:i"
