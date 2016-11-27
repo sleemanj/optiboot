@@ -44,8 +44,7 @@ EOF
   local KNOWNKEYS="$(cat platform.local.txt | grep -P "^[a-z]" | sed -r "s/=.*//" )"
   for key in $KNOWNKEYS
   do
-    mv platform.txt platform.tmp.txt
-    echo $key
+    mv platform.txt platform.tmp.txt    
     grep -vF "$key=" platform.tmp.txt >platform.txt
   done
   

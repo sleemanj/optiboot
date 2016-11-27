@@ -1,4 +1,14 @@
-
+################################################################################
+#
+# DIY ATtiny Customisations for platform.txt
+#
+# The following directives are inserted into platform.txt by sources.sh
+# during the distribution build process for DIY ATtiny
+# 
+# The directives here will replace any of the same named directives in 
+# platform.txt
+#
+################################################################################
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Standard avrdude.conf has some bugs with the tiny series, so we have to supply

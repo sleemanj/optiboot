@@ -1,6 +1,16 @@
-# This file is used in part to create programmers.txt in the diy_attiny distribution
+################################################################################
+#
+# DIY ATtiny Customisations for programmers.txt
+#
+# The following directives are inserted into programmers.txt by sources.sh
+# during the distribution build process for DIY ATtiny
+# 
+# The directives here will replace any of the same named directives in 
+# programmers.txt
+#
+################################################################################
 
-ee_usbasp.name=USBasp + Upload EEPROM
+ee_usbasp.name=USBasp + Upload EEPROM (Not For Burn Bootloader)
 ee_usbasp.communication=usb
 ee_usbasp.protocol=usbasp
 ee_usbasp.program.protocol=usbasp
