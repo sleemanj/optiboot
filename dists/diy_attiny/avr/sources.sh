@@ -61,7 +61,8 @@ version=${VERSION}
     cp avrdude.local.conf avrdude.conf
     wget https://raw.githubusercontent.com/arduino/Arduino/master/hardware/arduino/avr/programmers.txt -O programmers.tmp.txt
     cat programmers.tmp.txt | sed -r 's/\.name=(.*)/.name=DIY ATtiny: \1/' >programmers.txt  
-    rm programmers.tmp.txt
+    cat programmers.local.txt >>programmers.txt
+    rm  programmers.tmp.txt
   else
     # Not using a custom avrdude.conf
     rm -f avrdude.conf programmers.txt
