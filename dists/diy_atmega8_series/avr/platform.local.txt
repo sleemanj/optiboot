@@ -1,5 +1,3 @@
-name=DIY ATmega8/88/48/168/328
-
 
 # When uploading with no bootloader, we only want to set the fuses, Arduino IDE 
 # 1.6.x assumes you will always have a bootloader.file, so we have to make a
