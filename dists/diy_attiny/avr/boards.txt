@@ -216,12 +216,12 @@ attiny25_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILL
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny25_diy.menu.lto.enable=Enabled
+attiny25_diy.menu.lto.enable=LTO Enabled
 attiny25_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny25_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny25_diy.menu.lto.enable.ltocppflags=-flto
 attiny25_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny25_diy.menu.lto.disable=Disabled
+attiny25_diy.menu.lto.disable=LTO Disabled
 attiny25_diy.menu.lto.disable.ltocflags=
 attiny25_diy.menu.lto.disable.ltoelfflags=
 attiny25_diy.menu.lto.disable.ltocppflags=
@@ -357,12 +357,12 @@ attiny45_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILL
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny45_diy.menu.lto.enable=Enabled
+attiny45_diy.menu.lto.enable=LTO Enabled
 attiny45_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny45_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny45_diy.menu.lto.enable.ltocppflags=-flto
 attiny45_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny45_diy.menu.lto.disable=Disabled
+attiny45_diy.menu.lto.disable=LTO Disabled
 attiny45_diy.menu.lto.disable.ltocflags=
 attiny45_diy.menu.lto.disable.ltoelfflags=
 attiny45_diy.menu.lto.disable.ltocppflags=
@@ -500,12 +500,12 @@ attiny85_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILL
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny85_diy.menu.lto.enable=Enabled
+attiny85_diy.menu.lto.enable=LTO Enabled
 attiny85_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny85_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny85_diy.menu.lto.enable.ltocppflags=-flto
 attiny85_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny85_diy.menu.lto.disable=Disabled
+attiny85_diy.menu.lto.disable=LTO Disabled
 attiny85_diy.menu.lto.disable.ltocflags=
 attiny85_diy.menu.lto.disable.ltoelfflags=
 attiny85_diy.menu.lto.disable.ltocppflags=
@@ -693,12 +693,12 @@ attiny24_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILL
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny24_diy.menu.lto.enable=Enabled
+attiny24_diy.menu.lto.enable=LTO Enabled
 attiny24_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny24_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny24_diy.menu.lto.enable.ltocppflags=-flto
 attiny24_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny24_diy.menu.lto.disable=Disabled
+attiny24_diy.menu.lto.disable=LTO Disabled
 attiny24_diy.menu.lto.disable.ltocflags=
 attiny24_diy.menu.lto.disable.ltoelfflags=
 attiny24_diy.menu.lto.disable.ltocppflags=
@@ -839,12 +839,12 @@ attiny44_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILL
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny44_diy.menu.lto.enable=Enabled
+attiny44_diy.menu.lto.enable=LTO Enabled
 attiny44_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny44_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny44_diy.menu.lto.enable.ltocppflags=-flto
 attiny44_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny44_diy.menu.lto.disable=Disabled
+attiny44_diy.menu.lto.disable=LTO Disabled
 attiny44_diy.menu.lto.disable.ltocflags=
 attiny44_diy.menu.lto.disable.ltoelfflags=
 attiny44_diy.menu.lto.disable.ltocppflags=
@@ -985,12 +985,12 @@ attiny84_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILL
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny84_diy.menu.lto.enable=Enabled
+attiny84_diy.menu.lto.enable=LTO Enabled
 attiny84_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny84_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny84_diy.menu.lto.enable.ltocppflags=-flto
 attiny84_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny84_diy.menu.lto.disable=Disabled
+attiny84_diy.menu.lto.disable=LTO Disabled
 attiny84_diy.menu.lto.disable.ltocflags=
 attiny84_diy.menu.lto.disable.ltoelfflags=
 attiny84_diy.menu.lto.disable.ltocppflags=
@@ -1188,12 +1188,12 @@ attiny13_diy.menu.serial.HalfDuplexWStream.build.custom_flags.serial.use_serial_
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny13_diy.menu.lto.enable=Enabled
+attiny13_diy.menu.lto.enable=LTO Enabled
 attiny13_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny13_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny13_diy.menu.lto.enable.ltocppflags=-flto
 attiny13_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny13_diy.menu.lto.disable=Disabled
+attiny13_diy.menu.lto.disable=LTO Disabled
 attiny13_diy.menu.lto.disable.ltocflags=
 attiny13_diy.menu.lto.disable.ltoelfflags=
 attiny13_diy.menu.lto.disable.ltocppflags=
@@ -1392,12 +1392,12 @@ attiny4_diy.menu.serial.HalfDuplexWStream.build.custom_flags.serial.use_serial_t
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny4_diy.menu.lto.enable=Enabled
+attiny4_diy.menu.lto.enable=LTO Enabled
 attiny4_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny4_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny4_diy.menu.lto.enable.ltocppflags=-flto
 attiny4_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny4_diy.menu.lto.disable=Disabled
+attiny4_diy.menu.lto.disable=LTO Disabled
 attiny4_diy.menu.lto.disable.ltocflags=
 attiny4_diy.menu.lto.disable.ltoelfflags=
 attiny4_diy.menu.lto.disable.ltocppflags=
@@ -1597,12 +1597,12 @@ attiny9_diy.menu.serial.HalfDuplexWStream.build.custom_flags.serial.use_serial_t
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny9_diy.menu.lto.enable=Enabled
+attiny9_diy.menu.lto.enable=LTO Enabled
 attiny9_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny9_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny9_diy.menu.lto.enable.ltocppflags=-flto
 attiny9_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny9_diy.menu.lto.disable=Disabled
+attiny9_diy.menu.lto.disable=LTO Disabled
 attiny9_diy.menu.lto.disable.ltocflags=
 attiny9_diy.menu.lto.disable.ltoelfflags=
 attiny9_diy.menu.lto.disable.ltocppflags=
@@ -1802,12 +1802,12 @@ attiny5_diy.menu.serial.HalfDuplexWStream.build.custom_flags.serial.use_serial_t
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny5_diy.menu.lto.enable=Enabled
+attiny5_diy.menu.lto.enable=LTO Enabled
 attiny5_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny5_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny5_diy.menu.lto.enable.ltocppflags=-flto
 attiny5_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny5_diy.menu.lto.disable=Disabled
+attiny5_diy.menu.lto.disable=LTO Disabled
 attiny5_diy.menu.lto.disable.ltocflags=
 attiny5_diy.menu.lto.disable.ltoelfflags=
 attiny5_diy.menu.lto.disable.ltocppflags=
@@ -2004,12 +2004,12 @@ attiny10_diy.menu.serial.HalfDuplexWStream.build.custom_flags.serial.use_serial_
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-attiny10_diy.menu.lto.enable=Enabled
+attiny10_diy.menu.lto.enable=LTO Enabled
 attiny10_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
 attiny10_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
 attiny10_diy.menu.lto.enable.ltocppflags=-flto
 attiny10_diy.menu.lto.enable.ltoarcmd=gcc-
-attiny10_diy.menu.lto.disable=Disabled
+attiny10_diy.menu.lto.disable=LTO Disabled
 attiny10_diy.menu.lto.disable.ltocflags=
 attiny10_diy.menu.lto.disable.ltoelfflags=
 attiny10_diy.menu.lto.disable.ltocppflags=
