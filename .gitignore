@@ -1,10 +1,14 @@
 .sources.tmp
-dists/diy_attiny/avr/bootloaders
 dists/diy_atmega8_series/avr/bootloaders
 dists/diy_atmega8_series/avr/programmers.txt
+dists/diy_atmega8_series/avr/platform.txt
+dists/diy_atmega8_series/avr/avrdude.conf
+
+dists/diy_attiny/avr/bootloaders
 dists/diy_attiny/avr/cores/
 dists/diy_attiny/avr/libraries/
 dists/diy_attiny/avr/platform.txt
 dists/diy_attiny/avr/programmers.txt
+dists/diy_attiny/avr/avrdude.conf
 dists/diy_attiny/avr/variants/
 
