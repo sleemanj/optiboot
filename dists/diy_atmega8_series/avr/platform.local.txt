@@ -1,3 +1,19 @@
+################################################################################
+#
+# DIY ATmega Customisations for platform.txt
+#
+# The following directives are inserted into platform.txt by sources.sh
+# during the distribution build process for DIY ATmega
+# 
+# The directives here will replace any of the same named directives in 
+# platform.txt
+#
+################################################################################
+
+compiler.c.flags=-c -g -Os {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections -MMD {ltocflags}
+compiler.c.elf.flags={compiler.warning_flags} -Os {ltoelfflags} -Wl,--gc-sections
+compiler.S.flags=-c -g -x assembler-with-cpp {ltocppflags}
+compiler.cpp.flags=-c -g -Os {compiler.warning_flags} -std=gnu++11 -fpermissive -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD {ltocppflags}
 
 # When uploading with no bootloader, we only want to set the fuses, Arduino IDE 
 # 1.6.x assumes you will always have a bootloader.file, so we have to make a

@@ -63,7 +63,7 @@
 menu.version    = Processor Version
 menu.clock      = Processor Speed
 menu.boot       = Use Bootloader
-
+menu.lto        = Link Time Optimisation (1.6.11+ only)
 
 
 ################################################################################
@@ -139,6 +139,18 @@ atmega8_diy.menu.clock.1MHz.build.f_cpu=1000000L
 atmega8_diy.menu.clock.1MHz.bootloader.low_fuses=0xA1
 atmega8_diy.menu.clock.1MHz.upload.speed=9600
 
+# Link Time Optimisation
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega8_diy.menu.lto.enable=LTO Enabled
+atmega8_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
+atmega8_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
+atmega8_diy.menu.lto.enable.ltocppflags=-flto
+atmega8_diy.menu.lto.enable.ltoarcmd=gcc-
+atmega8_diy.menu.lto.disable=LTO Disabled
+atmega8_diy.menu.lto.disable.ltocflags=
+atmega8_diy.menu.lto.disable.ltoelfflags=
+atmega8_diy.menu.lto.disable.ltocppflags=
+atmega8_diy.menu.lto.disable.ltoarcmd=
 
 # }}}
 
@@ -232,6 +244,20 @@ atmega48_diy.menu.clock.1MHz=1MHz Internal Oscillator
 atmega48_diy.menu.clock.1MHz.build.f_cpu=1000000L
 atmega48_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 atmega48_diy.menu.clock.1MHz.upload.speed=9600
+
+# Link Time Optimisation
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega48_diy.menu.lto.enable=LTO Enabled
+atmega48_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
+atmega48_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
+atmega48_diy.menu.lto.enable.ltocppflags=-flto
+atmega48_diy.menu.lto.enable.ltoarcmd=gcc-
+atmega48_diy.menu.lto.disable=LTO Disabled
+atmega48_diy.menu.lto.disable.ltocflags=
+atmega48_diy.menu.lto.disable.ltoelfflags=
+atmega48_diy.menu.lto.disable.ltocppflags=
+atmega48_diy.menu.lto.disable.ltoarcmd=
+
 
 # }}}
 
@@ -370,6 +396,20 @@ atmega328_diy.menu.clock.1MHz.build.f_cpu=1000000L
 atmega328_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 atmega328_diy.menu.clock.1MHz.upload.speed=9600
 
+# Link Time Optimisation
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega328_diy.menu.lto.enable=LTO Enabled
+atmega328_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
+atmega328_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
+atmega328_diy.menu.lto.enable.ltocppflags=-flto
+atmega328_diy.menu.lto.enable.ltoarcmd=gcc-
+atmega328_diy.menu.lto.disable=LTO Disabled
+atmega328_diy.menu.lto.disable.ltocflags=
+atmega328_diy.menu.lto.disable.ltoelfflags=
+atmega328_diy.menu.lto.disable.ltocppflags=
+atmega328_diy.menu.lto.disable.ltoarcmd=
+
+
 # }}}
 
 
@@ -462,6 +502,21 @@ atmega88_diy.menu.clock.1MHz.build.f_cpu=1000000L
 atmega88_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 atmega88_diy.menu.clock.1MHz.upload.speed=9600
 
+
+# Link Time Optimisation
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega88_diy.menu.lto.enable=LTO Enabled
+atmega88_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
+atmega88_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
+atmega88_diy.menu.lto.enable.ltocppflags=-flto
+atmega88_diy.menu.lto.enable.ltoarcmd=gcc-
+atmega88_diy.menu.lto.disable=LTO Disabled
+atmega88_diy.menu.lto.disable.ltocflags=
+atmega88_diy.menu.lto.disable.ltoelfflags=
+atmega88_diy.menu.lto.disable.ltocppflags=
+atmega88_diy.menu.lto.disable.ltoarcmd=
+
+
 # }}}
 
 
@@ -552,6 +607,20 @@ atmega168_diy.menu.clock.1MHz=1MHz Internal Oscillator
 atmega168_diy.menu.clock.1MHz.build.f_cpu=1000000L
 atmega168_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 atmega168_diy.menu.clock.1MHz.upload.speed=9600
+
+# Link Time Optimisation
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega168_diy.menu.lto.enable=LTO Enabled
+atmega168_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
+atmega168_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
+atmega168_diy.menu.lto.enable.ltocppflags=-flto
+atmega168_diy.menu.lto.enable.ltoarcmd=gcc-
+atmega168_diy.menu.lto.disable=LTO Disabled
+atmega168_diy.menu.lto.disable.ltocflags=
+atmega168_diy.menu.lto.disable.ltoelfflags=
+atmega168_diy.menu.lto.disable.ltocppflags=
+atmega168_diy.menu.lto.disable.ltoarcmd=
+
 
 # }}}
 
