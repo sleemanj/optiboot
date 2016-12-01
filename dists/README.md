@@ -31,17 +31,19 @@ DIY Arduino based stuff.
   users should upgrade to 1.6.x without further delay, 
   [download for free here](https://www.arduino.cc/en/Main/Software).
 
-:star: Arduino IDE 1.6.13+ (Probably) Required
+:star: Arduino IDE 1.6.13+ Recommended
 --------------------------------------------------------------------------------
 
-This distribution now requires (Probably) at least Arduino IDE 1.6.13, this is because of the following great things...
+This distribution now recommends at least Arduino IDE 1.6.13, this is because of the following great things...
 
   1. IDE 1.6.13+ IDE version now includes a long awaited updated GCC (compiler) and AVRDUDE (uploader)
   2. IDE 1.6.13+ IDE version now has LTO available (Link Time Optimisation) which can radically reduce your code size
  
 due to these main advantages, it's just not worth putting a lot of work into keeping backward compatiability with older Arduino IDE versions, since upgrading is something almost everybody is going to want to do!
 
-It MIGHT still work in older IDE versions, but I wouldn't count on it!
+It MIGHT still work in older IDE versions, I have tested very briefly in 1.6.9 and it seems OK and probably should be in 1.6.11 and 1.6.12 also, but seriously, just upgrade already :+1:
+
+:boom: ** Do not use Arduino IDE 1.6.10 due to major bugs in that version of the IDE. :boom:  
 
 Supported Chips
 --------------------------------------------------------------------------------
