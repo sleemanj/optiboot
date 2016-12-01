@@ -117,6 +117,8 @@ A number of examples are available in `File > Examples > ATTinyCore > Tiny13` wh
 
 ### ATtiny4, ATtiny5, ATtiny9, ATtiny10
 
+:warning: Currently support for 4/5/9/10 is tricky/broken due to https://github.com/arduino/toolchain-avr/issues/42 I recommend using the Manual Install method and then installing the official toolchain on top of the arduino one as detailed in this [extended information about how to use the Tiny4/5/9/10](https://github.com/sleemanj/ATTinyCore/blob/master/avr/variants/tiny5_10/README.md)
+
 :star: [See Arduino Pinout Diagram](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/tiny5%2C10.jpg)
 
 These chips are extremely small 6 pin chips and work a bit differently, please read this [extended information about how to use the Tiny4/5/9/10](https://github.com/sleemanj/ATTinyCore/blob/master/avr/variants/tiny5_10/README.md) as it does require some extra setup.
