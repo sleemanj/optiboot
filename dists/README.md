@@ -45,6 +45,15 @@ It MIGHT still work in older IDE versions, I have tested very briefly in 1.6.9 a
 
 :boom: ** Do not use Arduino IDE 1.6.10 due to major bugs in that version of the IDE. :boom:  
 
+:star: Make sure your "Arduino AVR Boards Built-In" is updated
+--------------------------------------------------------------------------------
+
+It is often a problem that people have updated their IDE version but it is using for some reason an old "Arduino AVR Boards", this can cause a problem (usually with avrdude configuration).
+
+Go to "Tools > Board > Board Manager" and look at the (usually) first item which is called "Arduino AVR Boards", it should show version 1.6.15 or higher installed, note that this number is not the same as your IDE version (usually).  
+
+Especially if it is lower than 1.6.15, click the item and select/install the highest available version.
+
 Supported Chips
 --------------------------------------------------------------------------------
 
