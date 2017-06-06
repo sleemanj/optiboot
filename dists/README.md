@@ -4,6 +4,7 @@
 
 - [DIY AVR in the Arduino IDE](#diy-avr-in-the-arduino-ide)
   - [:star: Arduino IDE 1.6.13+ Recommended](#star-arduino-ide-1613-recommended)
+  - [:star: Make sure your "Arduino AVR Boards Built-In" is updated](#star-make-sure-your-arduino-avr-boards-built-in-is-updated)
   - [Supported Chips](#supported-chips)
   - [ATmega x8 Series (8,48,88,168,328)](#atmega-x8-series-84888168328)
   - [ATtiny](#attiny)
