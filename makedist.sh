@@ -224,7 +224,14 @@ See the following URL for the automatic installation instructions
   
   # Locate the most recent platform JSON for this package and use it as
   # a template for the data of this new package
-  PACKAGEFILE=$(ls -t ${PACKAGENAME}_*_platform.json | head -1)  
+  #PACKAGEFILE=$(ls -t ${PACKAGENAME}_*_platform.json | head -1)  
+  PACKAGEFILE=$(ls ${PACKAGENAME}_*_platform.json | sed -r 's/(20[0-9]+)_([1-9])_/\1_0\2_/' | sed -r 's/_([1-9])_platform/_0\1_platform/' | sort | tail -1)
+  if ! [ -e "$PACKAGEFILE" ]
+  then
+    PACKAGEFILE=$(echo $PACKAGEFILE | sed -r 's/_[0]/_/g')
+  fi
+  
+  
   cat $PACKAGEFILE | sed -r "s/SHA-256:([^\"]+)/SHA-256:$HASH/" \
                   | sed -r "s/\"size\":.*/\"size\": \"$SIZE\",/" \
                   | sed -r "s/\"version\":.*,/\"version\": \"$VERSION\",/" \
