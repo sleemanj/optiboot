@@ -44,6 +44,7 @@ menu.millis_ppm  = Millis Accuracy
 menu.print      = Print Support
 menu.serial     = Serial Support
 menu.lto        = Link Time Optimisation (1.6.11+ only)
+menu.bodlevel   = Brown-out Detection Level
 
 # The names are put here in the order they will appear in the boards menu
 #  you can repeat these definitions in each board section for completeness
@@ -93,7 +94,9 @@ attiny85_diy.name=ATtiny85
 attiny25_diy.name=ATtiny25
 attiny25_diy.build.mcu=attiny25
 attiny25_diy.bootloader.low_fuses=0xE2
-attiny25_diy.bootloader.high_fuses=0xDD
+# attiny25_diy.bootloader.high_fuses=0xDD
+attiny25_diy.bootloader.bod_bits=101
+attiny25_diy.bootloader.high_fuses=0b11011{bootloader.bod_bits}
 attiny25_diy.bootloader.extended_fuses=0xFF
 attiny25_diy.bootloader.unlock_bits=0xFF
 attiny25_diy.bootloader.lock_bits=0xFF
@@ -227,6 +230,17 @@ attiny25_diy.menu.lto.disable.ltoelfflags=
 attiny25_diy.menu.lto.disable.ltocppflags=
 attiny25_diy.menu.lto.disable.ltoarcmd=
 
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny25_diy.menu.bodlevel.2v7=2.7v
+attiny25_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
+attiny25_diy.menu.bodlevel.disabled=Disabled
+attiny25_diy.menu.bodlevel.disabled.bootloader.bod_bits=111
+attiny25_diy.menu.bodlevel.4v3=4.3v
+attiny25_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
+attiny25_diy.menu.bodlevel.1v8=1.8v
+attiny25_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
+
 # }}}
 
 # {{{ ############### ATtiny45 #################################################
@@ -234,7 +248,9 @@ attiny25_diy.menu.lto.disable.ltoarcmd=
 attiny45_diy.name=ATtiny45
 attiny45_diy.build.mcu=attiny45
 attiny45_diy.bootloader.low_fuses=0xE2
-attiny45_diy.bootloader.high_fuses=0xDD
+# attiny45_diy.bootloader.high_fuses=0xDD
+attiny45_diy.bootloader.bod_bits=101
+attiny45_diy.bootloader.high_fuses=0b11011{bootloader.bod_bits}
 attiny45_diy.bootloader.extended_fuses=0xFF
 attiny45_diy.bootloader.unlock_bits=0xFF
 attiny45_diy.bootloader.lock_bits=0xFF
@@ -368,7 +384,16 @@ attiny45_diy.menu.lto.disable.ltoelfflags=
 attiny45_diy.menu.lto.disable.ltocppflags=
 attiny45_diy.menu.lto.disable.ltoarcmd=
 
-
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny45_diy.menu.bodlevel.2v7=2.7v
+attiny45_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
+attiny45_diy.menu.bodlevel.disabled=Disabled
+attiny45_diy.menu.bodlevel.disabled.bootloader.bod_bits=111
+attiny45_diy.menu.bodlevel.4v3=4.3v
+attiny45_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
+attiny45_diy.menu.bodlevel.1v8=1.8v
+attiny45_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
 
 # }}}
 
@@ -377,7 +402,9 @@ attiny45_diy.menu.lto.disable.ltoarcmd=
 attiny85_diy.name=ATtiny85
 attiny85_diy.build.mcu=attiny85
 attiny85_diy.bootloader.low_fuses=0xE2
-attiny85_diy.bootloader.high_fuses=0xDD
+# attiny85_diy.bootloader.high_fuses=0xDD
+attiny85_diy.bootloader.bod_bits=101
+attiny85_diy.bootloader.high_fuses=0b11011{bootloader.bod_bits}
 attiny85_diy.bootloader.extended_fuses=0xFF
 attiny85_diy.bootloader.unlock_bits=0xFF
 attiny85_diy.bootloader.lock_bits=0xFF
@@ -511,6 +538,16 @@ attiny85_diy.menu.lto.disable.ltoelfflags=
 attiny85_diy.menu.lto.disable.ltocppflags=
 attiny85_diy.menu.lto.disable.ltoarcmd=
 
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny85_diy.menu.bodlevel.2v7=2.7v
+attiny85_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
+attiny85_diy.menu.bodlevel.disabled=Disabled
+attiny85_diy.menu.bodlevel.disabled.bootloader.bod_bits=111
+attiny85_diy.menu.bodlevel.4v3=4.3v
+attiny85_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
+attiny85_diy.menu.bodlevel.1v8=1.8v
+attiny85_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
 
 
 # }}}
@@ -565,7 +602,9 @@ attiny85_diy.menu.lto.disable.ltoarcmd=
 attiny24_diy.name=ATtiny24
 attiny24_diy.build.mcu=attiny24
 attiny24_diy.bootloader.low_fuses=0xE2
-attiny24_diy.bootloader.high_fuses=0xDD
+# attiny24_diy.bootloader.high_fuses=0xDD
+attiny24_diy.bootloader.bod_bits=101
+attiny24_diy.bootloader.high_fuses=0b11011{bootloader.bod_bits}
 attiny24_diy.bootloader.extended_fuses=0xFF
 attiny24_diy.bootloader.unlock_bits=0xFF
 attiny24_diy.bootloader.lock_bits=0xFF
@@ -704,6 +743,30 @@ attiny24_diy.menu.lto.disable.ltoelfflags=
 attiny24_diy.menu.lto.disable.ltocppflags=
 attiny24_diy.menu.lto.disable.ltoarcmd=
 
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny24_diy.menu.bodlevel.2v7=2.7v
+attiny24_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
+attiny24_diy.menu.bodlevel.disabled=Disabled
+attiny24_diy.menu.bodlevel.disabled.bootloader.bod_bits=111
+attiny24_diy.menu.bodlevel.4v3=4.3v
+attiny24_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
+attiny24_diy.menu.bodlevel.1v8=1.8v
+attiny24_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
+
+# The ones below are not mentioned in the 24/44/84 or 24/44/84A 
+# datasheets but at least engbedded includes for 24A/44[A]/84
+# so they might work, but can't say for sure.
+#
+# attiny24_diy.menu.bodlevel.2v3=2.3v
+# attiny24_diy.menu.bodlevel.2v3.bootloader.bod_bits=011
+# attiny24_diy.menu.bodlevel.2v2=2.2v
+# attiny24_diy.menu.bodlevel.2v2.bootloader.bod_bits=010
+# attiny24_diy.menu.bodlevel.2v0=2.0v
+# attiny24_diy.menu.bodlevel.2v0.bootloader.bod_bits=000
+# attiny24_diy.menu.bodlevel.1v9=1.9v
+# attiny24_diy.menu.bodlevel.1v9.bootloader.bod_bits=001
+
 
 # }}}
 
@@ -712,7 +775,9 @@ attiny24_diy.menu.lto.disable.ltoarcmd=
 attiny44_diy.name=ATtiny44
 attiny44_diy.build.mcu=attiny44
 attiny44_diy.bootloader.low_fuses=0xE2
-attiny44_diy.bootloader.high_fuses=0xDD
+# attiny44_diy.bootloader.high_fuses=0xDD
+attiny44_diy.bootloader.bod_bits=101
+attiny44_diy.bootloader.high_fuses=0b11011{bootloader.bod_bits}
 attiny44_diy.bootloader.extended_fuses=0xFF
 attiny44_diy.bootloader.unlock_bits=0xFF
 attiny44_diy.bootloader.lock_bits=0xFF
@@ -850,6 +915,30 @@ attiny44_diy.menu.lto.disable.ltoelfflags=
 attiny44_diy.menu.lto.disable.ltocppflags=
 attiny44_diy.menu.lto.disable.ltoarcmd=
 
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny44_diy.menu.bodlevel.2v7=2.7v
+attiny44_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
+attiny44_diy.menu.bodlevel.disabled=Disabled
+attiny44_diy.menu.bodlevel.disabled.bootloader.bod_bits=111
+attiny44_diy.menu.bodlevel.4v3=4.3v
+attiny44_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
+attiny44_diy.menu.bodlevel.1v8=1.8v
+attiny44_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
+
+# The ones below are not mentioned in the 24/44/84 or 24/44/84A 
+# datasheets but at least engbedded includes for 24A/44[A]/84
+# so they might work, but can't say for sure.
+#
+# attiny44_diy.menu.bodlevel.2v3=2.3v
+# attiny44_diy.menu.bodlevel.2v3.bootloader.bod_bits=011
+# attiny44_diy.menu.bodlevel.2v2=2.2v
+# attiny44_diy.menu.bodlevel.2v2.bootloader.bod_bits=010
+# attiny44_diy.menu.bodlevel.2v0=2.0v
+# attiny44_diy.menu.bodlevel.2v0.bootloader.bod_bits=000
+# attiny44_diy.menu.bodlevel.1v9=1.9v
+# attiny44_diy.menu.bodlevel.1v9.bootloader.bod_bits=001
+
 
 # }}}
 
@@ -858,7 +947,9 @@ attiny44_diy.menu.lto.disable.ltoarcmd=
 attiny84_diy.name=ATtiny84
 attiny84_diy.build.mcu=attiny84
 attiny84_diy.bootloader.low_fuses=0xE2
-attiny84_diy.bootloader.high_fuses=0xDD
+# attiny84_diy.bootloader.high_fuses=0xDD
+attiny84_diy.bootloader.bod_bits=101
+attiny84_diy.bootloader.high_fuses=0b11011{bootloader.bod_bits}
 attiny84_diy.bootloader.extended_fuses=0xFF
 attiny84_diy.bootloader.unlock_bits=0xFF
 attiny84_diy.bootloader.lock_bits=0xFF
@@ -996,6 +1087,29 @@ attiny84_diy.menu.lto.disable.ltoelfflags=
 attiny84_diy.menu.lto.disable.ltocppflags=
 attiny84_diy.menu.lto.disable.ltoarcmd=
 
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny84_diy.menu.bodlevel.2v7=2.7v
+attiny84_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
+attiny84_diy.menu.bodlevel.disabled=Disabled
+attiny84_diy.menu.bodlevel.disabled.bootloader.bod_bits=111
+attiny84_diy.menu.bodlevel.4v3=4.3v
+attiny84_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
+attiny84_diy.menu.bodlevel.1v8=1.8v
+attiny84_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
+
+# The ones below are not mentioned in the 24/44/84 or 24/44/84A 
+# datasheets but at least engbedded includes for 24A/44[A]/84
+# so they might work, but can't say for sure.
+#
+# attiny84_diy.menu.bodlevel.2v3=2.3v
+# attiny84_diy.menu.bodlevel.2v3.bootloader.bod_bits=011
+# attiny84_diy.menu.bodlevel.2v2=2.2v
+# attiny84_diy.menu.bodlevel.2v2.bootloader.bod_bits=010
+# attiny84_diy.menu.bodlevel.2v0=2.0v
+# attiny84_diy.menu.bodlevel.2v0.bootloader.bod_bits=000
+# attiny84_diy.menu.bodlevel.1v9=1.9v
+# attiny84_diy.menu.bodlevel.1v9.bootloader.bod_bits=001
 
 # }}}
 
@@ -1035,7 +1149,9 @@ attiny84_diy.menu.lto.disable.ltoarcmd=
 attiny13_diy.name=ATtiny13
 attiny13_diy.build.mcu=attiny13
 attiny13_diy.bootloader.low_fuses=0x7A
-attiny13_diy.bootloader.high_fuses=0xFB
+# attiny13_diy.bootloader.high_fuses=0xFB
+attiny13_diy.bootloader.high_fuses=0b11111{bootloader.bod_bits}1
+attiny13_diy.bootloader.bod_bits=01
 attiny13_diy.bootloader.unlock_bits=0x3F
 attiny13_diy.bootloader.lock_bits=0x3F
 attiny13_diy.build.f_cpu=9600000L
@@ -1198,6 +1314,17 @@ attiny13_diy.menu.lto.disable.ltocflags=
 attiny13_diy.menu.lto.disable.ltoelfflags=
 attiny13_diy.menu.lto.disable.ltocppflags=
 attiny13_diy.menu.lto.disable.ltoarcmd=
+
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+attiny13_diy.menu.bodlevel.2v7=2.7v
+attiny13_diy.menu.bodlevel.2v7.bootloader.bod_bits=01
+attiny13_diy.menu.bodlevel.disabled=Disabled
+attiny13_diy.menu.bodlevel.disabled.bootloader.bod_bits=11
+attiny13_diy.menu.bodlevel.1v8=1.8v
+attiny13_diy.menu.bodlevel.1v8.bootloader.bod_bits=10
+attiny13_diy.menu.bodlevel.4v3=4.3v
+attiny13_diy.menu.bodlevel.4v3.bootloader.bod_bits=00
 
 # }}}
 
