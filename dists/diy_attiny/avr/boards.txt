@@ -1159,7 +1159,7 @@ attiny13_diy.upload.speed=57600
 attiny13_diy.build.core=tiny
 attiny13_diy.build.variant=tiny13
 attiny13_diy.build.board=ATTINY13_DIY
-attiny13_diy.upload.tool=diy_attiny:avrdude_noefuse
+attiny13_diy.upload.tool=diy_attiny:avrdude_nobootloader_noefuse
 attiny13_diy.program.tool=diy_attiny:avrdude_nobootloader_noefuse
 attiny13_diy.bootloader.tool=diy_attiny:avrdude_nobootloader_noefuse
 attiny13_diy.upload.maximum_data_size=64
@@ -1187,6 +1187,12 @@ attiny13_diy.menu.version.attiny13a.build.mcu  = attiny13
 attiny13_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny13_diy.menu.boot.none.upload.maximum_size=1024
 attiny13_diy.menu.boot.none.bootloader.tool=diy_attiny:avrdude_nobootloader_noefuse
+
+attiny13_diy.menu.boot.macfix=No (ISP Programmer Upload) (NullPointer Fix?)
+attiny13_diy.menu.boot.macfix.upload.maximum_size=1024
+attiny13_diy.menu.boot.macfix.bootloader.tool=diy_attiny:avrdude_nobootloader_noefuse
+attiny13_diy.menu.boot.macfix.upload.tool=avrdude
+
 
 # Speed Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
