@@ -97,6 +97,10 @@ The ATtiny series of chips use (installed automatically for you with the JSON ab
  
 Note only 85 has been tested, but the others should work too, open an issue if not.
 
+#### SPI Pin Inversions
+
+Note on the pinout diagram above that the MOSI and MISO pins have two "orientations" on the x5 Series, when Programming (Slave) use the Programming orientation, and when using SPI devices connected to your chip (Master) use the SPI orientation.  The reason for this inversion is that the SPI Master implementation uses the "USI" function of the x5, which does not have a hardware SPI system.
+
 ### ATtiny24, ATtiny44, ATtiny84
 
 :star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x4.png)
@@ -106,6 +110,10 @@ Note only 85 has been tested, but the others should work too, open an issue if n
  * ATtiny84, ATtiny84A
  
 Note only 84A has been tested, but the others should work too, open an issue if not.
+
+#### SPI Pin Inversions
+
+Note on the pinout diagram above that the MOSI and MISO pins have two "orientations" on the x4 Series, when Programming (Slave) use the Programming orientation, and when using SPI devices connected to your chip (Master) use the SPI orientation.  The reason for this inversion is that the SPI Master implementation uses the "USI" function of the x4, which does not have a hardware SPI system.
 
 ### ATtiny13
 
