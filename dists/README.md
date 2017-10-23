@@ -84,7 +84,7 @@ The ATtiny series of chips use (installed automatically for you with the JSON ab
 
 :boom: Because it doesn't use the "official" Arduino core files (which really don't support ATtiny at all properly) there may be some differences you will notice along the way, and some libraries may not be available.  The main issues will be when using the very small ATtiny13, 4, 5, 9 and 10 which have to sacrifice some functionality.
 
-:warning: It is important that you only use the `A0`, `A1` ... `An` constants with `analogRead()` especially when using ATtiny chips, do **not** do something like `digitalRead(A0)`, that will not do what you want.  Consult the pinout diagrams for each chip and it will show you clearly which numbers to use for each pin!
+:warning: It is recommended that you only use the `A0`, `A1` ... `An` constants with `analogRead()`.  Doing something like `digitalRead(A0)`, may not do what you want (especially in releases of this core prior to October 2017, after October 2017 it's less of a problem).  Consult the pinout diagrams for each chip and it will show you clearly which numbers to use for each pin!
 
 
 ### ATtiny25, ATtiny45, ATtiny85
@@ -129,7 +129,7 @@ You may be interested in the [bit-bashed software I2C by Peter Fleury](http://ho
 
 :star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/tiny5%2C10.png)
 
-These chips are extremely small 6 pin chips and work a bit differently, please read this [extended information about how to use the Tiny4/5/9/10](https://github.com/sleemanj/ATTinyCore/blob/master/avr/variants/tiny5_10/README.md) as it does require some extra setup.
+These chips are extremely small 6 pin chips and use TPI to upload, please read this [extended information about how to use the Tiny4/5/9/10](https://github.com/sleemanj/ATTinyCore/blob/master/avr/variants/tiny5_10/README.md) for more information and troubleshooting.
 
 The 4 and 5 only have 512K of Flash, and all of them only have 32 bytes of SRAM, you can forget about anything to do with Print (that includes Serial) as it's not practically useful in such limitations. But all the basic functions, that is, digitalRead/Write, analogRead/Write and pinMode are good.
 
