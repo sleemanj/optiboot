@@ -3,7 +3,7 @@
 **Table of Contents**
 
 - [DIY AVR in the Arduino IDE](#diy-avr-in-the-arduino-ide)
-  - [:star: Arduino IDE 1.6.13+ Recommended](#star-arduino-ide-1613-recommended)
+  - [:star: Arduino IDE 1.8.5+ (or 1.6.13) Recommended](#star-arduino-ide-185-or-1613-recommended)
   - [:star: Make sure your "Arduino AVR Boards Built-In" is updated](#star-make-sure-your-arduino-avr-boards-built-in-is-updated)
   - [Supported Chips](#supported-chips)
   - [ATmega x8 Series (8,48,88,168,328)](#atmega-x8-series-84888168328)
@@ -11,6 +11,7 @@
     - [ATtiny25, ATtiny45, ATtiny85](#attiny25-attiny45-attiny85)
     - [ATtiny24, ATtiny44, ATtiny84](#attiny24-attiny44-attiny84)
     - [ATtiny13](#attiny13)
+      - [SPI / Wire (I2C, TWI) On Tiny13](#spi--wire-i2c-twi-on-tiny13)
     - [ATtiny4, ATtiny5, ATtiny9, ATtiny10](#attiny4-attiny5-attiny9-attiny10)
   - [Installation & Usage](#installation-&-usage)
     - [Automatic Installation through Board Manager (Recommended)](#automatic-installation-through-board-manager-recommended)
@@ -32,17 +33,10 @@ DIY Arduino based stuff.
   users should upgrade to 1.6.x without further delay, 
   [download for free here](https://www.arduino.cc/en/Main/Software).
 
-:star: Arduino IDE 1.6.13+ Recommended
+:star: Arduino IDE 1.8.5+ (or 1.6.13) Recommended
 --------------------------------------------------------------------------------
 
-This distribution now recommends at least Arduino IDE 1.6.13, this is because of the following great things...
-
-  1. IDE 1.6.13+ IDE version now includes a long awaited updated GCC (compiler) and AVRDUDE (uploader)
-  2. IDE 1.6.13+ IDE version now has LTO available (Link Time Optimisation) which can radically reduce your code size
- 
-due to these main advantages, it's just not worth putting a lot of work into keeping backward compatiability with older Arduino IDE versions, since upgrading is something almost everybody is going to want to do!
-
-It MIGHT still work in older IDE versions, I have tested very briefly in 1.6.9 and it seems OK and probably should be in 1.6.11 and 1.6.12 also, but seriously, just upgrade already :+1:
+The current release was made using IDE version 1.8.5 so that's the recommended, but you should be ok with anything 1.6.13 or newer, and MAYBE older versions.
 
 :boom: ** Do not use Arduino IDE 1.6.10 due to major bugs in that version of the IDE. :boom:  
 
@@ -51,7 +45,7 @@ It MIGHT still work in older IDE versions, I have tested very briefly in 1.6.9 a
 
 It is often a problem that people have updated their IDE version but it is using for some reason an old "Arduino AVR Boards", this can cause a problem (usually with avrdude configuration).
 
-Go to "Tools > Board > Board Manager" and look at the (usually) first item which is called "Arduino AVR Boards", it should show version 1.6.15 or higher installed, note that this number is not the same as your IDE version (usually).  
+Go to "Tools > Board > Board Manager" and look at the (usually) first item which is called "Arduino AVR Boards", it should show version 1.6.15 or higher installed, note that this number is not the same as your IDE version (usually).
 
 Especially if it is lower than 1.6.15, click the item and select/install the highest available version.
 
@@ -64,9 +58,9 @@ Presently the list of included chips is as follows:
 
 [IDE 1.6.x Board Manager JSON for ATmega 8/48/88/168/328](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_atmega8_series_index.json)
 
-:star: [See Arduino Pinout Diagram (DIP)](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328-dip.jpg) 
-:star: [See Arduino Pinout Diagram (SMD-32)](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328.jpg) 
-:star: [See Arduino Pinout Diagram (SMD-28)](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328-mlf28.jpg) 
+:star: [See Arduino Pinout Diagram (DIP)](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328-dip.png) 
+:star: [See Arduino Pinout Diagram (SMD-32)](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328.png) 
+:star: [See Arduino Pinout Diagram (SMD-28)](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328-mlf28.png) 
 
 This series of chips are pin compatible in both 28 pin DIP (through hole) and
 32 pin surface mount packages.  Consult the datasheets for the specific 
@@ -95,7 +89,7 @@ The ATtiny series of chips use (installed automatically for you with the JSON ab
 
 ### ATtiny25, ATtiny45, ATtiny85
 
-:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x5.jpg)
+:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x5.png)
 
  * ATtiny25
  * ATtiny45
@@ -105,7 +99,7 @@ Note only 85 has been tested, but the others should work too, open an issue if n
 
 ### ATtiny24, ATtiny44, ATtiny84
 
-:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x4.jpg)
+:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/x4.png)
 
  * ATtiny24, ATtiny24A
  * ATtiny44, ATtiny44A
@@ -115,7 +109,7 @@ Note only 84A has been tested, but the others should work too, open an issue if 
 
 ### ATtiny13
 
-:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/13.jpg)
+:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/13.png)
 
 This series of chips is pin compatible with the ATtinyx5 series, but have only 1K of flash and 64 Bytes of SRAM,  as a result they are a tight squeeze for the Arduino environment.  There is no room for bootloaders so you need an ISP programmer.
 
@@ -125,11 +119,15 @@ Remember that although there is no bootloader, you still want to "Burn Bootloade
 
 A number of examples are available in `File > Examples > ATTinyCore > Tiny13` which will help you to get the hang of special considerations about writing code for the Tiny13.
 
+#### SPI / Wire (I2C, TWI) On Tiny13
+
+Not presently supported.  Space is pretty tight so I suspect that it would not be practical to have a very complete SPI or Wire compatible library on a Tiny13 (patches welcome).
+
+You may be interested in the [bit-bashed software I2C by Peter Fleury](http://homepage.hispeed.ch/peterfleury/avr-software.html) but my guess is if you're using Arduino you might be better to step up to a Tiny85 which should, in theory, be able to use SPI and Wire (I2C).
+
 ### ATtiny4, ATtiny5, ATtiny9, ATtiny10
 
-:warning: Currently support for 4/5/9/10 is tricky/broken due to https://github.com/arduino/toolchain-avr/issues/42 I recommend using the Manual Install method and then installing the official toolchain on top of the arduino one as detailed in this [extended information about how to use the Tiny4/5/9/10](https://github.com/sleemanj/ATTinyCore/blob/master/avr/variants/tiny5_10/README.md)
-
-:star: [See Arduino Pinout Diagram](https://raw.githubusercontent.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/tiny5%2C10.jpg)
+:star: [See Arduino Pinout Diagram](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/tiny5%2C10.png)
 
 These chips are extremely small 6 pin chips and work a bit differently, please read this [extended information about how to use the Tiny4/5/9/10](https://github.com/sleemanj/ATTinyCore/blob/master/avr/variants/tiny5_10/README.md) as it does require some extra setup.
 
@@ -144,7 +142,7 @@ Due to these chips being what Atmel calls "Reduced Core TinyAVR" the compiler ca
 Installation & Usage
 --------------------------------------------------------------------------------
 
-Note that this has been tested with 1.6.9, older versions your milage may vary.
+Note that this has been tested with 1.8.5, older versions your milage may vary.
 
 ### Automatic Installation through Board Manager (Recommended)
 

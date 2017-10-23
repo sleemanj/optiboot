@@ -9,8 +9,8 @@
   "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2017_10_23.zip",
   "archiveFileName": "diy_attiny_2017_10_23.zip",
   
-  "checksum": "SHA-256:2cdc3d4d77b54f91967107e461fe0554f1f33da548fd48d745981684073fa692",
-  "size": "568103",
+  "checksum": "SHA-256:0a76cf720c899652855a41b31823f4e22c9b9e50856b77a736a50d84d1e522aa",
+  "size": "611958",
 
   "boards": [
     {"name": "ATtiny4"},    
