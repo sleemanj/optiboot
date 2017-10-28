@@ -806,12 +806,12 @@ attiny44_diy.menu.version.attiny44a.build.mcu  = attiny44
 
 attiny44_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny44_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny44_diy.menu.boot.optiboot.upload.maximum_size=1466
+attiny44_diy.menu.boot.optiboot.upload.maximum_size=3514
 attiny44_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
 attiny44_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny44_diy.menu.boot.none=No (ISP Programmer Upload)
-attiny44_diy.menu.boot.none.upload.maximum_size=2048
+attiny44_diy.menu.boot.none.upload.maximum_size=4096
 attiny44_diy.menu.boot.none.bootloader.tool=diy_attiny:avrdude_nobootloader
 
 # Speed Menu
