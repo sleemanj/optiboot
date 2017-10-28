@@ -129,9 +129,9 @@ A number of examples are available in `File > Examples > ATTinyCore > Tiny13` wh
 
 #### SPI / Wire (I2C, TWI) On Tiny13
 
-Not presently supported.  Space is pretty tight so I suspect that it would not be practical to have a very complete SPI or Wire compatible library on a Tiny13 (patches welcome).
+SPI is supported at least for writing to SPI devices, reading is not tested.  Writing has been tested with an SPI Digital Potentiometer, and there is enough space to use that, at least semi usefully.
 
-You may be interested in the [bit-bashed software I2C by Peter Fleury](http://homepage.hispeed.ch/peterfleury/avr-software.html) but my guess is if you're using Arduino you might be better to step up to a Tiny85 which should, in theory, be able to use SPI and Wire (I2C).
+I2C/TWI (Wire Library) is not presently supported on the Tiny13, at this stage I don't think there is sufficient space on a Tiny13 to offer a Wire library and actually have any flash left to use it in any way usefully.
 
 ### ATtiny4, ATtiny5, ATtiny9, ATtiny10
 
