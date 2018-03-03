@@ -13,11 +13,17 @@ fi
 
 if [ -z "$USINGMAKEFILES" ]
 then 
-  USINGMAKEFILES="Makefile.atmega8 Makefile.atmega640-1280-1281-2560-2561 Makefile.atmegaxx4-16-31"
+  USINGMAKEFILES="Makefile.atmega8 Makefile.atmega640-1280-1281-2560-2561 Makefile.atmegaxx4-16-31 Makefile.attinyx5 Makefile.attinyx4"
+fi
+
+if [ -z "$OSCCAL_PROGMEM" ]
+then
+  OSCCAL_PROGMEM="1"
 fi
 
 export AVR_FREQ
 export BAUD_RATE
+export OSCCAL_PROGMEM
 
 for chip in $(cat $USINGMAKEFILES | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | sort | uniq | sed s/://)
 do
