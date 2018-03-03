@@ -60,7 +60,7 @@ export
 # defaults
 # Set this explicitly in your make rules!
 # MCU_TARGET = atmega168
-LDSECTIONS  = -Wl,--section-start=.text=0x3e00 -Wl,--section-start=.version=0x3ffe
+LDSECTIONS  = -Wl,--section-start=.text=0x3e00 -Wl,--section-start=.osccal=0x3ffd -Wl,--section-start=.version=0x3ffe
 
 # Build environments
 # Start of some ugly makefile-isms to allow optiboot to be built
@@ -198,8 +198,19 @@ ifdef SINGLESPEED
 SS_CMD = -DSINGLESPEED=1
 endif
 
+ifdef OSCCAL_EEPROM_ADDR
+OSCCAL_CMD = -DOSCCAL_EEPROM_ADDR=$(OSCCAL_EEPROM_ADDR)
+dummy = FORCE
+endif
+
+ifdef OSCCAL_PROGMEM
+OSCCAL_CMD = -DOSCCAL_PROGMEM
+dummy = FORCE
+endif
+
 COMMON_OPTIONS = $(BAUD_RATE_CMD) $(LED_START_FLASHES_CMD) $(BIGBOOT_CMD)
 COMMON_OPTIONS += $(SOFT_UART_CMD) $(LED_DATA_FLASH_CMD) $(LED_CMD) $(SS_CMD)
+COMMON_OPTIONS += $(OSCCAL_CMD)
 
 #UART is handled separately and only passed for devices with more than one.
 ifdef UART
@@ -248,7 +259,7 @@ virboot8: TARGET = atmega8
 virboot8: MCU_TARGET = atmega8
 virboot8: CFLAGS += $(COMMON_OPTIONS) '-DVIRTUAL_BOOT_PARTITION' '-Dsave_vect_num=EE_RDY_vect_num'
 virboot8: AVR_FREQ ?= 16000000L 
-virboot8: LDSECTIONS  = -Wl,--section-start=.text=0x1c00 -Wl,--section-start=.version=0x1ffe
+virboot8: LDSECTIONS  = -Wl,--section-start=.text=0x1c00 -Wl,--section-start=.osccal=0x1ffd -Wl,--section-start=.version=0x1ffe
 virboot8: $(PROGRAM)_virboot8.hex
 virboot8: $(PROGRAM)_virboot8.lst
 
@@ -257,7 +268,7 @@ virboot328: TARGET = atmega328
 virboot328: MCU_TARGET = atmega328p
 virboot328: CFLAGS += $(COMMON_OPTIONS) '-DVIRTUAL_BOOT_PARTITION'
 virboot328: AVR_FREQ ?= 16000000L
-virboot328: LDSECTIONS  = -Wl,--section-start=.text=0x7d80 -Wl,--section-start=.version=0x7ffe
+virboot328: LDSECTIONS  = -Wl,--section-start=.text=0x7d80 -Wl,--section-start=.osccal=0x7ffd -Wl,--section-start=.version=0x7ffe
 virboot328: $(PROGRAM)_virboot328.hex
 virboot328: $(PROGRAM)_virboot328.lst
 
@@ -271,7 +282,6 @@ virboot328_isp: LFUSE ?= FF
 # 2.7V brownout
 virboot328_isp: EFUSE ?= 05
 virboot328_isp: isp
-
 
 #---------------------------------------------------------------------------
 # "Board-level Platform" targets.
@@ -474,10 +484,10 @@ clean:
 	$(OBJDUMP) -h -S $< > $@
 
 %.hex: %.elf
-	$(OBJCOPY) -j .text -j .data -j .version --set-section-flags .version=alloc,load -O ihex $< $@
+	$(OBJCOPY) -j .text -j .data -j .version -j .osccal --set-section-flags .version=alloc,load --set-section-flags .osccal=alloc,load -O ihex $< $@
 
 %.srec: %.elf
-	$(OBJCOPY) -j .text -j .data -j .version --set-section-flags .version=alloc,load -O srec $< $@
+	$(OBJCOPY) -j .text -j .data -j .version -j .osccal -set-section-flags .version=alloc,load --set-section-flags .osccal=alloc,load -O srec $< $@
 
 %.bin: %.elf
-	$(OBJCOPY) -j .text -j .data -j .version --set-section-flags .version=alloc,load -O binary $< $@
+	$(OBJCOPY) -j .text -j .data -j .version -j .osccal --set-section-flags .version=alloc,load --set-section-flags .osccal=alloc,load -O binary $< $@
