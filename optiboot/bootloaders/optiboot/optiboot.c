@@ -408,7 +408,7 @@ void __attribute__((noinline)) verifySpace();
 void __attribute__((noinline)) watchdogConfig(uint8_t x);
 
 static inline void getNch(uint8_t);
-#if defined(LED) && defined(LED_START_FLASHES)
+#if defined(LED) && defined(LED_START_FLASHES) && LED_START_FLASHES > 0
 static inline void flash_led(uint8_t);
 #endif
 static inline void watchdogReset();
@@ -654,9 +654,9 @@ int main(void) {
        * Send optiboot version as "SW version"
        * Note that the references to memory are optimized away.
        */
-      if (which == 0x82) {
+      if (which == STK_SW_MINOR) {
 	  putch(optiboot_version & 0xFF);
-      } else if (which == 0x81) {
+      } else if (which == STK_SW_MAJOR) {
 	  putch(optiboot_version >> 8);
       } else {
 	/*

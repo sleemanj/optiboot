@@ -17,7 +17,6 @@
     || defined(__AVR_ATmega88__)  || defined(__AVR_ATmega88A__)  || defined(__AVR_ATmega88P__)  || defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega88PB__)  \
     || defined(__AVR_ATmega168__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168P__) || defined(__AVR_ATmega168PA__) \
     || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
-    
 /*------------------------------------------------------------------------ */
 
   // Denote these chips as ATMEGA8 series compatible
@@ -468,7 +467,7 @@
 # define UART_UCSZ1 UCSZ21
 # define UART_UCSZ2 UCSZ22
 #elif UART == 3
-#if !defined(UDR1)
+#if !defined(UDR3)
 #error UART == 3, but no UART3 on device
 #endif
 # define UART_SRA UCSR3A
