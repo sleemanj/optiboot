@@ -149,7 +149,7 @@ atmega32: TARGET = atmega32
 atmega32: MCU_TARGET = atmega32
 atmega32: CFLAGS += $(COMMON_OPTIONS)
 atmega32: AVR_FREQ ?= 8000000L
-atmega32: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega32: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe -Wl,--section-start=.osccal=0x7ffd
 atmega32: $(PROGRAM)_atmega32_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega32_isp: atmega32
@@ -163,7 +163,7 @@ atmega32a: TARGET = atmega32a
 atmega32a: MCU_TARGET = atmega32
 atmega32a: CFLAGS += $(COMMON_OPTIONS)
 atmega32a: AVR_FREQ ?= 8000000L
-atmega32a: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega32a: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe -Wl,--section-start=.osccal=0x7ffd
 atmega32a: $(PROGRAM)_atmega32a_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega32a_isp: atmega32a
@@ -182,7 +182,7 @@ atmega324: TARGET = atmega324
 atmega324: MCU_TARGET = atmega324p
 atmega324: CFLAGS += $(COMMON_OPTIONS)
 atmega324: AVR_FREQ ?= 8000000L
-atmega324: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega324: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe -Wl,--section-start=.osccal=0x7ffd
 atmega324: $(PROGRAM)_atmega324_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega324_isp: atmega324
@@ -197,7 +197,7 @@ atmega324a: TARGET = atmega324a
 atmega324a: MCU_TARGET = atmega324a
 atmega324a: CFLAGS += $(COMMON_OPTIONS)
 atmega324a: AVR_FREQ ?= 8000000L
-atmega324a: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega324a: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe -Wl,--section-start=.osccal=0x7ffd
 atmega324a: $(PROGRAM)_atmega324a_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega324a_isp: atmega324a
@@ -212,7 +212,7 @@ atmega324p: TARGET = atmega324p
 atmega324p: MCU_TARGET = atmega324p
 atmega324p: CFLAGS += $(COMMON_OPTIONS)
 atmega324p: AVR_FREQ ?= 8000000L
-atmega324p: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega324p: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe -Wl,--section-start=.osccal=0x7ffd
 atmega324p: $(PROGRAM)_atmega324p_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega324p_isp: atmega324p
@@ -227,7 +227,7 @@ atmega324pa: TARGET = atmega324pa
 atmega324pa: MCU_TARGET = atmega324pa
 atmega324pa: CFLAGS += $(COMMON_OPTIONS)
 atmega324pa: AVR_FREQ ?= 8000000L
-atmega324pa: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+atmega324pa: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe -Wl,--section-start=.osccal=0x7ffd
 atmega324pa: $(PROGRAM)_atmega324pa_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega324pa_isp: atmega324pa
@@ -247,7 +247,7 @@ atmega644: TARGET = atmega644
 atmega644: MCU_TARGET = atmega644
 atmega644: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT
 atmega644: AVR_FREQ ?= 8000000L
-atmega644: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe
+atmega644: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe -Wl,--section-start=.osccal=0xfffd
 atmega644: $(PROGRAM)_atmega644_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega644_isp: atmega644
@@ -262,7 +262,7 @@ atmega644a: TARGET = atmega644a
 atmega644a: MCU_TARGET = atmega644a
 atmega644a: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT
 atmega644a: AVR_FREQ ?= 8000000L
-atmega644a: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe
+atmega644a: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe -Wl,--section-start=.osccal=0xfffd
 atmega644a: $(PROGRAM)_atmega644a_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega644a_isp: atmega644a
@@ -277,7 +277,7 @@ atmega644p: TARGET = atmega644p
 atmega644p: MCU_TARGET = atmega644p
 atmega644p: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT
 atmega644p: AVR_FREQ ?= 8000000L
-atmega644p: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe
+atmega644p: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe -Wl,--section-start=.osccal=0xfffd
 atmega644p: $(PROGRAM)_atmega644p_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega644p_isp: atmega644p
@@ -292,7 +292,7 @@ atmega644pa: TARGET = atmega644pa
 atmega644pa: MCU_TARGET = atmega644pa
 atmega644pa: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT
 atmega644pa: AVR_FREQ ?= 8000000L
-atmega644pa: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe
+atmega644pa: LDSECTIONS  = -Wl,--section-start=.text=0xfc00 -Wl,--section-start=.version=0xfffe -Wl,--section-start=.osccal=0xfffd
 atmega644pa: $(PROGRAM)_atmega644pa_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega644pa_isp: atmega644pa

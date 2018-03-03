@@ -62,7 +62,7 @@
 atmega640: MCU_TARGET = atmega640
 atmega640: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT $(UART_CMD)
 atmega640: AVR_FREQ ?= 8000000L
-atmega640: LDSECTIONS  = -Wl,--section-start=.text=0xfc00  -Wl,--section-start=.version=0xfffe
+atmega640: LDSECTIONS  = -Wl,--section-start=.text=0xfc00  -Wl,--section-start=.version=0xfffe -Wl,--section-start=.osccal=0xfffd
 atmega640: $(PROGRAM)_atmega640_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 atmega640_isp: atmega640

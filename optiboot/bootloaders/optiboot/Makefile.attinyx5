@@ -96,7 +96,7 @@ attiny25: TARGET = attiny25
 attiny25: MCU_TARGET = attiny25
 attiny25: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=6
 attiny25: AVR_FREQ ?= 8000000L
-attiny25: LDSECTIONS  = -Wl,--section-start=.text=0x05BC -Wl,--section-start=.version=0x07FE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny25: LDSECTIONS  = -Wl,--section-start=.text=0x05BC -Wl,--section-start=.version=0x07FE -Wl,--section-start=.osccal=0x07Fd -Wl,--gc-sections -Wl,--undefined=optiboot_version
 attiny25: $(PROGRAM)_attiny25_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 attiny25_isp: attiny25
@@ -111,7 +111,7 @@ attiny45: TARGET = attiny45
 attiny45: MCU_TARGET = attiny45
 attiny45: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=6
 attiny45: AVR_FREQ ?= 8000000L
-attiny45: LDSECTIONS  = -Wl,--section-start=.text=0x0DBA -Wl,--section-start=.version=0x0FFE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny45: LDSECTIONS  = -Wl,--section-start=.text=0x0DBA -Wl,--section-start=.version=0x0FFE -Wl,--section-start=.osccal=0x0FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
 attiny45: $(PROGRAM)_attiny45_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 attiny45_isp: attiny45
@@ -126,7 +126,7 @@ attiny85: TARGET = attiny85
 attiny85: MCU_TARGET = attiny85
 attiny85: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=6
 attiny85: AVR_FREQ ?= 8000000L
-attiny85: LDSECTIONS  = -Wl,--section-start=.text=0x1DBA -Wl,--section-start=.version=0x1FFE -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny85: LDSECTIONS  = -Wl,--section-start=.text=0x1DBA -Wl,--section-start=.version=0x1FFE -Wl,--section-start=.osccal=0x1FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
 attiny85: $(PROGRAM)_attiny85_$(AVR_FREQ)_$(BAUD_RATE).hex
 
 attiny85_isp: attiny85
