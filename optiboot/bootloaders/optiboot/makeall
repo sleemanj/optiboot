@@ -62,7 +62,7 @@ else
   export -n SUPPORT_EEPROM
 fi
 
-for chip in $(cat $USINGMAKEFILES | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | sort | uniq | sed s/://)
+for chip in $(cat $USINGMAKEFILES | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | grep -v tuner | sort | uniq | sed s/://)
 do
   echo -n "Building $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ... "
   

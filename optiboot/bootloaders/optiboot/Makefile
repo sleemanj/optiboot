@@ -467,6 +467,9 @@ include Makefile.atmega640-1280-1281-2560-2561
 
 FORCE:
 
+hex_relocate_reset.bin:
+	gcc hex_relocate_reset.c -o hex_relocate_reset.bin
+
 %.tuner.elf:
 	$(CC) $(CFLAGS) -o $@ tinyTuner.c
 	avr-size $@
@@ -474,12 +477,15 @@ FORCE:
 %.tuner.hex: %.tuner.elf
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
 
-%_with_tuner.hex:
+%_rawmerge_tuner.hex:
 	AVR_FREQ=$(AVR_FREQ) BAUD_RATE=$(BAUD_RATE) $(MAKE) $*
 	MCU_TARGET=$(*) AVR_FREQ=$(AVR_FREQ) $(MAKE) $*_$(AVR_FREQ).tuner.hex
 	cat $*_$(AVR_FREQ).tuner.hex | grep -vP '^:00000001FF\r' >$@
 	cat $(PROGRAM)_$(*)_$(AVR_FREQ)_$(BAUD_RATE).hex >>$@
 
+%_with_tuner.hex: %_rawmerge_tuner.hex
+	mv $(*)_rawmerge_tuner.hex $@
+	
 baudcheck: FORCE
 	- @$(CC) --version
 	- @$(CC) $(CFLAGS) -E baudcheck.c -o baudcheck.tmp

@@ -136,3 +136,7 @@ attiny85_isp: LFUSE ?= E2
 attiny85_isp: HFUSE ?= DD
 attiny85_isp: EFUSE ?= 00
 attiny85_isp: isp
+
+attiny85_with_tuner.hex:  hex_relocate_reset.bin
+attiny85_with_tuner.hex:  attiny85_rawmerge_tuner.hex
+	cat attiny85_rawmerge_tuner.hex | ./hex_relocate_reset.bin 6 0x1DBA >$@
