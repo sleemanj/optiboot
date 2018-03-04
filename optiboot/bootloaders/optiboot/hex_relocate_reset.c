@@ -50,9 +50,10 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "Firmware is found at 0x%02X\n", firmware);
 			fprintf(stderr, "Rewrite reset vector to rjmp to bootloader at 0x%04X\n", bootloader);
 			
-			// Replace it with the bootloader
-			writeByteHex(bootloader, &buffer[9]);
-			writeByteHex(0xC0 | ((bootloader>>8)&0xF), &buffer[11]);
+			// Replace it with the bootloader, note rjmp is number of WORDS to jump
+			// and then lose one more ( PC = PC + k + 1 where k is the number of words to jump )
+			writeByteHex((bootloader/2)-1, &buffer[9]);
+			writeByteHex(0xC0 | ((((bootloader/2)-1)>>8)&0xF), &buffer[11]);
 			
 			// Update the checksum
 			fprintf(stderr, "Update checksum\n");
@@ -66,8 +67,8 @@ int main(int argc, char *argv[])
 			// Insert the firmware boot vector into there except because
 			// it will be an rjmp we need to modify the destination
 			// by the difference between the original reset vector (0)
-			// and the new vector			
-			firmware -= (newVectorIndex-0);
+			// and the new vector **MEASURED IN WORDS**
+			firmware -= ((newVector-0)/2);
 			fprintf(stderr, "Inserting firmware rjmp at vector 0x%02X (index %d) to 0x%02X\n", newVector, newVectorIndex, firmware);
 			writeByteHex(firmware, &buffer[newVectorIndex]);
 			writeByteHex(0xC0 | ((firmware>>8)&0xF), &buffer[newVectorIndex+2]);

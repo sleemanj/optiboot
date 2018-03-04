@@ -122,6 +122,11 @@ attiny45_isp: HFUSE ?= DD
 attiny45_isp: EFUSE ?= 00
 attiny45_isp: isp
 
+attiny45_with_tuner.hex:  hex_relocate_reset.bin
+attiny45_with_tuner.hex:  attiny45_rawmerge_tuner.hex
+	cat attiny45_rawmerge_tuner.hex | ./hex_relocate_reset.bin 6 0x0DBA >$@
+#	rm attiny45_rawmerge_tuner.hex
+	
 attiny85: TARGET = attiny85
 attiny85: MCU_TARGET = attiny85
 attiny85: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=6
@@ -140,3 +145,4 @@ attiny85_isp: isp
 attiny85_with_tuner.hex:  hex_relocate_reset.bin
 attiny85_with_tuner.hex:  attiny85_rawmerge_tuner.hex
 	cat attiny85_rawmerge_tuner.hex | ./hex_relocate_reset.bin 6 0x1DBA >$@
+	rm attiny85_rawmerge_tuner.hex
