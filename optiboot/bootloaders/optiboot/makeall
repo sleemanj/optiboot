@@ -21,9 +21,46 @@ then
   OSCCAL_PROGMEM="1"
 fi
 
+if [ -z "$SUPPORT_EEPROM" ]
+then
+  SUPPORT_EEPROM="0"
+fi
+
+if [ -z "$LED_DATA_FLASH" ]
+then
+  LED_DATA_FLASH="0"
+fi
+
+if [ -z "$LED_START_FLASHES" ]
+then
+  LED_START_FLASHES="0"
+fi
+
+
 export AVR_FREQ
 export BAUD_RATE
-export OSCCAL_PROGMEM
+export LED_START_FLASHES
+
+if [ "$LED_DATA_FLASH" = 1 ]
+then
+  export LED_DATA_FLASH
+else 
+  export -n LED_DATA_FLASH
+fi
+
+if [ "$OSCCAL_PROGMEM" = 1 ]
+then
+  export OSCCAL_PROGMEM
+else 
+  export -n OSCCAL_PROGMEM
+fi
+
+if [ "$SUPPORT_EEPROM" = 1 ]
+then
+  export SUPPORT_EEPROM
+else 
+  export -n SUPPORT_EEPROM
+fi
 
 for chip in $(cat $USINGMAKEFILES | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | sort | uniq | sed s/://)
 do
@@ -36,6 +73,21 @@ do
   else    
     echo -n "OK, SIZE: "
     avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1
+  fi
+  
+  # Make a tuned version
+  if echo $chip | grep tiny >/dev/null
+  then
+    echo -n "Building tuning $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ... "
+		echo "\n\n\n*** BUILDING TUNER VERSION ***\n\n\n" >>$chip.build_log  
+    if ! ( make ${chip}_with_tuner.hex  2>&1 ) >>$chip.build_log
+    then
+      echo "FAILED, SEE $chip.build_log"
+    else
+      mv ${chip}_with_tuner.hex tunable_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex
+      echo -n "OK, SIZE: "
+			avr-size tunable_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1
+    fi
   fi
 done
 
