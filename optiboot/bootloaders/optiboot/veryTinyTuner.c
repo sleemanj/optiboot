@@ -67,8 +67,8 @@
 // value instead of whatever OSCCAL is set to, you can also 
 // specify a known-good OSCCAL for the serial output so you can
 // watch the search helpfully
-#define DEBUG_START_WITH_OSCCAL 100
-#define DEBUG_SERIAL_OUTPUT_USE_OSCCAL 147
+// #define DEBUG_START_WITH_OSCCAL 100
+// #define DEBUG_SERIAL_OUTPUT_USE_OSCCAL 147
 
 #if TUNER_SERIAL_OUTPUT > 0
   void putcal();
@@ -306,16 +306,21 @@ int16_t sampleError(uint8_t forThisOSCCAL)
   // Calculate the difference between the actual number of cycles spent in TimeNineBits and the expected number of cycles
   int16_t error = clocks - 7500;
 	
-	#if TUNER_SERIAL_OUTPUT >= 3
-		char buf[4];
-		utoa((unsigned int)OSCCAL, buf, 10);
-		putch_t(buf[0]);
-		putch_t(buf[1]);
-		putch_t(buf[2]);
-	#endif
-	
 	OSCCAL = oldOSCCAL;
 	return abs(error);
+}
+
+void    showSampleActivity(uint8_t calValue, char activityMarker )
+{
+  #if TUNER_SERIAL_OUTPUT >= 3
+    char buf[4];
+    utoa((unsigned int)calValue, buf, 10);
+    if(activityMarker) putch_t(activityMarker);
+    putch_t(buf[0]);
+    putch_t(buf[1]);
+    putch_t(buf[2]);
+    putch_t('\n');
+  #endif
 }
 
 uint8_t update( ) 
@@ -324,10 +329,17 @@ uint8_t update( )
   static uint16_t error = 0xFFFF;
 	if(error == 0xFFFF)
 	{
-		sampleError(OSCCAL);
-		#if TUNER_SERIAL_OUTPUT >= 3
-			putch_t('\n');
-		#endif
+		error = sampleError(OSCCAL);
+    
+    #if TUNER_SERIAL_OUTPUT >= 4
+      putstr_t(PSTR("Initial Error: "));
+      char buf[20]; 
+      snprintf(buf, sizeof(buf), "%d/%d", error, 7500); 
+      putstr(buf);
+      putstr_t(PSTR(" with OSCCAL= "));
+      snprintf(buf, sizeof(buf), "%d\n", OSCCAL);
+      putstr(buf);
+    #endif
 	}
 	
 	// Now have a peek forward and backward
@@ -355,15 +367,15 @@ uint8_t update( )
 			peekError = sampleError(peekCal);
 			if(peekError < error)
 			{
-				#if TUNER_SERIAL_OUTPUT >= 3
-				putch_t('\n');
-				#endif
-				
 				// Error seems to improve, keep looking from there, do not 
 				// come down below this point again
 				minGood = OSCCAL;
 				OSCCAL = peekCal;
 				error  = peekError;
+        
+        // Show the activity now after we change to the better
+        // cal value
+        showSampleActivity(peekCal, '~');
 				return true;
 			}
 			else
@@ -372,14 +384,12 @@ uint8_t update( )
 				{
 					// We are looking too far, don't check here again
 					maxGood = peekCal;
-					#if TUNER_SERIAL_OUTPUT >= 3
-					putch_t('!');
-					#endif
+					showSampleActivity(peekCal, '<');
 				}
-				
-				#if TUNER_SERIAL_OUTPUT >= 3
-					putch_t('\n');
-				#endif
+				else
+        {
+          showSampleActivity(peekCal, '*');
+        }
 			}
 		}
 		
@@ -390,16 +400,16 @@ uint8_t update( )
 		{
 			peekError = sampleError(peekCal);
 			if(peekError < error)
-			{
-				#if TUNER_SERIAL_OUTPUT >= 3
-				putch_t('\n');
-				#endif
-				
+			{				
 				// Error seems to improve, keep looking from there,
 				// do not come up above this point again
 				maxGood = OSCCAL;
 				OSCCAL = peekCal;
 				error  = peekError;
+        
+        // Show the activity now after we change to the better
+        // cal value
+        showSampleActivity(peekCal, '~');
 				return true;
 			}
 			else
@@ -408,14 +418,12 @@ uint8_t update( )
 				{
 					// We are looking too far, don't check here again
 					minGood = peekCal;
-					#if TUNER_SERIAL_OUTPUT >= 3
-					putch_t('!');
-					#endif
+					showSampleActivity(peekCal,'>');
 				}
-				
-				#if TUNER_SERIAL_OUTPUT >= 3
-					putch_t('\n');
-				#endif
+				else
+        {
+          showSampleActivity(peekCal,'*');
+        }
 			}
 		}
 	}
