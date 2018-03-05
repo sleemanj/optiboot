@@ -471,8 +471,9 @@ hex_relocate_reset.bin:
 	gcc hex_relocate_reset.c -o hex_relocate_reset.bin
 
 %.tuner.elf:
-	$(CC) $(CFLAGS) -o $@ tinyTuner.c
+	$(CC) $(CFLAGS) -o $@ veryTinyTuner.c
 	avr-size $@
+	cp $@ /tmp/
 
 %.tuner.hex: %.tuner.elf
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
