@@ -64,9 +64,43 @@ fi
 
 for chip in $(cat $USINGMAKEFILES | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | grep -v tuner | sort | uniq | sed s/://)
 do
-  echo -n "Building $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ... "
+  rm $chip.build_log  
+      
+  export BOOTLOADER_ADDRESS
+  # The makefiles will check for emptyness of this and use a default
+  #  so we only need to set it when we are going to pull the actual 
+  #  size of the bootloader and calculate a minimum bootloader
+  #  address (to maximise program space)
+  BOOTLOADER_ADDRESS=
   
-  if ! ( make $chip 2>&1 ) >$chip.build_log
+  if ! [ -z "$USE_SIZE" ]
+  then
+    echo -e "\n\n\n*** GETTING SIZES ***\n\n\n" >>$chip.build_log  
+    echo -n "Calculating size for $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ..."
+    # Note that to "calculate the size" we set the address low and compile
+    # this should ensure that the text and version/cal sections wont overlap
+    # and cause the link to fail, then we can get the size of that
+    BOOTLOADER_ADDRESS=0x0032
+
+    if ! ( make $chip 2>&1 ) >>$chip.build_log
+    then
+      echo "FAILED, SEE: $chip.build_log"
+      exit
+    else
+      SIZE="$(avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep -oP "[1-9][0-9]+" | head -1)"
+      echo -n "OK, SIZE: ${SIZE}"
+      FLASHEND="0x$(avr-objdump -h optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep .version | sed -r 's/^\s*[0-9]+\s.version\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$/\1/')"
+      # We want the bootloader to be at a word boundary (even address), so
+      # after calculating, divide by 2 and multiply back by 2 (integer math)
+      BOOTLOADER_ADDRESS="$(printf "0x%0.4X" $(($(($FLASHEND - $SIZE - 3)) / 2 * 2)))"
+      echo " BOOTLOADER_ADDRESS: $BOOTLOADER_ADDRESS"
+      rm -r optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf
+    fi    
+  fi
+
+  echo -e "\n\n\n*** BUILDING OPTIBOOT ***\n\n\n" >>$chip.build_log  
+  echo -n "Building $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ... "
+  if ! ( make $chip 2>&1 ) >>$chip.build_log
   then
     echo "FAILED, SEE: $chip.build_log"
     exit
@@ -74,12 +108,11 @@ do
     echo -n "OK, SIZE: "
     avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1
   fi
-  
-  # Make a tuned version
+    
   if echo $chip | grep tiny >/dev/null
   then
     echo -n "Building tuning $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ... "
-		echo "\n\n\n*** BUILDING TUNER VERSION ***\n\n\n" >>$chip.build_log  
+		echo -e "\n\n\n*** BUILDING TUNER VERSION ***\n\n\n" >>$chip.build_log  
     if ! ( make ${chip}_with_tuner.hex  2>&1 ) >>$chip.build_log
     then
       echo "FAILED, SEE $chip.build_log"

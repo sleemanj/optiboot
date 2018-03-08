@@ -63,10 +63,33 @@ PROGRAM    = optiboot
 # export symbols to recursive makes (for ISP)
 export
 
-# defaults
-# Set this explicitly in your make rules!
-# MCU_TARGET = atmega168
-LDSECTIONS  = -Wl,--section-start=.text=0x3e00 -Wl,--section-start=.osccal=0x3ffd -Wl,--section-start=.version=0x3ffe
+# Some defaults, if you don't have a bash shell these might not work so good.
+# you can override these by specifying the non-underscore-prefixed-variable
+# in your target, for example...
+#
+#  attiny24: BOOTLOADER_ADDRESS=0x100
+#
+# Each target must minimally provide MCU_TARGET, FLASH_SIZE
+#  and if it will use virtual boot, then the save vector ("RESET_VECTOR")
+#  which is a vector (ie interrupt vector) we will use to store the uploaded
+#  firmware's entry point (rjmp to it).  Note the RESET_VECTOR is a 
+#  0 based decimal vector number, 14 or 6 are commonly used (EE_RDY)
+#
+#  attiny24: MCU_TARGET = attiny24
+#  attiny24: FLASH_SIZE = 1234
+#  attiny24: RESET_VECTOR=14
+#
+_MCU_TARGET          = $(word 1, $(MCU_TARGET) atmega328)
+_AVR_FREQ            = $(word 1, $(AVR_FREQ) 8000000L)
+_BOOTLOADER_ADDRESS  = $(word 1, $(BOOTLOADER_ADDRESS) $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 600 / 2 * 2 ))))
+_VERSION_ADDRESS     = $(word 1, $(VERSION_ADDRESS)    $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 2 / 2 * 2 ))))
+_CAL_ADDRESS         = $(word 1, $(CAL_ADDRESS)        $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 3 ))))
+_RESET_VECTOR        = $(word 1, $(RESET_VECTOR) 0)
+
+LDSECTIONS  = -Wl,--section-start=.text=$(_BOOTLOADER_ADDRESS) \
+							-Wl,--section-start=.osccal=$(_CAL_ADDRESS)      \
+							-Wl,--section-start=.version=$(_VERSION_ADDRESS) \
+							-Wl,--gc-sections -Wl,--undefined=optiboot_version
 
 # Build environments
 # Start of some ugly makefile-isms to allow optiboot to be built
@@ -115,15 +138,20 @@ endif
 GCCROOT = $(TOOLROOT)/avr/bin/
 AVRDUDE_CONF = -C$(TOOLROOT)/avr/etc/avrdude.conf
 
+else ifdef ARDUINO_DIR
+# Compile using a specified arduino IDE distribution
+TOOLROOT = $(ARDUINO_DIR)/hardware/tools
+GCCROOT = $(TOOLROOT)/avr/bin/
+AVRDUDE_CONF = -C$(TOOLROOT)/avr/etc/avrdude.conf
 else
 GCCROOT =
 AVRDUDE_CONF =
 endif
 
 STK500 = "C:\Program Files\Atmel\AVR Tools\STK500\Stk500.exe"
-STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET).hex \
+STK500-1 = $(STK500) -e -d$(_MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET).hex \
            -lFF -LFF -f$(HFUSE)$(LFUSE) -EF8 -ms -q -cUSB -I200kHz -s -wt
-STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
+STK500-2 = $(STK500) -d$(_MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 #
 # End of build environment code.
 
@@ -143,8 +171,8 @@ CC         = $(GCCROOT)avr-gcc
 
 # Override is only needed by avr-lib build system.
 
-override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) -DF_CPU=$(AVR_FREQ) $(DEFS)
-override LDFLAGS       = $(LDSECTIONS) -Wl,--relax -nostartfiles -nostdlib
+override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(_MCU_TARGET) -DF_CPU=$(_AVR_FREQ) -Dsave_vect_num=$(_RESET_VECTOR) $(DEFS)
+override LDFLAGS       = -g $(LDSECTIONS) -Wl,--relax -nostartfiles -nostdlib
 #-Wl,--gc-sections
 
 OBJCOPY        = $(GCCROOT)avr-objcopy
@@ -236,7 +264,7 @@ endif
 # endif
 #
 
-#.PRECIOUS: %.elf
+.PRECIOUS: %.elf
 
 #---------------------------------------------------------------------------
 # "Chip-level Platform" targets.
@@ -468,7 +496,7 @@ include Makefile.atmega640-1280-1281-2560-2561
 FORCE:
 
 hex_relocate_reset.bin:
-	gcc hex_relocate_reset.c -o hex_relocate_reset.bin
+	gcc -std=c99 hex_relocate_reset.c -o hex_relocate_reset.bin
 
 %.tuner.elf:
 	$(CC) $(CFLAGS) -o $@ veryTinyTuner.c
@@ -478,14 +506,25 @@ hex_relocate_reset.bin:
 %.tuner.hex: %.tuner.elf
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
 
-%_rawmerge_tuner.hex:
-	AVR_FREQ=$(AVR_FREQ) BAUD_RATE=$(BAUD_RATE) $(MAKE) $*
-	MCU_TARGET=$(*) AVR_FREQ=$(AVR_FREQ) $(MAKE) $*_$(AVR_FREQ).tuner.hex
-	cat $*_$(AVR_FREQ).tuner.hex | grep -vP '^:00000001FF\r' >$@
-	cat $(PROGRAM)_$(*)_$(AVR_FREQ)_$(BAUD_RATE).hex >>$@
-
-%_with_tuner.hex: %_rawmerge_tuner.hex
-	mv $(*)_rawmerge_tuner.hex $@
+%_combine_with_tuner.hex: RESET_VECTOR := $(word 1, $(RESET_VECTOR) 0)
+%_combine_with_tuner.hex: hex_relocate_reset.bin
+	# Build the tuner (veryTinyTuner) for the given AVR frequency
+	#  strip off the end-of-file marker and put it in a temporary file
+	MCU_TARGET=$(word 1, $(MCU_TARGET) $(*)) AVR_FREQ=$(_AVR_FREQ) $(MAKE) $*_$(_AVR_FREQ).tuner.hex
+	cat $*_$(_AVR_FREQ).tuner.hex | grep -vP '^:00000001FF\r' >$@.tmp
+	
+	# Build optiboot for the frequency and concatenate it to the tuner	
+	AVR_FREQ=$(_AVR_FREQ) BAUD_RATE=$(BAUD_RATE) BOOTLOADER_ADDRESS=$(BOOTLOADER_ADDRESS) $(MAKE) $*
+	cat $(PROGRAM)_$(*)_$(_AVR_FREQ)_$(BAUD_RATE).hex >>$@.tmp
+	
+	# Fix the reset vector for the virtual boot
+	cat $@.tmp | ./hex_relocate_reset.bin $(_RESET_VECTOR) $(_BOOTLOADER_ADDRESS) >$@
+	rm  $@.tmp
+	
+# This is done so that chips can pass in things like BOOTLOADER_ADDRESS and RESET_VECTOR
+# by overriding this (see Makefile.attinyx4 for example)
+%_with_tuner.hex: %_combine_with_tuner.hex
+	mv $< $@
 	
 baudcheck: FORCE
 	- @$(CC) --version
@@ -501,7 +540,11 @@ isp-stk500: $(PROGRAM)_$(TARGET).hex
 	$(STK500-1)
 	$(STK500-2)
 
-%.elf: $(OBJ) baudcheck $(dummy)
+%.elf: AVR_FREQ             := $(word 1, $(AVR_FREQ) 8000000L)
+#%.elf: _BOOTLOADER_ADDRESS  = $(word 1, $(BOOTLOADER_ADDRESS) $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 600 / 2 * 2 ))))
+#%.elf: _VERSION_ADDRESS     = $(word 1, $(VERSION_ADDRESS)    $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 2 / 2 * 2 ))))
+#%.elf: _CAL_ADDRESS         = $(word 1, $(CAL_ADDRESS)        $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 3 ))))
+%.elf: $(OBJ) $(dummy)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBS)
 	$(SIZE) $@
 

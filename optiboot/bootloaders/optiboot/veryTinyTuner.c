@@ -4,6 +4,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
@@ -344,7 +345,7 @@ uint8_t update( )
 	
 	// Now have a peek forward and backward
 	uint8_t steps[] = { 30, 15, 5, 3, 1 };
-	uint8_t x = 0, i = 0;
+	uint8_t x = 0;
 	
 	int16_t peekError;
 	int16_t peekCal;

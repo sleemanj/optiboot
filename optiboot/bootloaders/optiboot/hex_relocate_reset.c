@@ -6,6 +6,7 @@
  *  Used for virtual boot with combined tiny tuner
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 
@@ -34,6 +35,15 @@ int main(int argc, char *argv[])
 	while(!feof(stdin))
 	{
 		if(fgets(buffer, sizeof(buffer), stdin) == NULL) break;
+		
+		// For convenience you can pass in 0 as the newVector and we 
+		// won't actually make any changes, for chips that have a 
+		// separate boot flash area and handle that properly themselves
+		if(newVector == 0)
+		{
+			printf("%s", buffer);
+			continue;
+		}
 		
 		if( buffer[3]  == '0' && buffer[4] == '0' && buffer[5] == '0' && buffer[6] == '0' // address 0
 		&&  buffer[7]  == '0' && buffer[8] == '0'                                         // type = data
@@ -97,7 +107,7 @@ uint8_t  inThisPage(uint16_t address, const char *buffer)
 	// Rationalize the address to a word address
 	address = address & ~0x01;
 	
-	fprintf(stderr, "Looking for %02X\n", address);
+	//fprintf(stderr, "Looking for %02X\n", address);
 	
 	uint16_t firstAddress	= (readByteHex(&buffer[3])<<8) | (readByteHex(&buffer[5]));
 	if(address < firstAddress) return 0;

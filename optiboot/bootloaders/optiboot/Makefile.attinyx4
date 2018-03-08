@@ -87,12 +87,17 @@
 
 ################################################################################
 
-attiny24: TARGET = attiny24
-attiny24: MCU_TARGET = attiny24
-attiny24: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
-attiny24: AVR_FREQ ?= 8000000L
-attiny24: LDSECTIONS  = -Wl,--section-start=.text=0x05BC -Wl,--section-start=.version=0x07FE -Wl,--section-start=.osccal=0x07Fd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-attiny24: $(PROGRAM)_attiny24_$(AVR_FREQ)_$(BAUD_RATE).hex
+attiny24: TARGET       = attiny24
+attiny24: MCU_TARGET   = $(TARGET)
+attiny24: FLASH_SIZE   = 2048
+attiny24: RESET_VECTOR = 14
+attiny24: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=$(RESET_VECTOR)
+attiny24: $(PROGRAM)_attiny24_$(_AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny24_with_tuner.hex: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x5A6)
+attiny24_with_tuner.hex: RESET_VECTOR := 14
+attiny24_with_tuner.hex: attiny24_combine_with_tuner.hex
+	mv $< $@
 
 attiny24_isp: attiny24
 attiny24_isp: TARGET = attiny24_$(AVR_FREQ)_$(BAUD_RATE)
@@ -106,9 +111,15 @@ attiny44: TARGET = attiny44
 attiny44: MCU_TARGET = attiny44
 attiny44: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
 attiny44: AVR_FREQ ?= 8000000L
-attiny44: LDSECTIONS  = -Wl,--section-start=.text=0x0DBA -Wl,--section-start=.version=0x0FFE -Wl,--section-start=.osccal=0x0FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny44: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x0DA6)
+attiny44: LDSECTIONS  = -Wl,--section-start=.text=$(BOOTLOADER_ADDRESS) -Wl,--section-start=.version=0x0FFE -Wl,--section-start=.osccal=0x0FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
 attiny44: $(PROGRAM)_attiny44_$(AVR_FREQ)_$(BAUD_RATE).hex
 
+attiny44_with_tuner.hex: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x0DA6)
+attiny44_with_tuner.hex: RESET_VECTOR := 14
+attiny44_with_tuner.hex: attiny44_combine_with_tuner.hex
+	mv $< $@
+	
 attiny44_isp: attiny44
 attiny44_isp: TARGET = attiny44_$(AVR_FREQ)_$(BAUD_RATE)
 attiny44_isp: MCU_TARGET ?= attiny44
@@ -121,9 +132,15 @@ attiny84: TARGET = attiny84
 attiny84: MCU_TARGET = attiny84
 attiny84: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
 attiny84: AVR_FREQ ?= 8000000L
-attiny84: LDSECTIONS  = -Wl,--section-start=.text=0x1DBA -Wl,--section-start=.version=0x1FFE -Wl,--section-start=.osccal=0x1FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny84: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x1DA6)
+attiny84: LDSECTIONS  = -Wl,--section-start=.text=$(BOOTLOADER_ADDRESS) -Wl,--section-start=.version=0x1FFE -Wl,--section-start=.osccal=0x1FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
 attiny84: $(PROGRAM)_attiny84_$(AVR_FREQ)_$(BAUD_RATE).hex
 
+attiny84_with_tuner.hex: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x1DA6)
+attiny84_with_tuner.hex: RESET_VECTOR := 14
+attiny84_with_tuner.hex: attiny84_combine_with_tuner.hex
+	mv $< $@
+	
 attiny84_isp: attiny84
 attiny84_isp: TARGET = attiny84_$(AVR_FREQ)_$(BAUD_RATE)
 attiny84_isp: MCU_TARGET ?= attiny84
@@ -137,9 +154,15 @@ attiny24a: TARGET = attiny24a
 attiny24a: MCU_TARGET = attiny24a
 attiny24a: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
 attiny24a: AVR_FREQ ?= 8000000L
-attiny24a: LDSECTIONS  = -Wl,--section-start=.text=0x05BC -Wl,--section-start=.version=0x07FE -Wl,--section-start=.osccal=0x07Fd -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny24a: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x5A6)
+attiny24a: LDSECTIONS  = -Wl,--section-start=.text=$(BOOTLOADER_ADDRESS) -Wl,--section-start=.version=0x07FE -Wl,--section-start=.osccal=0x07Fd -Wl,--gc-sections -Wl,--undefined=optiboot_version
 attiny24a: $(PROGRAM)_attiny24a_$(AVR_FREQ)_$(BAUD_RATE).hex
 
+attiny24a_with_tuner.hex: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x5A6)
+attiny24a_with_tuner.hex: RESET_VECTOR := 14
+attiny24a_with_tuner.hex: attiny24a_combine_with_tuner.hex
+	mv $< $@
+	
 attiny24a_isp: attiny24a
 attiny24a_isp: TARGET = attiny24a_$(AVR_FREQ)_$(BAUD_RATE)
 attiny24a_isp: MCU_TARGET ?= attiny24
@@ -152,9 +175,15 @@ attiny44a: TARGET = attiny44a
 attiny44a: MCU_TARGET = attiny44a
 attiny44a: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
 attiny44a: AVR_FREQ ?= 8000000L
-attiny44a: LDSECTIONS  = -Wl,--section-start=.text=0x0DBA -Wl,--section-start=.version=0x0FFE -Wl,--section-start=.osccal=0x0FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny44a: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x0DA6)
+attiny44a: LDSECTIONS  = -Wl,--section-start=.text=$(BOOTLOADER_ADDRESS) -Wl,--section-start=.version=0x0FFE -Wl,--section-start=.osccal=0x0FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
 attiny44a: $(PROGRAM)_attiny44a_$(AVR_FREQ)_$(BAUD_RATE).hex
 
+attiny44a_with_tuner.hex: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x0DA6)
+attiny44a_with_tuner.hex: RESET_VECTOR := 14
+attiny44a_with_tuner.hex: attiny44a_combine_with_tuner.hex
+	mv $< $@
+	
 attiny44a_isp: attiny44
 attiny44a_isp: TARGET = attiny44a_$(AVR_FREQ)_$(BAUD_RATE)
 attiny44a_isp: MCU_TARGET ?= attiny44a
@@ -166,9 +195,15 @@ attiny44a_isp: isp
 attiny84a: TARGET = attiny84a
 attiny84a: MCU_TARGET = attiny84a
 attiny84a: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=14
-attiny84a: AVR_FREQ ?= 8000000L
-attiny84a: LDSECTIONS  = -Wl,--section-start=.text=0x1DBA -Wl,--section-start=.version=0x1FFE -Wl,--section-start=.osccal=0x1FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
+attiny84a: AVR_FREQ := $(word 1, $(AVR_FREQ) 8000000L)
+attiny84a: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x1DA6)
+attiny84a: LDSECTIONS  = -Wl,--section-start=.text=$(BOOTLOADER_ADDRESS) -Wl,--section-start=.version=0x1FFE -Wl,--section-start=.osccal=0x1FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
 attiny84a: $(PROGRAM)_attiny84a_$(AVR_FREQ)_$(BAUD_RATE).hex
+
+attiny84a_with_tuner.hex: BOOTLOADER_ADDRESS := $(word 1, $(BOOTLOADER_ADDRESS) 0x1DA6)
+attiny84a_with_tuner.hex: RESET_VECTOR := 14
+attiny84a_with_tuner.hex: attiny84a_combine_with_tuner.hex
+	mv $< $@
 
 attiny84a_isp: attiny84a
 attiny84a_isp: TARGET = attiny84a_$(AVR_FREQ)_$(BAUD_RATE)
