@@ -63,6 +63,78 @@ PROGRAM    = optiboot
 # export symbols to recursive makes (for ISP)
 export
 
+# Makefiles are annoying, we need some help to "escape" patterns
+comma := ,
+space := 
+space += 
+equal := =
+
+
+# Feature Wrangling, mainly for backcompat we allow the maker to specify
+#  features in two ways.
+#
+# A "FEATURES" environment variable which specifies a list of one or more 
+#  features to set, for example, this is the newer way of doing it
+#
+#  FEATURES=OSCCAL_PROGMEM,SUPPORT_EEPROM,OSCCAL_EEPROM_ADDR=123 make attiny24
+#
+# or by specifying these as individual environment variables
+#
+#  OSCCAL_PROGMEM=1 SUPPORT_EEPROM=1 OSCCAL_EEPROM_ADDR=123 make attiny24
+#
+# This is where we take the individual environment variables if given
+#  and stuff them into FEATURES instead.
+ifndef FEATURES
+	ifdef SOFT_UART
+		FEATURES += SOFT_UART
+	endif
+
+	ifdef VIRTUAL_BOOT_PARTITION
+		FEATURES += VIRTUAL_BOOT_PARTITION
+	endif
+
+	ifdef LED
+		FEATURES += LED=$(strip $(LED))
+	endif
+
+	ifdef LED_START_FLASHES
+		FEATURES += LED_START_FLASHES=$(strip $(LED_START_FLASHES))
+	endif
+
+	ifdef LED_DATA_FLASH
+		FEATURES += LED_DATA_FLASH
+	endif
+
+	ifdef BIGBOOT
+		FEATURES += BIGBOOT
+	endif
+
+	ifdef SUPPORT_EEPROM
+		FEATURES += SUPPORT_EEPROM
+	endif
+
+	ifdef OSCCAL_EEPROM_ADDR
+		FEATURES += OSCCAL_EEPROM_ADDR=$(strip $(OSCCAL_EEPROM_ADDR))
+	endif
+
+	ifdef OSCCAL_PROGMEM
+		FEATURES += OSCCAL_PROGMEM
+	endif
+
+	ifdef TUNABLE
+		FEATURES += TUNABLE
+	endif
+endif
+
+ifdef AVR_FREQ
+	FEATURES += AVR_FREQ=$(strip $(AVR_FREQ))
+endif
+
+ifdef BAUD_RATE
+	FEATURES += BAUD_RATE=$(strip $(BAUD_RATE))
+endif
+
+
 # Some defaults, if you don't have a bash shell these might not work so good.
 # you can override these by specifying the non-underscore-prefixed-variable
 # in your target, for example...
@@ -79,12 +151,86 @@ export
 #  attiny24: FLASH_SIZE = 1234
 #  attiny24: RESET_VECTOR=14
 #
-_MCU_TARGET          = $(word 1, $(MCU_TARGET) atmega328)
-_AVR_FREQ            = $(word 1, $(AVR_FREQ) 8000000L)
-_BOOTLOADER_ADDRESS  = $(word 1, $(BOOTLOADER_ADDRESS) $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 600 / 2 * 2 ))))
+#  Each target can specify various features
+#
+#    attiny24: FEATURES += SOFT_UART, VIRTUAL_BOOT_PARTITION
+#
+#  Additional features can also be passed in the environment either
+#    in a FEATURES variable, or as separate variables
+#
+#    FEATURES=OSCCAL_PROGMEM,SUPPORT_EEPROM make attiny24
+#    OSCCAL_PROGMEM=1 SUPPORT_EEPROM=1 make attiny24
+#
+# Some features require parameters
+#
+#    attiny24: FEATURES += SUPPORT_EEPROM,OSCCAL_EEPROM_ADDR=123
+#
+#    FEATURES=SUPPORT_EEPROM,OSCCAL_EEPROM_ADDR=123 make attiny24
+#
+# Failed attempts to wrangle make, the first one was supposed to 
+#  be able to find an env var with that name or the name in the FEATURES
+#  list, but for some reason origin $(1) is undefined all the time 
+# 
+# The second was suposed to be able to use has_feature for both 
+#  simple features (OSCCAL_PROGMEM) and withvalues (OSCCAL_EEPROM_ADDR=123)
+#  but for some reason the call to findstring = doesn't work 
+#  (even if I try and findstring something more obvious like ADDR
+#   it still doesn't work, even though it clearly DOES contain that)
+#
+# Make is a PITA
+
+#has_feature					 = $(if $(or \
+															$(filter-out undefined, $(origin $(1))) ,\
+															$(findstring $(1), $(subst $(comma),$(space),$(FEATURES)))\
+														 ),\
+													$(if $(2),\
+														$(2), \
+														-D$(strip $(1))=1 \
+													 ), \
+													$(1)===$(origin $(1))\
+												)
+#has_feature					 = $(if $(call find_in_features, $(1)),\
+													$(if $(2),\
+														$(2), \
+														-D$(strip $(call find_in_features, $(1)))$(if $(findstring =, $(call find_in_features $(1))),  ,=1) \
+													 ) \
+												)
+find_in_features		 = $(filter $(1)%, $(subst $(comma),$(space),$(strip $(FEATURES))))
+find_var_in_features		 = $(filter $(1)=%, $(subst $(comma),$(space),$(strip $(FEATURES))))
+
+has_feature					 = $(if $(call find_in_features, $(1)),\
+													$(if $(2),\
+														$(2),\
+														-D$(strip $(call find_in_features, $(1)))=1 \
+													 ) \
+												)
+												
+var_feature					 = $(if $(call find_var_in_features, $(1)),\
+													$(if $(2),\
+														$(2),\
+														-D$(strip $(call find_var_in_features, $(1))) \
+													 ) \
+												)
+
+val_of_feature			 = $(lastword $(subst =, $(space), $(call var_feature, $(1))))
+												
+_MCU_TARGET          = $(word 1, $(MCU_TARGET) $(TARGET) atmega328)
+_AVR_FREQ            = $(word 1, $(AVR_FREQ)  $(call val_of_feature, AVR_FREQ)  8000000L)
+_BAUD_RATE           = $(word 1, $(BAUD_RATE) $(call val_of_feature, BAUD_RATE) 9600)
+_BOOTLOADER_RESERVED = $(word 1, $(BOOTLOADER_RESERVED) 600)
+_BOOTLOADER_ADDRESS  = $(word 1, $(BOOTLOADER_ADDRESS) $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - $(_BOOTLOADER_RESERVED) / 2 * 2 ))))
 _VERSION_ADDRESS     = $(word 1, $(VERSION_ADDRESS)    $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 2 / 2 * 2 ))))
 _CAL_ADDRESS         = $(word 1, $(CAL_ADDRESS)        $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 3 ))))
 _RESET_VECTOR        = $(word 1, $(RESET_VECTOR) 0)
+_CFLAGS							 = $(call has_feature, SOFT_UART)              \
+											 $(call has_feature, VIRTUAL_BOOT_PARTITION) \
+											 $(call var_feature, LED)                    \
+											 $(call var_feature, LED_START_FLASHES)      \
+											 $(call has_feature, LED_DATA_FLASH)         \
+											 $(call has_feature, BIGBOOT)                \
+											 $(call has_feature, SUPPORT_EEPROM)         \
+											 $(call var_feature, OSCCAL_EEPROM_ADDR)     \
+											 $(call has_feature, OSCCAL_PROGMEM)
 
 LDSECTIONS  = -Wl,--section-start=.text=$(_BOOTLOADER_ADDRESS) \
 							-Wl,--section-start=.osccal=$(_CAL_ADDRESS)      \
@@ -171,7 +317,7 @@ CC         = $(GCCROOT)avr-gcc
 
 # Override is only needed by avr-lib build system.
 
-override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(_MCU_TARGET) -DF_CPU=$(_AVR_FREQ) -Dsave_vect_num=$(_RESET_VECTOR) $(DEFS)
+override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(_MCU_TARGET) -DF_CPU=$(_AVR_FREQ) -DBAUD_RATE=$(_BAUD_RATE) -Dsave_vect_num=$(_RESET_VECTOR) $(_CFLAGS) $(COMMON_OPTIONS) $(DEFS)
 override LDFLAGS       = -g $(LDSECTIONS) -Wl,--relax -nostartfiles -nostdlib
 #-Wl,--gc-sections
 
@@ -186,71 +332,20 @@ SIZE           = $(GCCROOT)avr-size
 # appropriate parameters ("-DLED_START_FLASHES=10") to gcc
 #
 
-ifdef BAUD_RATE
-BAUD_RATE_CMD = -DBAUD_RATE=$(BAUD_RATE)
-dummy = FORCE
-else
-BAUD_RATE     = 115200
-BAUD_RATE_CMD = -DBAUD_RATE=115200
+# For backcompat, take a feature-given baud rate and stuff it into BAUD_RATE
+#  and also set a default here
+ifndef BAUD_RATE
+BAUD_RATE=$(word 1, $(call val_of_feature, BAUD_RATE) 115200)
 endif
 
-ifdef LED_START_FLASHES
-LED_START_FLASHES_CMD = -DLED_START_FLASHES=$(LED_START_FLASHES)
-dummy = FORCE
-else
-#LED_START_FLASHES_CMD = -DLED_START_FLASHES=3
-# Flashing the LED by default is a bad idea IMHO, because we, the bootloader
-#  don't know what is connected to that default LED pin we specified.
-#
-# Also dumping this flashing stuff saves us over 40 bytes, that's really
-#  important on virtual boot platforms especially.
-LED_START_FLASHES_CMD = 
+# For backcompat, take a feature-given AVR_FREQ and stuff it into AVR_FREQ
+# and also set a default here
+ifndef AVR_FREQ
+AVR_FREQ=$(word 1, $(call val_of_feature, AVR_FREQ) 8000000L)
 endif
 
-# BIG_BOOT: Include extra features, up to 1K.
-ifdef BIGBOOT
-BIGBOOT_CMD = -DBIGBOOT=1
-dummy = FORCE
-endif
 
-ifdef SOFT_UART
-SOFT_UART_CMD = -DSOFT_UART=1
-dummy = FORCE
-endif
-
-ifdef LED_DATA_FLASH
-LED_DATA_FLASH_CMD = -DLED_DATA_FLASH=1
-dummy = FORCE
-endif
-
-ifdef LED
-LED_CMD = -DLED=$(LED)
-dummy = FORCE
-endif
-
-ifdef SINGLESPEED
-SS_CMD = -DSINGLESPEED=1
-endif
-
-ifdef OSCCAL_EEPROM_ADDR
-OSCCAL_CMD = -DOSCCAL_EEPROM_ADDR=$(OSCCAL_EEPROM_ADDR)
-dummy = FORCE
-endif
-
-ifdef OSCCAL_PROGMEM
-OSCCAL_CMD = -DOSCCAL_PROGMEM
-dummy = FORCE
-endif
-
-ifdef SUPPORT_EEPROM
-SUPPORT_EEPROM_CMD = -DSUPPORT_EEPROM
-dummy = FORCE
-endif
-
-COMMON_OPTIONS = $(BAUD_RATE_CMD) $(LED_START_FLASHES_CMD) $(BIGBOOT_CMD)
-COMMON_OPTIONS += $(SOFT_UART_CMD) $(LED_DATA_FLASH_CMD) $(LED_CMD) $(SS_CMD)
-COMMON_OPTIONS += $(OSCCAL_CMD)
-COMMON_OPTIONS += $(SUPPORT_EEPROM_CMD)
+COMMON_OPTIONS =
 
 #UART is handled separately and only passed for devices with more than one.
 ifdef UART
@@ -540,11 +635,8 @@ isp-stk500: $(PROGRAM)_$(TARGET).hex
 	$(STK500-1)
 	$(STK500-2)
 
-%.elf: AVR_FREQ             := $(word 1, $(AVR_FREQ) 8000000L)
-#%.elf: _BOOTLOADER_ADDRESS  = $(word 1, $(BOOTLOADER_ADDRESS) $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 600 / 2 * 2 ))))
-#%.elf: _VERSION_ADDRESS     = $(word 1, $(VERSION_ADDRESS)    $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 2 / 2 * 2 ))))
-#%.elf: _CAL_ADDRESS         = $(word 1, $(CAL_ADDRESS)        $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 3 ))))
 %.elf: $(OBJ) $(dummy)
+	echo $(FEATURES)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBS)
 	$(SIZE) $@
 
@@ -563,5 +655,32 @@ clean:
 %.bin: %.elf
 	$(OBJCOPY) -j .text -j .data -j .version -j .osccal --set-section-flags .version=alloc,load --set-section-flags .osccal=alloc,load -O binary $< $@
 
+# This target is called from the individual targets in the other makefiles
+#  eg attiny24: _optiboot_
+_optiboot_:  $(if $(call has_feature, TUNABLE), _optiboot_tuner_, _optiboot_only_ )
 
+_optiboot_tuner_: _optiboot_only_ 
+_optiboot_tuner_: hex_relocate_reset.bin
+	# Build the tuner (veryTinyTuner) for the given AVR frequency
+	#  strip off the end-of-file marker and put it in a temporary file
+	MCU_TARGET=$(_MCU_TARGET) AVR_FREQ=$(_AVR_FREQ) $(MAKE) $(_MCU_TARGET)_$(_AVR_FREQ).tuner.hex
+	cat $(_MCU_TARGET)_$(_AVR_FREQ).tuner.hex | grep -vP '^:00000001FF\r' >$@.tmp
+	
+	cat $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex >>$@.tmp
+	
+	# Fix the reset vector for the virtual boot
+	cat $@.tmp | ./hex_relocate_reset.bin $(_RESET_VECTOR) $(_BOOTLOADER_ADDRESS) >tunable_$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex
+	rm  $@.tmp
+
+_optiboot_only_: 
+	TARGET=$(TARGET) \
+	MCU_TARGET=$(_MCU_TARGET) \
+	FLASH_SIZE=$(FLASH_SIZE) \
+	BOOTLOADER_RESERVED=$(_BOOTLOADER_RESERVED) \
+	BOOTLOADER_ADDRESS=$(_BOOTLOADER_ADDRESS) \
+	VERSION_ADDRESS=$(_VERSION_ADDRESS) \
+	CAL_ADDRESS=$(_CAL_ADDRESS) \
+	RESET_VECTOR=$(_RESET_VECTOR) \
+	FEATURES="$(FEATURES)" \
+	  make $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex
 

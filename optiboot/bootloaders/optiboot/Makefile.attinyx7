@@ -60,7 +60,6 @@
 ################################################################################
 
 
-
 ################################################################################
 # {{{
 
@@ -83,24 +82,14 @@
 # EE_RDY is vector 0x0020, which is 32 in decimal, ignore the stupid "from 1"
 #  counting of the Vector No. column in the datasheet.  Thanks for that Atmel.
 #
-
+# (Note that some other chips use SPM_RDY, the TinyX7 does not have that vector)
 ################################################################################
 
-attiny167: TARGET = attiny167
-attiny167: MCU_TARGET = attiny167
-attiny167: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=32
-#attiny167: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=32
-attiny167: AVR_FREQ ?= 8000000L
-attiny167: LDSECTIONS  = -Wl,--section-start=.text=0x3DBC -Wl,--section-start=.version=0x3FFE -Wl,--section-start=.osccal=0x3FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-attiny167: $(PROGRAM)_attiny167_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-attiny167_isp: attiny167
-attiny167_isp: TARGET = attiny167_$(AVR_FREQ)_$(BAUD_RATE)
-attiny167_isp: MCU_TARGET ?= attiny167
-attiny167_isp: LFUSE ?= E2
-attiny167_isp: HFUSE ?= DF
-attiny167_isp: EFUSE ?= 00
-attiny167_isp: isp
+attiny167: TARGET       = attiny167
+attiny167: FLASH_SIZE   = 16384
+attiny167: RESET_VECTOR = 32
+attiny167: FEATURES    += SOFT_UART VIRTUAL_BOOT_PARTITION
+attiny167: _optiboot_
 
 # }}}
 
@@ -128,20 +117,11 @@ attiny167_isp: isp
 
 ################################################################################
 
-attiny87: TARGET = attiny87
-attiny87: MCU_TARGET = attiny87
-attiny87: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=16
-#attiny87: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=32
-attiny87: AVR_FREQ ?= 8000000L
-attiny87: LDSECTIONS  = -Wl,-section-start=.text=0x1DBA -Wl,--section-start=.version=0x1FFE -Wl,--section-start=.osccal=0x1FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-attiny87: $(PROGRAM)_attiny87_$(AVR_FREQ)_$(BAUD_RATE).hex
+attiny87: TARGET       = attiny87
+attiny87: FLASH_SIZE   = 8192
+attiny87: RESET_VECTOR = 16
+attiny87: FEATURES    += SOFT_UART VIRTUAL_BOOT_PARTITION
+attiny87: _optiboot_
 
-attiny87_isp: attiny87
-attiny87_isp: TARGET = attiny87_$(AVR_FREQ)_$(BAUD_RATE)
-attiny87_isp: MCU_TARGET ?= attiny87
-attiny87_isp: LFUSE ?= E2
-attiny87_isp: HFUSE ?= DF
-attiny87_isp: EFUSE ?= 00
-attiny87_isp: isp
 
 # }}}

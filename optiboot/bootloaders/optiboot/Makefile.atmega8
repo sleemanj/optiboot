@@ -96,67 +96,30 @@
 #
 ################################################################################
 
-atmega328p: TARGET = atmega328p
-atmega328p: MCU_TARGET = atmega328p
-atmega328p: CFLAGS += $(COMMON_OPTIONS)
-atmega328p: AVR_FREQ ?= 8000000L
-atmega328p: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe -Wl,--section-start=.osccal=0x7ffd
-atmega328p: $(PROGRAM)_atmega328p_$(AVR_FREQ)_$(BAUD_RATE).hex
+_atmega8_: BOOTLOADER_RESERVED = 512
+_atmega8_: RESET_VECTOR = 0
+_atmega8_: FEATURES += 
+_atmega8_: _optiboot_
 
-atmega328p_isp: atmega328p
-atmega328p_isp: TARGET = atmega328p_$(AVR_FREQ)_$(BAUD_RATE)
-atmega328p_isp: MCU_TARGET ?= atmega328p
-atmega328p_isp: LFUSE ?= E2
-atmega328p_isp: HFUSE ?= DE
-atmega328p_isp: EFUSE ?= 05
-atmega328p_isp: isp
+atmega328:  TARGET=atmega328
+atmega328:  FLASH_SIZE=32768
+atmega328:  _atmega8_
+
+atmega328p:  TARGET=atmega328p
+atmega328p:  FLASH_SIZE=32768
+atmega328p:  _atmega8_
 
 # 328pa is not known by avr-gcc, so we use 328p for MCU_TARGET
-atmega328pa: TARGET = atmega328pa
-atmega328pa: MCU_TARGET = atmega328p
-atmega328pa: CFLAGS += $(COMMON_OPTIONS)
-atmega328pa: AVR_FREQ ?= 8000000L
-atmega328pa: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe -Wl,--section-start=.osccal=0x7ffd
-atmega328pa: $(PROGRAM)_atmega328pa_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega328pa_isp: atmega328pa
-atmega328pa_isp: TARGET = atmega328pa_$(AVR_FREQ)_$(BAUD_RATE)
-atmega328pa_isp: MCU_TARGET ?= atmega328pa
-atmega328pa_isp: LFUSE ?= E2
-atmega328pa_isp: HFUSE ?= DE
-atmega328pa_isp: EFUSE ?= 05
-atmega328pa_isp: isp
+atmega328pa:  TARGET=atmega328pa
+atmega328pa:  MCU_TARGET=atmega328p
+atmega328pa:  FLASH_SIZE=32768
+atmega328pa:  _atmega8_
 
 # 328pb is not known by avr-gcc, so we use 328p for MCU_TARGET
-atmega328pb: TARGET = atmega328pb
-atmega328pb: MCU_TARGET = atmega328p
-atmega328pb: CFLAGS += $(COMMON_OPTIONS)
-atmega328pb: AVR_FREQ ?= 8000000L
-atmega328pb: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe -Wl,--section-start=.osccal=0x7ffd
-atmega328pb: $(PROGRAM)_atmega328pb_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega328pb_isp: atmega328pb
-atmega328pb_isp: TARGET = atmega328pb_$(AVR_FREQ)_$(BAUD_RATE)
-atmega328pb_isp: MCU_TARGET ?= atmega328pb
-atmega328pb_isp: LFUSE ?= E2
-atmega328pb_isp: HFUSE ?= DE
-atmega328pb_isp: EFUSE ?= 05
-atmega328pb_isp: isp
-
-atmega328: TARGET = atmega328
-atmega328: MCU_TARGET = atmega328
-atmega328: CFLAGS += $(COMMON_OPTIONS)
-atmega328: AVR_FREQ ?= 8000000L
-atmega328: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe -Wl,--section-start=.osccal=0x7ffd
-atmega328: $(PROGRAM)_atmega328_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega328_isp: atmega328
-atmega328_isp: TARGET = atmega328_$(AVR_FREQ)_$(BAUD_RATE)
-atmega328_isp: MCU_TARGET ?= atmega328
-atmega328_isp: LFUSE ?= E2
-atmega328_isp: HFUSE ?= DE
-atmega328_isp: EFUSE ?= 05
-atmega328_isp: isp
+atmega328pb:  TARGET=atmega328pb
+atmega328pb:  MCU_TARGET=atmega328p
+atmega328pb:  FLASH_SIZE=32768
+atmega328pb:  _atmega8_
 
 
 ## ATMEGA168/168p
@@ -167,77 +130,29 @@ atmega328_isp: isp
 #
 ################################################################################
 
-atmega168: TARGET = atmega168
-atmega168: MCU_TARGET ?= atmega168
-atmega168: CFLAGS += $(COMMON_OPTIONS)
-atmega168: AVR_FREQ ?= 8000000L 
-atmega168: $(PROGRAM)_atmega168_$(AVR_FREQ)_$(BAUD_RATE).hex
+atmega168:  TARGET=atmega168
+atmega168:  FLASH_SIZE=16384
+atmega168:  _atmega8_
 
-atmega168_isp: atmega168
-atmega168_isp: TARGET = atmega168_$(AVR_FREQ)_$(BAUD_RATE)
-atmega168_isp: MCU_TARGET ?= atmega168
-atmega168_isp: LFUSE ?= E2
-atmega168_isp: HFUSE ?= DD
-atmega168_isp: EFUSE ?= 04
-atmega168_isp: isp
+atmega168a:  TARGET=atmega168a
+atmega168a:  FLASH_SIZE=16384
+atmega168a:  _atmega8_
 
-atmega168a: TARGET = atmega168a
-atmega168a: MCU_TARGET ?= atmega168a
-atmega168a: CFLAGS += $(COMMON_OPTIONS)
-atmega168a: AVR_FREQ ?= 8000000L 
-atmega168a: $(PROGRAM)_atmega168a_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega168a_isp: atmega168a
-atmega168a_isp: TARGET = atmega168a_$(AVR_FREQ)_$(BAUD_RATE)
-atmega168a_isp: MCU_TARGET ?= atmega168a
-atmega168a_isp: LFUSE ?= E2
-atmega168a_isp: HFUSE ?= DD
-atmega168a_isp: EFUSE ?= 04
-atmega168a_isp: isp
-
-atmega168p: TARGET = atmega168p
-atmega168p: MCU_TARGET ?= atmega168p
-atmega168p: CFLAGS += $(COMMON_OPTIONS)
-atmega168p: AVR_FREQ ?= 8000000L 
-atmega168p: $(PROGRAM)_atmega168p_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega168p_isp: atmega168p
-atmega168p_isp: TARGET = atmega168p_$(AVR_FREQ)_$(BAUD_RATE)
-atmega168p_isp: MCU_TARGET ?= atmega168p
-atmega168p_isp: LFUSE ?= E2
-atmega168p_isp: HFUSE ?= DD
-atmega168p_isp: EFUSE ?= 04
-atmega168p_isp: isp
+atmega168p:  TARGET=atmega168p
+atmega168p:  FLASH_SIZE=16384
+atmega168p:  _atmega8_
 
 # 168pa is not known by avr-libc so we use 168p
-atmega168pa: TARGET = atmega168pa
-atmega168pa: MCU_TARGET ?= atmega168p
-atmega168pa: CFLAGS += $(COMMON_OPTIONS)
-atmega168pa: AVR_FREQ ?= 8000000L 
-atmega168pa: $(PROGRAM)_atmega168pa_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega168pa_isp: atmega168pa
-atmega168pa_isp: TARGET = atmega168pa_$(AVR_FREQ)_$(BAUD_RATE)
-atmega168pa_isp: MCU_TARGET ?= atmega168pa
-atmega168pa_isp: LFUSE ?= E2
-atmega168pa_isp: HFUSE ?= DD
-atmega168pa_isp: EFUSE ?= 04
-atmega168pa_isp: isp
+atmega168pa:  TARGET=atmega168pa
+atmega168pa:  MCU_TARGET=atmega168p
+atmega168pa:  FLASH_SIZE=16384
+atmega168pa:  _atmega8_
 
 # 168pb is not known by avr-gcc so we use 168p
-atmega168pb: TARGET = atmega168pb
-atmega168pb: MCU_TARGET ?= atmega168p
-atmega168pb: CFLAGS += $(COMMON_OPTIONS)
-atmega168pb: AVR_FREQ ?= 8000000L 
-atmega168pb: $(PROGRAM)_atmega168pb_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega168pb_isp: atmega168p
-atmega168pb_isp: TARGET = atmega168pb_$(AVR_FREQ)_$(BAUD_RATE)
-atmega168pb_isp: MCU_TARGET ?= atmega168p
-atmega168pb_isp: LFUSE ?= E2
-atmega168pb_isp: HFUSE ?= DD
-atmega168pb_isp: EFUSE ?= 04
-atmega168pb_isp: isp
+atmega168pb:  TARGET=atmega168pb
+atmega168pb:  MCU_TARGET=atmega168p
+atmega168pb:  FLASH_SIZE=16384
+atmega168pb:  _atmega8_
 
 ## ATMEGA88/88P
 #
@@ -252,82 +167,28 @@ atmega168pb_isp: isp
 #  On Linux, seems to be fine without but I'll leave it in anyway.
 ################################################################################
 
-atmega88p: TARGET = atmega88p
-atmega88p: MCU_TARGET = atmega88p
-atmega88p: CFLAGS += $(COMMON_OPTIONS)
-atmega88p: AVR_FREQ ?= 8000000L
-atmega88p: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--section-start=.osccal=0x1ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega88p: $(PROGRAM)_atmega88p_$(AVR_FREQ)_$(BAUD_RATE).hex
 
-atmega88p_isp: atmega88p
-atmega88p_isp: TARGET = atmega88p_$(AVR_FREQ)_$(BAUD_RATE)
-atmega88p_isp: MCU_TARGET ?= atmega88p
-atmega88p_isp: LFUSE ?= E2
-atmega88p_isp: HFUSE ?= DD
-atmega88p_isp: EFUSE ?= FC
-atmega88p_isp: isp
+atmega88:  TARGET=atmega88
+atmega88:  FLASH_SIZE=8192
+atmega88:  _atmega8_
 
-atmega88: TARGET = atmega88
-atmega88: MCU_TARGET = atmega88
-atmega88: CFLAGS += $(COMMON_OPTIONS)
-atmega88: AVR_FREQ ?= 8000000L
-atmega88: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--section-start=.osccal=0x1ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega88: $(PROGRAM)_atmega88_$(AVR_FREQ)_$(BAUD_RATE).hex
+atmega88p:  TARGET=atmega88p
+atmega88p:  FLASH_SIZE=8192
+atmega88p:  _atmega8_
 
-atmega88_isp: atmega88
-atmega88_isp: TARGET = atmega88_$(AVR_FREQ)_$(BAUD_RATE)
-atmega88_isp: MCU_TARGET ?= atmega88
-atmega88_isp: LFUSE ?= E2
-atmega88_isp: HFUSE ?= DD
-atmega88_isp: EFUSE ?= FC
-atmega88_isp: isp
+atmega88a:  TARGET=atmega88a
+atmega88a:  FLASH_SIZE=8192
+atmega88a:  _atmega8_
 
-atmega88a: TARGET = atmega88a
-atmega88a: MCU_TARGET = atmega88a
-atmega88a: CFLAGS += $(COMMON_OPTIONS)
-atmega88a: AVR_FREQ ?= 8000000L
-atmega88a: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--section-start=.osccal=0x1ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega88a: $(PROGRAM)_atmega88a_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega88a_isp: atmega88a
-atmega88a_isp: TARGET = atmega88a_$(AVR_FREQ)_$(BAUD_RATE)
-atmega88a_isp: MCU_TARGET ?= atmega88a
-atmega88a_isp: LFUSE ?= E2
-atmega88a_isp: HFUSE ?= DD
-atmega88a_isp: EFUSE ?= FC
-atmega88a_isp: isp
-
-atmega88pa: TARGET = atmega88pa
-atmega88pa: MCU_TARGET = atmega88pa
-atmega88pa: CFLAGS += $(COMMON_OPTIONS)
-atmega88pa: AVR_FREQ ?= 8000000L
-atmega88pa: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--section-start=.osccal=0x1ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega88pa: $(PROGRAM)_atmega88pa_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega88pa_isp: atmega88pa
-atmega88pa_isp: TARGET = atmega88pa_$(AVR_FREQ)_$(BAUD_RATE)
-atmega88pa_isp: MCU_TARGET ?= atmega88pa
-atmega88pa_isp: LFUSE ?= E2
-atmega88pa_isp: HFUSE ?= DD
-atmega88pa_isp: EFUSE ?= FC
-atmega88pa_isp: isp
+atmega88pa:  TARGET=atmega88pa
+atmega88pa:  FLASH_SIZE=8192
+atmega88pa:  _atmega8_
 
 # 88pb is not known by avr-gcc, we use 88pa instead
-atmega88pb: TARGET = atmega88pb
-atmega88pb: MCU_TARGET = atmega88pa
-atmega88pb: CFLAGS += $(COMMON_OPTIONS)
-atmega88pb: AVR_FREQ ?= 8000000L
-atmega88pb: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--section-start=.osccal=0x1ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega88pb: $(PROGRAM)_atmega88pb_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega88pb_isp: atmega88pb
-atmega88pb_isp: TARGET = atmega88pb_$(AVR_FREQ)_$(BAUD_RATE)
-atmega88pb_isp: MCU_TARGET ?= atmega88pa
-atmega88pb_isp: LFUSE ?= E2
-atmega88pb_isp: HFUSE ?= DD
-atmega88pb_isp: EFUSE ?= FC
-atmega88pb_isp: isp
-
+atmega88pb:  TARGET=atmega88pb
+atmega88pb:  MCU_TARGET = atmega88pa
+atmega88pb:  FLASH_SIZE=8192
+atmega88pb:  _atmega8_
 
 ## ATMEGA8
 #
@@ -344,33 +205,15 @@ atmega88pb_isp: isp
 #  On Linux, seems to be fine without but I'll leave it in anyway.
 ################################################################################
 
-atmega8: TARGET = atmega8
-atmega8: MCU_TARGET = atmega8
-atmega8: CFLAGS += $(COMMON_OPTIONS)
-atmega8: AVR_FREQ ?= 8000000L
-atmega8: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--section-start=.osccal=0x1ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega8: $(PROGRAM)_atmega8_$(AVR_FREQ)_$(BAUD_RATE).hex
+atmega8:  TARGET=atmega8
+atmega8:  FLASH_SIZE=8192
+atmega8:  _atmega8_
 
-atmega8_isp: atmega8
-atmega8_isp: TARGET = atmega8_$(AVR_FREQ)_$(BAUD_RATE)
-atmega8_isp: MCU_TARGET ?= atmega8
-atmega8_isp: LFUSE ?= A4
-atmega8_isp: HFUSE ?= CC
-atmega8_isp: isp
+atmega8a:  TARGET=atmega8a
+atmega8a:  MCU_TARGET = atmega8
+atmega8a:  FLASH_SIZE=8192
+atmega8a:  _atmega8_
 
-atmega8a: TARGET = atmega8a
-atmega8a: MCU_TARGET = atmega8
-atmega8a: CFLAGS += $(COMMON_OPTIONS)
-atmega8a: AVR_FREQ ?= 8000000L
-atmega8a: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe -Wl,--section-start=.osccal=0x1ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega8a: $(PROGRAM)_atmega8a_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega8a_isp: atmega8a
-atmega8a_isp: TARGET = atmega8a_$(AVR_FREQ)_$(BAUD_RATE)
-atmega8a_isp: MCU_TARGET ?= atmega8
-atmega8a_isp: LFUSE ?= A4
-atmega8a_isp: HFUSE ?= CC
-atmega8a_isp: isp
 
 ## ATMEGA48/48P
 #  
@@ -408,85 +251,27 @@ atmega8a_isp: isp
 #    +2 for version +10 for future; = 568 bytes; 4096-568=3520=0x0dca
 ################################################################################
 
-atmega48p: TARGET = atmega48p
-atmega48p: MCU_TARGET = atmega48p
-atmega48p: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=25
-atmega48p: AVR_FREQ ?= 8000000L
-atmega48p: LDSECTIONS = -Wl,--section-start=.text=0x0db0 -Wl,--section-start=.version=0x0ffe -Wl,--section-start=.osccal=0x0ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega48p: $(PROGRAM)_atmega48p_$(AVR_FREQ)_$(BAUD_RATE).hex
 
-atmega48p_isp: atmega48p
-atmega48p_isp: TARGET = atmega48p_$(AVR_FREQ)_$(BAUD_RATE)
-atmega48p_isp: MCU_TARGET ?= atmega48p
-atmega48p_isp: LFUSE ?= E2
-atmega48p_isp: HFUSE ?= DD
-atmega48p_isp: EFUSE ?= 00
-atmega48p_isp: LOCKBYTE ?= 3F
-atmega48p_isp: isp
+_atmega48_: FLASH_SIZE   = 4092
+_atmega48_: RESET_VECTOR = 25
+_atmega48_: FEATURES    += VIRTUAL_BOOT_PARTITION
+_atmega48_: _optiboot_
+
+atmega48: TARGET       = atmega48
+atmega48: _atmega48_
+
+atmega48p: TARGET       = atmega48p
+atmega48p: _atmega48_
 
 # avr-libc doesn't know about the 48PA, we use 48P instead
-atmega48pa: TARGET = atmega48pa
-atmega48pa: MCU_TARGET = atmega48p
-atmega48pa: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=25
-atmega48pa: AVR_FREQ ?= 8000000L
-atmega48pa: LDSECTIONS = -Wl,--section-start=.text=0x0db0 -Wl,--section-start=.version=0x0ffe -Wl,--section-start=.osccal=0x0ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega48pa: $(PROGRAM)_atmega48pa_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega48pa_isp: atmega48pa
-atmega48pa_isp: TARGET = atmega48pa_$(AVR_FREQ)_$(BAUD_RATE)
-atmega48pa_isp: MCU_TARGET ?= atmega48p
-atmega48pa_isp: LFUSE ?= E2
-atmega48pa_isp: HFUSE ?= DD
-atmega48pa_isp: EFUSE ?= 00
-atmega48pa_isp: LOCKBYTE ?= 3F
-atmega48pa_isp: isp
+atmega48pa: TARGET       = atmega48pa
+atmega48pa: MCU_TARGET   = atmega48p
+atmega48pa: _atmega48_
 
 # avr-gcc doesn't know about the 48PB, we use 48P instead
-atmega48pb: TARGET = atmega48pb
-atmega48pb: MCU_TARGET = atmega48p
-atmega48pb: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=25
-atmega48pb: AVR_FREQ ?= 8000000L
-atmega48pb: LDSECTIONS = -Wl,--section-start=.text=0x0db0 -Wl,--section-start=.version=0x0ffe -Wl,--section-start=.osccal=0x0ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega48pb: $(PROGRAM)_atmega48pb_$(AVR_FREQ)_$(BAUD_RATE).hex
+atmega48pb: TARGET       = atmega48pb
+atmega48pb: MCU_TARGET   = atmega48p
+atmega48pb: _atmega48_
 
-atmega48pb_isp: atmega48p
-atmega48pb_isp: TARGET = atmega48pb_$(AVR_FREQ)_$(BAUD_RATE)
-atmega48pb_isp: MCU_TARGET ?= atmega48p
-atmega48pb_isp: LFUSE ?= E2
-atmega48pb_isp: HFUSE ?= DD
-atmega48pb_isp: EFUSE ?= 00
-atmega48pb_isp: LOCKBYTE ?= 3F
-atmega48pb_isp: isp
-
-
-atmega48: TARGET = atmega48
-atmega48: MCU_TARGET = atmega48
-atmega48: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=25
-atmega48: AVR_FREQ ?= 8000000L
-atmega48: LDSECTIONS = -Wl,--section-start=.text=0x0dc5 -Wl,--section-start=.version=0x0ffe -Wl,--section-start=.osccal=0x0ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega48: $(PROGRAM)_atmega48_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega48_isp: atmega48
-atmega48_isp: TARGET = atmega48_$(AVR_FREQ)_$(BAUD_RATE)
-atmega48_isp: MCU_TARGET ?= atmega48
-atmega48_isp: LFUSE ?= E2
-atmega48_isp: HFUSE ?= DD
-atmega48_isp: EFUSE ?= 00
-atmega48_isp: isp
-
-
-atmega48a: TARGET = atmega48a
-atmega48a: MCU_TARGET = atmega48a
-atmega48a: CFLAGS += $(COMMON_OPTIONS) -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=25
-atmega48a: AVR_FREQ ?= 8000000L
-atmega48a: LDSECTIONS = -Wl,--section-start=.text=0x0dc5 -Wl,--section-start=.version=0x0ffe -Wl,--section-start=.osccal=0x0ffd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-atmega48a: $(PROGRAM)_atmega48a_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-atmega48a_isp: atmega48a
-atmega48a_isp: TARGET = atmega48a_$(AVR_FREQ)_$(BAUD_RATE)
-atmega48a_isp: MCU_TARGET ?= atmega48
-atmega48a_isp: LFUSE ?= E2
-atmega48a_isp: HFUSE ?= DD
-atmega48a_isp: EFUSE ?= 00
-atmega48a_isp: isp
-
+atmega48a: TARGET       = atmega48a
+atmega48a: _atmega48_

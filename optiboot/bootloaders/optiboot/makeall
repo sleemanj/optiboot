@@ -1,4 +1,38 @@
 #!/bin/bash
+
+if [ -z "$AVR_FREQ" ] || [ -z "$BAUD_RATE" ]
+then
+  echo "Usage: AVR_FREQ=8000000L BAUD_RATE=57600 [BOOTLOADER_RESERVED=...] [FEATURES=...] [USINGMAKEFILES=...] $0" >&2
+  echo >&2
+  echo "FEATURES=...: A list of zero or more of the below features." >&2
+  echo "   LED_START_FLASHES=nn : Flash the led this many times at start, default 0" >&2
+  echo "   LED_DATA_FLASH       : Flash the led when programming, default off" >&2
+  echo "   LED                  : [PORTLETTER][NUM] of the LED, eg, A1"   >&2
+  echo "   TUNABLE              : Include \"Tiny Tuner\" with bootloader on first boot - attinyx4/x5 only" >&2
+  echo "   OSCCAL_PROGMEM       : Read the 3rd byte from the end of flash to get a OSCCAL value" >&2
+  echo "                          (This is required to use TUNABLE for anything useful)" >&2
+  echo "   OSCCAL_EEPROM_ADDR   : Read an OSCCAL value from this EEPROM address on boot" >&2
+  echo "   SUPPORT_EEPROM       : Support writing to EEPROM (default off)" >&2
+  echo "   BIGBOOT              : Presently this does the same as SUPPORT_EEPROM" >&2
+  echo >&2
+  echo "USINGMAKEFILES=...: A space separated list of makefiles to build (default, all the below)" >&2
+  echo "   Makefile.atmega8     : ATmega328,168,88,8,48 and variants thereof." >&2
+  echo "   Makefile.attinyx5    : ATTiny25,45,85 and variants thereof." >&2
+  echo "   Makefile.attinyx4    : ATTiny24,44,84 and variants thereof." >&2
+  echo "   Makefile.attinyx7    : ATTiny87,167 and variants thereof." >&2
+  echo >&2
+  echo "RESERVED_SIZE=...: auto|fixed" >&2
+  echo "   auto  : Where supported the reserved memory for the bootloader will be minimised," >&2
+  echo "           otherwise a default fixed allocation will be made." >&2
+  echo >&2
+  echo "   fixed : A default fixed bootloader size will be reserved, depending on chip,"      >&2
+  echo "           those with 'Boot Flash' sections of memory will typically be 512 Bytes (256 Words)"      >&2
+  echo "           those without 'Boot Flash' will typically be 600 bytes." >&2
+  echo >&2
+  echo "   nnnn  : THis many bytes will be reserved." >&2
+  exit 1
+fi
+
 make clean
 
 if [ -z "$AVR_FREQ" ]
@@ -13,89 +47,49 @@ fi
 
 if [ -z "$USINGMAKEFILES" ]
 then 
-  USINGMAKEFILES="Makefile.atmega8 Makefile.atmega640-1280-1281-2560-2561 Makefile.atmegaxx4-16-31 Makefile.attinyx5 Makefile.attinyx4"
+  USINGMAKEFILES="Makefile.atmega8 Makefile.attinyx5 Makefile.attinyx4 Makefile.attinyx7"
 fi
 
-if [ -z "$OSCCAL_PROGMEM" ]
+if [ -z "$FEATURES" ]
 then
-  OSCCAL_PROGMEM="1"
+  FEATURES=
 fi
-
-if [ -z "$SUPPORT_EEPROM" ]
-then
-  SUPPORT_EEPROM="0"
-fi
-
-if [ -z "$LED_DATA_FLASH" ]
-then
-  LED_DATA_FLASH="0"
-fi
-
-if [ -z "$LED_START_FLASHES" ]
-then
-  LED_START_FLASHES="0"
-fi
-
 
 export AVR_FREQ
 export BAUD_RATE
-export LED_START_FLASHES
-
-if [ "$LED_DATA_FLASH" = 1 ]
-then
-  export LED_DATA_FLASH
-else 
-  export -n LED_DATA_FLASH
-fi
-
-if [ "$OSCCAL_PROGMEM" = 1 ]
-then
-  export OSCCAL_PROGMEM
-else 
-  export -n OSCCAL_PROGMEM
-fi
-
-if [ "$SUPPORT_EEPROM" = 1 ]
-then
-  export SUPPORT_EEPROM
-else 
-  export -n SUPPORT_EEPROM
-fi
-
-for chip in $(cat $USINGMAKEFILES | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | grep -v tuner | sort | uniq | sed s/://)
+export FEATURES
+for chip in $(cat $USINGMAKEFILES | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | grep -v _ | sort | uniq | sed s/://)
 do
-  rm $chip.build_log  
-      
-  export BOOTLOADER_ADDRESS
-  # The makefiles will check for emptyness of this and use a default
-  #  so we only need to set it when we are going to pull the actual 
-  #  size of the bootloader and calculate a minimum bootloader
-  #  address (to maximise program space)
-  BOOTLOADER_ADDRESS=
-  
-  if ! [ -z "$USE_SIZE" ]
+  rm -f $chip.build_log  
+        
+  if [ "$RESERVED_SIZE" = "auto" ]
   then
     echo -e "\n\n\n*** GETTING SIZES ***\n\n\n" >>$chip.build_log  
     echo -n "Calculating size for $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ..."
-    # Note that to "calculate the size" we set the address low and compile
-    # this should ensure that the text and version/cal sections wont overlap
-    # and cause the link to fail, then we can get the size of that
-    BOOTLOADER_ADDRESS=0x0032
-
-    if ! ( make $chip 2>&1 ) >>$chip.build_log
+    
+    if ! ( BOOTLOADER_ADDRESS=0 make $chip 2>&1 ) >>$chip.build_log
     then
       echo "FAILED, SEE: $chip.build_log"
       exit
     else
       SIZE="$(avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep -oP "[1-9][0-9]+" | head -1)"
-      echo -n "OK, SIZE: ${SIZE}"
-      FLASHEND="0x$(avr-objdump -h optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep .version | sed -r 's/^\s*[0-9]+\s.version\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$/\1/')"
+      
+      # We want an even size, so add one (3->4) then divide and re-multiply (4->2->4, and 3->1->2)
+      SIZE=$(($SIZE + 1))
+      SIZE=$(($SIZE/2*2))
+      echo "OK, SIZE: ${SIZE}"
+      
+      
+      BOOTLOADER_RESERVED=$SIZE
+      export BOOTLOADER_RESERVED
+      
+      #FLASHEND="0x$(avr-objdump -h optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep .version | sed -r 's/^\s*[0-9]+\s.version\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$/\1/')"
       # We want the bootloader to be at a word boundary (even address), so
       # after calculating, divide by 2 and multiply back by 2 (integer math)
-      BOOTLOADER_ADDRESS="$(printf "0x%0.4X" $(($(($FLASHEND - $SIZE - 3)) / 2 * 2)))"
-      echo " BOOTLOADER_ADDRESS: $BOOTLOADER_ADDRESS"
+      #BOOTLOADER_ADDRESS="$(printf "0x%0.4X" $(($(($FLASHEND - $SIZE - 3)) / 2 * 2)))"
+      #echo " BOOTLOADER_ADDRESS: $BOOTLOADER_ADDRESS"
       rm -r optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf
-    fi    
+    fi
   fi
 
   echo -e "\n\n\n*** BUILDING OPTIBOOT ***\n\n\n" >>$chip.build_log  
@@ -106,22 +100,22 @@ do
     exit
   else    
     echo -n "OK, SIZE: "
-    avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1
-  fi
-    
-  if echo $chip | grep tiny >/dev/null
-  then
-    echo -n "Building tuning $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ... "
-		echo -e "\n\n\n*** BUILDING TUNER VERSION ***\n\n\n" >>$chip.build_log  
-    if ! ( make ${chip}_with_tuner.hex  2>&1 ) >>$chip.build_log
-    then
-      echo "FAILED, SEE $chip.build_log"
-    else
-      mv ${chip}_with_tuner.hex tunable_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex
-      echo -n "OK, SIZE: "
-			avr-size tunable_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1
-    fi
-  fi
+    echo -n $(avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep -oP "[1-9][0-9]+" | head -1)
+      
+		if echo $FEATURES | grep TUNABLE >/dev/null
+		then
+		  echo -n ", Tuner: "
+		  echo -n $(avr-size ${chip}_${AVR_FREQ}.tuner.hex | grep -oP "[1-9][0-9]+" | head -1)
+		  echo -n ", Combined: "
+			avr-size tunable_optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1
+	  else
+			echo
+		fi
+		
+		FLASHEND="0x$(avr-objdump -h optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep .version | sed -r 's/^\s*[0-9]+\s.version\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$/\1/')"
+		BOOTSTART="0x$(avr-objdump -h optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep .text | sed -r 's/^\s*[0-9]+\s.text\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$/\1/')"
+		echo "Flash Available To Sketch: $(($BOOTSTART - 1)) Bytes"
+  fi  
 done
 
 ls *hex

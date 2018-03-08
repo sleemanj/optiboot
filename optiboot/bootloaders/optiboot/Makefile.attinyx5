@@ -89,60 +89,22 @@
 # EE_RDY is vector 0x0006, which is 6 in decimal, ignore the stupid "from 1"
 #  counting of the Vector No. column in the datasheet.  Thanks for that Atmel.
 #
-
+# (Note that some other chips use SPM_RDY, the TinyX5 does not have that vector)
 ################################################################################
 
-attiny25: TARGET = attiny25
-attiny25: MCU_TARGET = attiny25
-attiny25: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=6
-attiny25: AVR_FREQ ?= 8000000L
-attiny25: LDSECTIONS  = -Wl,--section-start=.text=0x05BC -Wl,--section-start=.version=0x07FE -Wl,--section-start=.osccal=0x07Fd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-attiny25: $(PROGRAM)_attiny25_$(AVR_FREQ)_$(BAUD_RATE).hex
 
-attiny25_isp: attiny25
-attiny25_isp: TARGET = attiny25_$(AVR_FREQ)_$(BAUD_RATE)
-attiny25_isp: MCU_TARGET ?= attiny25
-attiny25_isp: LFUSE ?= E2
-attiny25_isp: HFUSE ?= DD
-attiny25_isp: EFUSE ?= 00
-attiny25_isp: isp
+_attinyX5_: RESET_VECTOR = 6
+_attinyX5_: FEATURES    += SOFT_UART VIRTUAL_BOOT_PARTITION
+_attinyX5_: _optiboot_
 
-attiny45: TARGET = attiny45
-attiny45: MCU_TARGET = attiny45
-attiny45: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=6
-attiny45: AVR_FREQ ?= 8000000L
-attiny45: LDSECTIONS  = -Wl,--section-start=.text=0x0DBA -Wl,--section-start=.version=0x0FFE -Wl,--section-start=.osccal=0x0FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-attiny45: $(PROGRAM)_attiny45_$(AVR_FREQ)_$(BAUD_RATE).hex
+attiny25: TARGET       = attiny25
+attiny25: FLASH_SIZE   = 2048
+attiny25: _attinyX5_
 
-attiny45_isp: attiny45
-attiny45_isp: TARGET = attiny45_$(AVR_FREQ)_$(BAUD_RATE)
-attiny45_isp: MCU_TARGET ?= attiny45
-attiny45_isp: LFUSE ?= E2
-attiny45_isp: HFUSE ?= DD
-attiny45_isp: EFUSE ?= 00
-attiny45_isp: isp
+attiny45: TARGET       = attiny45
+attiny45: FLASH_SIZE   = 4096
+attiny45: _attinyX5_
 
-attiny45_with_tuner.hex:  hex_relocate_reset.bin
-attiny45_with_tuner.hex:  attiny45_rawmerge_tuner.hex
-	cat attiny45_rawmerge_tuner.hex | ./hex_relocate_reset.bin 6 0x0DBA >$@
-#	rm attiny45_rawmerge_tuner.hex
-	
-attiny85: TARGET = attiny85
-attiny85: MCU_TARGET = attiny85
-attiny85: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART -DVIRTUAL_BOOT_PARTITION -Dsave_vect_num=6
-attiny85: AVR_FREQ ?= 8000000L
-attiny85: LDSECTIONS  = -Wl,--section-start=.text=0x1DBA -Wl,--section-start=.version=0x1FFE -Wl,--section-start=.osccal=0x1FFd -Wl,--gc-sections -Wl,--undefined=optiboot_version
-attiny85: $(PROGRAM)_attiny85_$(AVR_FREQ)_$(BAUD_RATE).hex
-
-attiny85_isp: attiny85
-attiny85_isp: TARGET = attiny85_$(AVR_FREQ)_$(BAUD_RATE)
-attiny85_isp: MCU_TARGET ?= attiny85
-attiny85_isp: LFUSE ?= E2
-attiny85_isp: HFUSE ?= DD
-attiny85_isp: EFUSE ?= 00
-attiny85_isp: isp
-
-attiny85_with_tuner.hex:  hex_relocate_reset.bin
-attiny85_with_tuner.hex:  attiny85_rawmerge_tuner.hex
-	cat attiny85_rawmerge_tuner.hex | ./hex_relocate_reset.bin 6 0x1DBA >$@
-	rm attiny85_rawmerge_tuner.hex
+attiny85: TARGET       = attiny85
+attiny85: FLASH_SIZE   = 8192
+attiny85: _attinyX5_
