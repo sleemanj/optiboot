@@ -44,6 +44,15 @@
       #define UART_RX_BIT 0
       #define UART_TX_BIT 1  
     #endif  
+  #else
+    /* Even though we use a hardware uart, for tinyTuner specify these as well. */
+    #ifndef UART_PORT
+      #define UART_PORT   PORTD     
+      #define UART_PIN    PIND
+      #define UART_DDR    DDRD
+      #define UART_RX_BIT 0
+      #define UART_TX_BIT 1  
+    #endif  
   #endif
   
   // These specific types of this family can toggle a pin by writing a 1

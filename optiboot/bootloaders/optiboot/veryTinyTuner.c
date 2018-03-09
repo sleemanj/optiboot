@@ -109,11 +109,10 @@ void tinyTuner(){
   #endif
 #endif
 
-#ifdef SOFT_UART
-  /* Set TX pin as output */
-  UART_DDR |= _BV(UART_TX_BIT);
-  UART_PORT |= _BV(UART_TX_BIT); //set high!
-#endif
+/* Set TX pin as output */
+UART_DDR |= _BV(UART_TX_BIT);
+UART_PORT |= _BV(UART_TX_BIT); //set high!
+
   
   //Tunes the oscillator (this code is overwritten by sketch files)
 #if TUNER_SERIAL_OUTPUT > 1
@@ -179,7 +178,17 @@ void tinyTuner(){
   //    FLASHEND-3 == 4095-3 == 4092
   addrPtr = (uint16_t)(void*)FLASHEND-3;
   
+#if defined(CTPB)
   SPMCSR = CTPB; //clear the temporary page buffer - this sets all bytes to 0xFF so as not to change any bytes we don't want to
+#elif defined(RWWSRE)
+  // ehhhhh I don't know if this is correct
+  //  see Page 337 of ATMega328 Datasheet
+  //    The temporary buffer will auto-erase after a Page Write operation 
+  //    or by writing the RWWSRE bit in SPMCSR (SPMCSR.RWWSRE). 
+  //  However the definition of RWWSRE on page 345 doesn't actually say that
+  //  is a function of this bit.
+  SPMCSR = RWWSRE;
+#endif
   typedef union {
       uint16_t integer;
       uint8_t array[2];
@@ -443,7 +452,7 @@ uint8_t update( )
 
 static uint16_t TimeNineBits( void ){
   // We need a fast (8 MHz) clock to maximize the accuracy
-  #if (F_CPU != 8000000)
+  #if (F_CPU != 8000000L)
   uint8_t ClockDivisor = CLKPR;
   cli();
   CLKPR = _BV(CLKPCE);

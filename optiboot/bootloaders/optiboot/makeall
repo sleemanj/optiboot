@@ -24,7 +24,7 @@ then
   echo >&2
   echo "@NOTE If no MAKEFILES or CHIPS are selected, all the Makefiles above are used.">&2
   echo >&2
-  echo "RESERVED_SIZE=...: auto|fixed" >&2
+  echo "RESERVED_SIZE=...: auto|fixed|nnnn  (default auto)" >&2
   echo "   auto  : Where supported the reserved memory for the bootloader will be minimised," >&2
   echo "           otherwise a default fixed allocation will be made." >&2
   echo >&2
@@ -87,7 +87,7 @@ for chip in $CHIPS
 do
   rm -f $chip.build_log  
         
-  if [ "$RESERVED_SIZE" = "auto" ]
+  if [ "$RESERVED_SIZE" = "auto" ] || [ -z "$RESERVED_SIZE" ]
   then
     echo -e "\n\n\n*** GETTING SIZES ***\n\n\n" >>$chip.build_log  
     echo -n "Calculating size for $chip with CPU $AVR_FREQ and $BAUD_RATE BAUD ..."
@@ -125,8 +125,6 @@ do
     # Must be a fixed size
     BOOTLOADER_RESERVED=$RESERVED_SIZE
     export BOOTLOADER_RESERVED
-  else
-    unset BOOTLOADER_RESERVED
   fi
 
   echo -e "\n\n\n*** BUILDING OPTIBOOT ***\n\n\n" >>$chip.build_log  
@@ -172,7 +170,7 @@ do
 		echo "    Available : $(($BOOTSTART)) Bytes"
 		echo
 		
-		if [ -n $AVAILOUT ]
+		if [ -n "$AVAILOUT" ]
 		then
 		  printf "%-50s = %d\n" optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex $(($BOOTSTART)) >>$AVAILOUT
 		  # Note that the tunable is the same available space, because it gets nuked when you upload
