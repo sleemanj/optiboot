@@ -120,9 +120,9 @@ attiny25_diy.upload.maximum_data_size=128
 
 attiny25_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny25_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny25_diy.menu.boot.optiboot.upload.maximum_size=1466
+attiny25_diy.menu.boot.optiboot.upload.maximum_size=1494
 attiny25_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny25_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny25_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny25_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny25_diy.menu.boot.none.upload.maximum_size=2048
@@ -274,9 +274,9 @@ attiny45_diy.upload.maximum_data_size=256
 
 attiny45_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny45_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny45_diy.menu.boot.optiboot.upload.maximum_size=3514
+attiny45_diy.menu.boot.optiboot.upload.maximum_size=3544
 attiny45_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny45_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny45_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny45_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny45_diy.menu.boot.none.upload.maximum_size=4096
@@ -428,9 +428,9 @@ attiny85_diy.upload.maximum_data_size=512
 
 attiny85_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny85_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny85_diy.menu.boot.optiboot.upload.maximum_size=7610
+attiny85_diy.menu.boot.optiboot.upload.maximum_size=7638
 attiny85_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny85_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny85_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny85_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny85_diy.menu.boot.none.upload.maximum_size=8192
@@ -633,9 +633,9 @@ attiny24_diy.menu.version.attiny24a.build.mcu  = attiny24
 
 attiny24_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny24_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny24_diy.menu.boot.optiboot.upload.maximum_size=1466
+attiny24_diy.menu.boot.optiboot.upload.maximum_size=1494
 attiny24_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny24_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny24_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny24_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny24_diy.menu.boot.none.upload.maximum_size=2048
@@ -806,9 +806,9 @@ attiny44_diy.menu.version.attiny44a.build.mcu  = attiny44
 
 attiny44_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny44_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny44_diy.menu.boot.optiboot.upload.maximum_size=3514
+attiny44_diy.menu.boot.optiboot.upload.maximum_size=3542
 attiny44_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny44_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny44_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny44_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny44_diy.menu.boot.none.upload.maximum_size=4096
@@ -978,9 +978,9 @@ attiny84_diy.menu.version.attiny84a.build.mcu  = attiny84
 
 attiny84_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny84_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny84_diy.menu.boot.optiboot.upload.maximum_size=7610
+attiny84_diy.menu.boot.optiboot.upload.maximum_size=7638
 attiny84_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny84_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny84_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny84_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny84_diy.menu.boot.none.upload.maximum_size=8192

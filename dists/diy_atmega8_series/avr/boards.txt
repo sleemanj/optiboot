@@ -218,7 +218,7 @@ atmega48_diy.menu.version.atmega48a.build.mcu = atmega48
 
 atmega48_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 atmega48_diy.menu.boot.optiboot.upload.protocol=arduino
-atmega48_diy.menu.boot.optiboot.upload.maximum_size=3520
+atmega48_diy.menu.boot.optiboot.upload.maximum_size=3544
 atmega48_diy.menu.boot.optiboot.bootloader.high_fuses=0xDD
 atmega48_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 

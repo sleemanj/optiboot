@@ -23,21 +23,22 @@ function build_hexs
 {
   USINGMAKEFILES="$1" 
   PACKAGENAME="$2"
+  FEATURES="$3"
   export USINGMAKEFILES
 
   rm $DIST/$PACKAGENAME/avr/bootloaders/*.hex
   pushd optiboot/bootloaders/optiboot   
 
-  AVR_FREQ=1000000L BAUD_RATE=9600 ./makeall
-  cp *hex $DIST/$PACKAGENAME/avr/bootloaders
+  FEATURES="$FEATURES" AVR_FREQ=1000000L BAUD_RATE=9600 ./makeall
+  cp optiboot*hex tunable*hex $DIST/$PACKAGENAME/avr/bootloaders
   make clean 
 
-  AVR_FREQ=8000000L BAUD_RATE=57600 ./makeall
-  cp *hex $DIST/$PACKAGENAME/avr/bootloaders
+  FEATURES="$FEATURES" AVR_FREQ=8000000L BAUD_RATE=57600 ./makeall
+  cp optiboot*hex tunable*hex $DIST/$PACKAGENAME/avr/bootloaders
   make clean 
 
-  AVR_FREQ=16000000L BAUD_RATE=57600 ./makeall
-  cp *hex $DIST/$PACKAGENAME/avr/bootloaders
+  FEATURES="$FEATURES" AVR_FREQ=16000000L BAUD_RATE=57600 ./makeall
+  cp optiboot*hex tunable*hex $DIST/$PACKAGENAME/avr/bootloaders
   make clean 
   popd
 }
@@ -285,6 +286,14 @@ function build_atmega8_hexs
   popd
 }
 
+function build_attiny_hexs
+{
+  PACKAGENAME="$1"
+
+  # Make the standard 1MHz at 9600, 8MHz at 57600 and 16MHz at 57600
+  build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
+}
+
 # Because of the menu-size in 1.0.x boards, we limit to only the 
 #  most common ones, where most common has been determined by me 
 #  having a look at aliexpress to see what's most often available, 
@@ -293,6 +302,8 @@ function build_atmega8_hexs
 # The 1.6.x format boards.txt includes all of the IC configs
 #  (well, most) by way of sub menus for variant, speed and boot
 #  so we don't need a long menu in 1.6.x
-
+AVAILOUT="$(pwd)/bootloader_sizes.txt"
+rm -f "$AVAILOUT"
+export AVAILOUT
 package_for build_atmega8_hexs diy_atmega8_series "atmega328p atmega128a atmega88 atmega8a atmega48pa"
-package_for "Makefile.attinyx5  Makefile.attinyx4"  diy_attiny "attiny8[45]_[^.]*_FullCore attiny4[45]_[^.]*_FullCore attiny2[45]_[^.]*_SmallerCore attiny13_1_2MHz_[^.]*1p6"
+package_for build_attiny_hexs  diy_attiny         "attiny8[45]_[^.]*_FullCore attiny4[45]_[^.]*_FullCore attiny2[45]_[^.]*_SmallerCore attiny13_1_2MHz_[^.]*1p6"
