@@ -122,7 +122,7 @@ ifndef FEATURES
 	endif
 
 	ifdef TUNABLE
-		FEATURES += TUNABLE
+		FEATURES += TUNABLE OSCCAL_PROGMEM
 	endif
 endif
 
@@ -172,7 +172,7 @@ endif
 #  list, but for some reason origin $(1) is undefined all the time 
 # 
 # The second was suposed to be able to use has_feature for both 
-#  simple features (OSCCAL_PROGMEM) and withvalues (OSCCAL_EEPROM_ADDR=123)
+#  simple features (OSCCAL_PROGMEM) and values (OSCCAL_EEPROM_ADDR=123)
 #  but for some reason the call to findstring = doesn't work 
 #  (even if I try and findstring something more obvious like ADDR
 #   it still doesn't work, even though it clearly DOES contain that)
@@ -213,11 +213,17 @@ var_feature					 = $(if $(call find_var_in_features, $(1)),\
 												)
 
 val_of_feature			 = $(lastword $(subst =, $(space), $(call var_feature, $(1))))
-												
+
+# Some things make the bootloader significantly bigger, we make a difference
+#  between a "small" bootloader, and a "big" bootloader here just to determine
+#  a useful default reserved size (which is only really applicable for virtual
+#  boot bootloaders).
+is_big_bootloader    = $(strip $(call has_feature, BIGBOOT) $(call has_feature, SUPPORT_EEPROM) $(call has_feature, OSCCAL_EEPROM_ADDR))
+
 _MCU_TARGET          = $(word 1, $(MCU_TARGET) $(TARGET) atmega328)
 _AVR_FREQ            = $(word 1, $(AVR_FREQ)  $(call val_of_feature, AVR_FREQ)  8000000L)
 _BAUD_RATE           = $(word 1, $(BAUD_RATE) $(call val_of_feature, BAUD_RATE) 9600)
-_BOOTLOADER_RESERVED = $(word 1, $(BOOTLOADER_RESERVED) 600)
+_BOOTLOADER_RESERVED = $(word 1, $(BOOTLOADER_RESERVED) $(if $(call is_big_bootloader), 700) 600)
 _BOOTLOADER_ADDRESS  = $(word 1, $(BOOTLOADER_ADDRESS) $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - $(_BOOTLOADER_RESERVED) / 2 * 2 ))))
 _VERSION_ADDRESS     = $(word 1, $(VERSION_ADDRESS)    $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 2 / 2 * 2 ))))
 _CAL_ADDRESS         = $(word 1, $(CAL_ADDRESS)        $(shell printf "0x%0.4X" $$(( $(FLASH_SIZE) - 3 ))))
@@ -318,7 +324,8 @@ CC         = $(GCCROOT)avr-gcc
 # Override is only needed by avr-lib build system.
 
 override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(_MCU_TARGET) -DF_CPU=$(_AVR_FREQ) -DBAUD_RATE=$(_BAUD_RATE) -Dsave_vect_num=$(_RESET_VECTOR) $(_CFLAGS) $(COMMON_OPTIONS) $(DEFS)
-override LDFLAGS       = -g $(LDSECTIONS) -Wl,--relax -nostartfiles -nostdlib
+override LDFLAGS       = -g $(LDSECTIONS) -Wl,--relax -nostartfiles
+#-nostdlib
 #-Wl,--gc-sections
 
 OBJCOPY        = $(GCCROOT)avr-objcopy

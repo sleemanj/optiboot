@@ -96,7 +96,7 @@
 #
 ################################################################################
 
-_atmega8_: BOOTLOADER_RESERVED = 512
+_atmega8_: BOOTLOADER_RESERVED = $(if $(call is_big_bootloader), 1024, 512)
 _atmega8_: RESET_VECTOR = 0
 _atmega8_: FEATURES += 
 _atmega8_: _optiboot_
@@ -257,10 +257,10 @@ _atmega48_: RESET_VECTOR = 25
 _atmega48_: FEATURES    += VIRTUAL_BOOT_PARTITION
 _atmega48_: _optiboot_
 
-atmega48: TARGET       = atmega48
+atmega48: TARGET         = atmega48
 atmega48: _atmega48_
 
-atmega48p: TARGET       = atmega48p
+atmega48p: TARGET        = atmega48p
 atmega48p: _atmega48_
 
 # avr-libc doesn't know about the 48PA, we use 48P instead

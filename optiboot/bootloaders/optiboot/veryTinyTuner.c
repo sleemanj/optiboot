@@ -120,11 +120,7 @@ void tinyTuner(){
   putstr_t(PSTR("Send x repeatedly to tune...\r\n"));
 	putcal();
 #endif
-  
-#if defined(LED) && defined(LED_START_FLASHES) && LED_START_FLASHES > 0
-  flash_led(LED_START_FLASHES * 10);
-#endif
-  
+
   uint8_t running = true;
   
   while ( running )

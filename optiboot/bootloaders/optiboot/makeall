@@ -2,7 +2,7 @@
 
 if [ -z "$AVR_FREQ" ] || [ -z "$BAUD_RATE" ]
 then
-  echo "Usage: AVR_FREQ=8000000L BAUD_RATE=57600 [BOOTLOADER_RESERVED=...] [FEATURES=...] [USINGMAKEFILES=...] $0" >&2
+  echo "Usage: AVR_FREQ=8000000L BAUD_RATE=57600 [BOOTLOADER_RESERVED=...] [FEATURES=...] $0 [MAKEFILES...] [CHIPS...]" >&2
   echo >&2
   echo "FEATURES=...: A list of zero or more of the below features." >&2
   echo "   LED_START_FLASHES=nn : Flash the led this many times at start, default 0" >&2
@@ -10,16 +10,19 @@ then
   echo "   LED                  : [PORTLETTER][NUM] of the LED, eg, A1"   >&2
   echo "   TUNABLE              : Include \"Tiny Tuner\" with bootloader on first boot - attinyx4/x5 only" >&2
   echo "   OSCCAL_PROGMEM       : Read the 3rd byte from the end of flash to get a OSCCAL value" >&2
-  echo "                          (This is required to use TUNABLE for anything useful)" >&2
+  echo "                          (TUNABLE also implicitly enables OSCCAL_PROGMEM)" >&2
   echo "   OSCCAL_EEPROM_ADDR   : Read an OSCCAL value from this EEPROM address on boot" >&2
   echo "   SUPPORT_EEPROM       : Support writing to EEPROM (default off)" >&2
-  echo "   BIGBOOT              : Presently this does the same as SUPPORT_EEPROM" >&2
   echo >&2
-  echo "USINGMAKEFILES=...: A space separated list of makefiles to build (default, all the below)" >&2
+  echo "MAKEFILES...: A space separated list of makefiles to build" >&2
   echo "   Makefile.atmega8     : ATmega328,168,88,8,48 and variants thereof." >&2
   echo "   Makefile.attinyx5    : ATTiny25,45,85 and variants thereof." >&2
   echo "   Makefile.attinyx4    : ATTiny24,44,84 and variants thereof." >&2
   echo "   Makefile.attinyx7    : ATTiny87,167 and variants thereof." >&2
+  echo >&2
+  echo "CHIPS.......: A space separated list of chips to build, for example attiny85" >&2
+  echo >&2
+  echo "@NOTE If no MAKEFILES or CHIPS are selected, all the Makefiles above are used.">&2
   echo >&2
   echo "RESERVED_SIZE=...: auto|fixed" >&2
   echo "   auto  : Where supported the reserved memory for the bootloader will be minimised," >&2
@@ -29,11 +32,13 @@ then
   echo "           those with 'Boot Flash' sections of memory will typically be 512 Bytes (256 Words)"      >&2
   echo "           those without 'Boot Flash' will typically be 600 bytes." >&2
   echo >&2
-  echo "   nnnn  : THis many bytes will be reserved." >&2
+  echo "   nnnn  : This many bytes will be reserved." >&2
   exit 1
 fi
 
-make clean
+make clean >/dev/null
+
+echo
 
 if [ -z "$AVR_FREQ" ]
 then
@@ -43,6 +48,11 @@ fi
 if [ -z "$BAUD_RATE" ]
 then
   BAUD_RATE=57600
+fi
+
+if [[ -n "$@" ]]
+then
+  USINGMAKEFILES="$USINGMAKEFILES $@"
 fi
 
 if [ -z "$USINGMAKEFILES" ]
@@ -55,10 +65,23 @@ then
   FEATURES=
 fi
 
+# Allow to specify Makefiles (Makefile.attinyx4) or explicit targets (attiny24)
+CHIPS=
+for WHAT in $USINGMAKEFILES
+do
+  if echo $WHAT | grep Makefile >/dev/null
+  then
+		CHIPS="$CHIPS $(cat $WHAT | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | grep -v _ | sort | uniq | sed s/://)"
+  else
+		CHIPS="$CHIPS $WHAT"
+  fi
+done
+
+
 export AVR_FREQ
 export BAUD_RATE
 export FEATURES
-for chip in $(cat $USINGMAKEFILES | grep -oP "^([A-Za-z0-9_]+)(?:\:)" | grep -v isp | grep -v _ | sort | uniq | sed s/://)
+for chip in $CHIPS
 do
   rm -f $chip.build_log  
         
@@ -114,7 +137,8 @@ do
 		
 		FLASHEND="0x$(avr-objdump -h optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep .version | sed -r 's/^\s*[0-9]+\s.version\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$/\1/')"
 		BOOTSTART="0x$(avr-objdump -h optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep .text | sed -r 's/^\s*[0-9]+\s.text\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$/\1/')"
-		echo "Flash Available To Sketch: $(($BOOTSTART - 1)) Bytes"
+		echo "    Flash Available To Sketch: $(($BOOTSTART - 1)) Bytes"
+		echo
   fi  
 done
 

@@ -91,26 +91,29 @@ _attinyX4_: RESET_VECTOR = 14
 _attinyX4_: FEATURES    += SOFT_UART VIRTUAL_BOOT_PARTITION
 _attinyX4_: _optiboot_
 
-attiny24: TARGET       = attiny24
-attiny24: FLASH_SIZE   = 2048
+attiny24: TARGET         = attiny24
+attiny24: FLASH_SIZE     = 2048
 attiny24: _attinyX4_
 
-attiny44: TARGET       = attiny44
-attiny44: FLASH_SIZE   = 4096
+attiny44: TARGET         = attiny44
+attiny44: FLASH_SIZE     = 4096
 attiny44: _attinyX4_
 
-attiny84: TARGET       = attiny84
-attiny84: FLASH_SIZE   = 8192
+attiny84: TARGET         = attiny84
+attiny84: FLASH_SIZE     = 8192
 attiny84: _attinyX4_
 
-attiny24a: TARGET       = attiny24a
-attiny24a: FLASH_SIZE   = 2048
+# The 24a has some problems compiling with avr-gcc 4.8.2
+#  so pretend it is an attiny24 for compilation purposes
+attiny24a: TARGET        = attiny24a
+attiny24a: MCU_TARGET    = attiny24
+attiny24a: FLASH_SIZE    = 2048
 attiny24a: _attinyX4_
 
-attiny44a: TARGET       = attiny44a
-attiny44a: FLASH_SIZE   = 4096
+attiny44a: TARGET        = attiny44a
+attiny44a: FLASH_SIZE    = 4096
 attiny44a: _attinyX4_
 
-attiny84a: TARGET       = attiny84a
-attiny84a: FLASH_SIZE   = 8192
+attiny84a: TARGET        = attiny84a
+attiny84a: FLASH_SIZE    = 8192
 attiny84a: _attinyX4_
