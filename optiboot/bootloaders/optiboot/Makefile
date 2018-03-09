@@ -598,8 +598,13 @@ include Makefile.atmega640-1280-1281-2560-2561
 FORCE:
 
 hex_relocate_reset.bin:
+	@echo
+	@echo "Compiling Hex Combining Tool"
+	@echo "--------------------------------------------------------------------------------"
 	gcc -std=c99 hex_relocate_reset.c -o hex_relocate_reset.bin
-
+	@echo "--------------------------------------------------------------------------------"
+	@echo 
+	
 %.tuner.elf:
 	$(CC) $(CFLAGS) -o $@ veryTinyTuner.c
 	avr-size $@
@@ -607,7 +612,7 @@ hex_relocate_reset.bin:
 
 %.tuner.hex: %.tuner.elf
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
-
+	
 %_combine_with_tuner.hex: RESET_VECTOR := $(word 1, $(RESET_VECTOR) 0)
 %_combine_with_tuner.hex: hex_relocate_reset.bin
 	# Build the tuner (veryTinyTuner) for the given AVR frequency
@@ -619,9 +624,14 @@ hex_relocate_reset.bin:
 	AVR_FREQ=$(_AVR_FREQ) BAUD_RATE=$(BAUD_RATE) BOOTLOADER_ADDRESS=$(BOOTLOADER_ADDRESS) $(MAKE) $*
 	cat $(PROGRAM)_$(*)_$(_AVR_FREQ)_$(BAUD_RATE).hex >>$@.tmp
 	
+	@echo
+	@echo "Combining Tiny Tuner and Bootloader"
+	@echo "--------------------------------------------------------------------------------"
 	# Fix the reset vector for the virtual boot
 	cat $@.tmp | ./hex_relocate_reset.bin $(_RESET_VECTOR) $(_BOOTLOADER_ADDRESS) >$@
 	rm  $@.tmp
+	@echo "--------------------------------------------------------------------------------"
+	@echo
 	
 # This is done so that chips can pass in things like BOOTLOADER_ADDRESS and RESET_VECTOR
 # by overriding this (see Makefile.attinyx4 for example)
@@ -643,19 +653,23 @@ isp-stk500: $(PROGRAM)_$(TARGET).hex
 	$(STK500-2)
 
 %.elf: $(OBJ) $(dummy)
-	echo $(FEATURES)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBS)
 	$(SIZE) $@
 
 clean:
+	@echo
+	@echo "Making Clean"
+	@echo "--------------------------------------------------------------------------------"
 	rm -rf *.o *.elf *.lst *.map *.sym *.lss *.eep *.srec *.bin *.hex *.tmp.sh *.build_log
-
+	@echo "--------------------------------------------------------------------------------"
+	@echo
+	
 %.lst: %.elf
 	$(OBJDUMP) -h -S $< > $@
 
 %.hex: %.elf
 	$(OBJCOPY) -j .text -j .data -j .version -j .osccal --set-section-flags .version=alloc,load --set-section-flags .osccal=alloc,load -O ihex $< $@
-
+	
 %.srec: %.elf
 	$(OBJCOPY) -j .text -j .data -j .version -j .osccal -set-section-flags .version=alloc,load --set-section-flags .osccal=alloc,load -O srec $< $@
 
@@ -668,9 +682,19 @@ _optiboot_:  $(if $(call has_feature, TUNABLE), _optiboot_tuner_, _optiboot_only
 
 _optiboot_tuner_: _optiboot_only_ 
 _optiboot_tuner_: hex_relocate_reset.bin
+	@echo
+	@echo "Building Tiny Tuner"
+	@echo "--------------------------------------------------------------------------------"
 	# Build the tuner (veryTinyTuner) for the given AVR frequency
 	#  strip off the end-of-file marker and put it in a temporary file
 	MCU_TARGET=$(_MCU_TARGET) AVR_FREQ=$(_AVR_FREQ) $(MAKE) $(_MCU_TARGET)_$(_AVR_FREQ).tuner.hex
+	@echo "--------------------------------------------------------------------------------"
+	@echo
+	
+	@echo
+	@echo "Combining Tiny Tuner and Bootloader"
+	@echo "--------------------------------------------------------------------------------"
+	
 	cat $(_MCU_TARGET)_$(_AVR_FREQ).tuner.hex | grep -vP '^:00000001FF\r' >$@.tmp
 	
 	cat $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex >>$@.tmp
@@ -678,8 +702,17 @@ _optiboot_tuner_: hex_relocate_reset.bin
 	# Fix the reset vector for the virtual boot
 	cat $@.tmp | ./hex_relocate_reset.bin $(_RESET_VECTOR) $(_BOOTLOADER_ADDRESS) >tunable_$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex
 	rm  $@.tmp
+	@echo "--------------------------------------------------------------------------------"
+	@echo "Bootloader: $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"
+	@echo "Tuner     : $(_MCU_TARGET)_$(_AVR_FREQ).tuner.hex"
+	@echo "Tunable   : tunable_$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"
+	@echo "Available : $$((0x$$($(OBJDUMP) -h  $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex | grep .sec1 | sed -r 's/^\s*[0-9]+\s.sec1\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$$/\1/') - 1)) Bytes"
+	@echo 
 
 _optiboot_only_: 
+	@echo
+	@echo "Building Optiboot Bootloader"
+	@echo "--------------------------------------------------------------------------------"
 	TARGET=$(TARGET) \
 	MCU_TARGET=$(_MCU_TARGET) \
 	FLASH_SIZE=$(FLASH_SIZE) \
@@ -690,4 +723,8 @@ _optiboot_only_:
 	RESET_VECTOR=$(_RESET_VECTOR) \
 	FEATURES="$(FEATURES)" \
 	  make $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex
-
+	@echo "--------------------------------------------------------------------------------"
+	@echo "Bootloader: $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"
+	@echo "Available : $$((0x$$($(OBJDUMP) -h  $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex | grep .sec1 | sed -r 's/^\s*[0-9]+\s.sec1\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$$/\1/'))) Bytes"
+	@echo
+	

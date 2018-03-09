@@ -123,21 +123,39 @@ do
     exit
   else    
     echo -n "OK, SIZE: "
-    echo -n $(avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep -oP "[1-9][0-9]+" | head -1)
+    echo -n $(avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1)
       
 		if echo $FEATURES | grep TUNABLE >/dev/null
 		then
-		  echo -n ", Tuner: "
-		  echo -n $(avr-size ${chip}_${AVR_FREQ}.tuner.hex | grep -oP "[1-9][0-9]+" | head -1)
+			# Sometimes the tune is named differently (because MCU_TARGET is different than
+			#  TARGET for this chip, but we won't know that, unless we parsed the make output
+			#  which I'm not going to do.
+			if [ -f ${chip}_${AVR_FREQ}.tuner.hex  ]
+			then
+				echo -n ", Tuner: "
+				echo -n $(avr-size ${chip}_${AVR_FREQ}.tuner.hex | grep -oP "[1-9][0-9]+" | head -1)
+			else
+				# We'll just assume it's combined-bootloader, what else can it be
+				echo -n ", Tuner: "
+				echo -n $(($(avr-size tunable_optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1) - $(avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1)))
+			fi
 		  echo -n ", Combined: "
 			avr-size tunable_optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1
 	  else
 			echo
 		fi
 		
-		FLASHEND="0x$(avr-objdump -h optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep .version | sed -r 's/^\s*[0-9]+\s.version\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$/\1/')"
+		FLASHEND="$((0x$(avr-objdump -h optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep .version | sed -r 's/^\s*[0-9]+\s.version\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$/\1/') + 2))"
 		BOOTSTART="0x$(avr-objdump -h optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep .text | sed -r 's/^\s*[0-9]+\s.text\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$/\1/')"
-		echo "    Flash Available To Sketch: $(($BOOTSTART - 1)) Bytes"
+		
+		echo "    Bootloader: optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex"
+		if echo $FEATURES | grep TUNABLE >/dev/null
+		then
+		  echo "    Tunable   : tunable_optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex"
+		fi
+		echo "    Total     : $FLASHEND Bytes"
+		echo "    Reserved  : $(($FLASHEND - $BOOTSTART)) Bytes"
+		echo "    Available : $(($BOOTSTART)) Bytes"
 		echo
   fi  
 done
