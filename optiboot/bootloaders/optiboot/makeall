@@ -2,7 +2,7 @@
 
 if [ -z "$AVR_FREQ" ] || [ -z "$BAUD_RATE" ]
 then
-  echo "Usage: AVR_FREQ=8000000L BAUD_RATE=57600 [BOOTLOADER_RESERVED=...] [FEATURES=...] $0 [MAKEFILES...] [CHIPS...]" >&2
+  echo "Usage: AVR_FREQ=8000000L BAUD_RATE=57600 [RESERVED_SIZE=...] [FEATURES=...] [AVAILOUT=...] $0 [MAKEFILES...] [CHIPS...]" >&2
   echo >&2
   echo "FEATURES=...: A list of zero or more of the below features." >&2
   echo "   LED_START_FLASHES=nn : Flash the led this many times at start, default 0" >&2
@@ -29,10 +29,13 @@ then
   echo "           otherwise a default fixed allocation will be made." >&2
   echo >&2
   echo "   fixed : A default fixed bootloader size will be reserved, depending on chip,"      >&2
-  echo "           those with 'Boot Flash' sections of memory will typically be 512 Bytes (256 Words)"      >&2
-  echo "           those without 'Boot Flash' will typically be 600 bytes." >&2
+  echo "           those with 'Boot Flash' sections of memory will typically be 512-1024 Bytes"      >&2
+  echo "           those without 'Boot Flash' will typically be 600-700 bytes." >&2
   echo >&2
   echo "   nnnn  : This many bytes will be reserved." >&2
+  echo >&2
+  echo "AVAILOUT=file.txt: concatenate to the specified file a list of file.hex: maximum_data_size_bytes">&2
+  echo "                   which relates to the upload.maximum_data_size parameter in Arduino">&2
   exit 1
 fi
 
@@ -77,10 +80,9 @@ do
   fi
 done
 
-
+export FEATURES
 export AVR_FREQ
 export BAUD_RATE
-export FEATURES
 for chip in $CHIPS
 do
   rm -f $chip.build_log  
@@ -113,6 +115,18 @@ do
       #echo " BOOTLOADER_ADDRESS: $BOOTLOADER_ADDRESS"
       rm -r optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf
     fi
+  elif [ "$RESERVED_SIZE" == "fixed" ]
+  then
+		# This is the default
+		unset BOOTLOADER_RESERVED
+    echo -n
+  elif [ -n "$RESERVED_SIZE" ]
+  then
+    # Must be a fixed size
+    BOOTLOADER_RESERVED=$RESERVED_SIZE
+    export BOOTLOADER_RESERVED
+  else
+    unset BOOTLOADER_RESERVED
   fi
 
   echo -e "\n\n\n*** BUILDING OPTIBOOT ***\n\n\n" >>$chip.build_log  
@@ -157,6 +171,16 @@ do
 		echo "    Reserved  : $(($FLASHEND - $BOOTSTART)) Bytes"
 		echo "    Available : $(($BOOTSTART)) Bytes"
 		echo
+		
+		if [ -n $AVAILOUT ]
+		then
+		  printf "%-50s = %d\n" optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex $(($BOOTSTART)) >>$AVAILOUT
+		  # Note that the tunable is the same available space, because it gets nuked when you upload
+		  if echo $FEATURES | grep TUNABLE >/dev/null
+			then
+				printf "%-50s = %d\n" tunable_optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex $(($BOOTSTART)) >>$AVAILOUT 
+		  fi
+		fi
   fi  
 done
 
