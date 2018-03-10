@@ -187,7 +187,11 @@ UART_PORT |= _BV(UART_TX_BIT); //set high!
   addrPtr = (uint16_t)(void*)FLASHEND-3;
   
 #if defined(CTPB)
+#if defined(SPMCSR)
   SPMCSR = CTPB; //clear the temporary page buffer - this sets all bytes to 0xFF so as not to change any bytes we don't want to
+#else
+  SPMCR = CTPB;
+#endif
 #elif defined(RWWSRE)
   // ehhhhh I don't know if this is correct
   //  see Page 337 of ATMega328 Datasheet
@@ -195,7 +199,11 @@ UART_PORT |= _BV(UART_TX_BIT); //set high!
   //    or by writing the RWWSRE bit in SPMCSR (SPMCSR.RWWSRE). 
   //  However the definition of RWWSRE on page 345 doesn't actually say that
   //  is a function of this bit.
+	#if defined(SPMCSR)
   SPMCSR = RWWSRE;
+	#else
+	SPMCR = RWWSRE;
+	#endif
 #endif
   typedef union {
       uint16_t integer;
@@ -330,7 +338,7 @@ int16_t sampleError(uint8_t forThisOSCCAL)
   int16_t clocks = (nbt-1)*5 + 5;
   
   // Calculate the difference between the actual number of cycles spent in TimeNineBits and the expected number of cycles
-  int16_t error = clocks - 7500;
+	int16_t error = clocks - 7500;
 	
 	OSCCAL = oldOSCCAL;
 	return abs(error);
@@ -473,11 +481,13 @@ uint8_t update( )
 static uint16_t TimeNineBits( void ){
   // We need a fast (8 MHz) clock to maximize the accuracy
   #if (F_CPU != 8000000L)
+	#ifdef CLKPR
   uint8_t ClockDivisor = CLKPR;
   cli();
   CLKPR = _BV(CLKPCE);
   CLKPR = (0<<CLKPS3) | (0<<CLKPS2) | (0<<CLKPS1) | (0<<CLKPS0);
   sei();
+	#endif
   #endif
   
   uint16_t Temp = 0;
@@ -530,12 +540,29 @@ static uint16_t TimeNineBits( void ){
   
   // Put the clock back the way we found it
   #if (F_CPU != 8000000)
+	#ifdef CLKPR
   cli();
   CLKPR = _BV(CLKPCE);
   CLKPR = ClockDivisor;
   sei();
+	#endif
   #endif
   
+	#if ( F_CPU != 8000000L ) && !defined(CLKPR)
+	// Some chips (8/8a) don't have the ability to change the oscillator on the fly
+	// we will have counted less in Temp than we would have at 8MHz
+	// Therefore we need to compensate for that so that everything else here
+	// thinks we timed at 8MHz.  This will introduce error, but there's not
+	// much else I can do, since I dont' really want to deciphr the assembly above
+	// to rewrite for other frequencies.
+	//
+	// Example: At 8MHz, 7500 Clocks would take 0.0009375 Seconds
+	//          at 1MHz, 7500/(8/1) = 937 Clocks would occur in 0.000937 Seconds
+	//          so we have 937 (say) in that Temp and need 7500 to pretend it was
+	//          8MHz
+	Temp *= 8000000L / F_CPU;
+	#endif
+
   return( Temp );
 }
 
