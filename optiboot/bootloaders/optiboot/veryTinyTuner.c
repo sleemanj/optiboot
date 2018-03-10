@@ -560,7 +560,20 @@ static uint16_t TimeNineBits( void ){
 	//          at 1MHz, 7500/(8/1) = 937 Clocks would occur in 0.000937 Seconds
 	//          so we have 937 (say) in that Temp and need 7500 to pretend it was
 	//          8MHz
+#if (F_CPU < 8000000L)
+	// Just we will be multiplying by something >1, just do integer math
+	// it will probably be a power of 2
 	Temp *= 8000000L / F_CPU;
+#else
+	// If the CPU is running faster than 8MHz then we havbe a problem
+  // because that will mean integer division will give us zero
+	// so we will have to go floating point.  The only chip with an 
+	// internal oscillator that will do more than 8M I can think of
+	// is the Tiny13 which is 9.6MHz and frankly this code is
+	// unlikley to ever fit a Tiny13 anyway, so this is probably all
+	// academic.
+	Temp = (float) Temp * ( (float) 8000000L / (float) F_CPU );
+#endif
 	#endif
 
   return( Temp );
