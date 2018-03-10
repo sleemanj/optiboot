@@ -9,7 +9,9 @@
   - [ATmega x8 Series (8,48,88,168,328)](#atmega-x8-series-84888168328)
   - [ATtiny](#attiny)
     - [ATtiny25, ATtiny45, ATtiny85](#attiny25-attiny45-attiny85)
+      - [SPI Pin Inversions](#spi-pin-inversions)
     - [ATtiny24, ATtiny44, ATtiny84](#attiny24-attiny44-attiny84)
+      - [SPI Pin Inversions](#spi-pin-inversions-1)
     - [ATtiny13](#attiny13)
       - [SPI / Wire (I2C, TWI) On Tiny13](#spi--wire-i2c-twi-on-tiny13)
     - [ATtiny4, ATtiny5, ATtiny9, ATtiny10](#attiny4-attiny5-attiny9-attiny10)
@@ -17,6 +19,7 @@
     - [Automatic Installation through Board Manager (Recommended)](#automatic-installation-through-board-manager-recommended)
     - [Manual Installation (Not Recommended)](#manual-installation-not-recommended)
     - [Usage](#usage)
+    - [Tunable Bootloaders](#tunable-bootloaders)
     - [Upload Using Programmer - EEPROM Auto Uploading](#upload-using-programmer---eeprom-auto-uploading)
     - [:boom: Upload Using Programmer - Important Note!](#boom-upload-using-programmer---important-note)
 
@@ -30,7 +33,7 @@ many Atmel AVR Microcontrollers in the Arduino IDE for people making their own
 DIY Arduino based stuff.
 
 :warning: Arduino Version 1.0.x support has now ended in this package, 1.0.x 
-  users should upgrade to 1.6.x without further delay, 
+  users should upgrade to 1.6.x+ without further delay, 
   [download for free here](https://www.arduino.cc/en/Main/Software).
 
 :star: Arduino IDE 1.8.5+ (or 1.6.13) Recommended
@@ -56,7 +59,7 @@ Presently the list of included chips is as follows:
 
 ## ATmega x8 Series (8,48,88,168,328)
 
-[IDE 1.6.x Board Manager JSON for ATmega 8/48/88/168/328](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_atmega8_series_index.json)
+[Board Manager JSON for ATmega 8/48/88/168/328](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_atmega8_series_index.json)
 
 :star: [See Arduino Pinout Diagram (DIP)](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328-dip.png) 
 :star: [See Arduino Pinout Diagram (SMD-32)](https://rawgit.com/sleemanj/ArduinoOrientedChipPinoutCreator/master/328.png) 
@@ -78,7 +81,7 @@ should work too, open an issue if not.
 
 ## ATtiny
 
-[IDE 1.6.x Board Manager JSON for ATtiny 25/45/85/24/44/84/13/10/5](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_attiny_index.json)
+[Board Manager JSON for ATtiny 25/45/85/24/44/84/13/10/5](https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/package_gogo_diy_attiny_index.json)
 
 The ATtiny series of chips use (installed automatically for you with the JSON above) a [fork of ATTinyCore](https://github.com/sleemanj/ATTinyCore) which has further optimisations for core code size reduction so you can fit (_considerably_) more useful code into your ATtiny and still maintain all the functions you are used to.
 
