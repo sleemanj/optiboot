@@ -12,61 +12,14 @@
 #  avrdude so we are just treating them as the original version - this should
 #  be fine, as long as the signature bytes are not changing (usually don't).
 #
-################################################################################
-################################################################################
-#
-# Usage and General Development Notes 
-# (See Further Comments for Chip Specific Notes)
-#
-#  WARNING: DO NOT GENERATE MULTIPLE TARGETS IN A SINGLE MAKE INVOCATION
-#   DO NOT DO: `make X Y Z`
-#   INSTEAD  : for i in X Y Z; do AVR_FREQ=16000000L BAUD_RATE=57600 make $i; done
-#   REASON   : I hate gnu make and it hates me, if you try to do `make X Y Z` it
-#              *appears* to work, but actually the generated hex files are 
-#              wrong. 
-#   
-#     AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328p
-#
-# to produce
-#
-#    optiboot_atmega328p_16000000L_57600.hex
-#
-# Note that if you use the _isp targets (eg atmega8_isp) the default 
-# fuses are for 8MHz internal oscillator for safety.
-#
-# If make were easier to write for occasionally, then I'd have included suggested
-# fuse values in the file names, but it's too hard (would have to look at AVR_FREQ
-# and choose fuse values from a table based on that).#
-#
-# WHAT IS THE .TEXT and .VERSION SECTION ADDRESSES
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# .text is the byte address of the start of the boot area, as determined by
-#  your (intended) fuse settings, if we assume that the boot section is at the
-#  top of the flash memory and you will use a 256 WORD (512 BYTE) boot section
-#  then the address should be CONVERT_TO_HEX(TOTAL_FLASH - 512)
-#
-# .version is CONVERT_TO_HEX(TOTAL_FLASH - 2) 
-#   - that is, the last 2 bytes of flash, I don't claim to know why, but it is
-#
-#  Eg: ATMega8 is 8192 bytes of Flash, we use a 256 Word Boot Area (512 Byte)
-#    .text    = 8192-512 = 7680 = 0x1E00
-#    .version = 8192-2   = 8190 = 0x1FFE
-#
-# Note that the 24/44/84 series does not have a hardware UART, we use SOFT_UART
-# TODO - Can we make use of the "Universal Serial Interface" (USI) here?
-#        see AVR307 Application Note.
+# See README.md for information in general about THIS version of optiboot.
 #
 ################################################################################
 
 
-################################################################################
-# {{{
-
-## ATtiny167
+## ATtiny167                                                                 {{{
 #
-# The ATtinyx7 does not have a seperate boot section.  We allocate 580 bytes
-#  for the "virtual" boot section, plus 2 for the version.
+# The ATtinyx7 does not have a seperate boot section.
 #
 # We have to use one of the interrupt vectors for our own purposes
 #  which will make it unavailable for use in the main program, so make it 
@@ -79,8 +32,13 @@
 #  make use of this interrupt, so we should still be able to use EEPROM.h 
 #  arduino library even when we have used this vector.
 #
-# EE_RDY is vector 0x0020, which is 32 in decimal, ignore the stupid "from 1"
-#  counting of the Vector No. column in the datasheet.  Thanks for that Atmel.
+# 167
+#   EE_RDY is vector 0x0020, which is 32 in decimal, ignore the stupid "from 1"
+#   counting of the Vector No. column in the datasheet.  Thanks for that Atmel.
+#
+# 87
+#   EE_RDY is vector 0x0010, which is 16 in decimal, ignore the stupid "from 1"
+#   counting of the Vector No. column in the datasheet.  Thanks for that Atmel.
 #
 # (Note that some other chips use SPM_RDY, the TinyX7 does not have that vector)
 ################################################################################
@@ -91,32 +49,6 @@ attiny167: RESET_VECTOR = 32
 attiny167: FEATURES    += SOFT_UART VIRTUAL_BOOT_PARTITION
 attiny167: _optiboot_
 
-# }}}
-
-# {{{
-
-## ATtiny87
-#
-# The ATtinyx7 does not have a seperate boot section.  We allocate 580 bytes
-#  for the "virtual" boot section, plus 2 for the version.
-#
-# We have to use one of the interrupt vectors for our own purposes
-#  which will make it unavailable for use in the main program, so make it 
-#  something few will use.
-#
-# The interrupt vectors are in "7.1 Interrupt Vectors"
-#  of the datasheet for the ATtiny87/167
-#
-# We hijack EE_RDY - I don't think that the avr libraries eeprom functions
-#  make use of this interrupt, so we should still be able to use EEPROM.h 
-#  arduino library even when we have used this vector.
-#
-# EE_RDY is vector 0x0010, which is 16 in decimal, ignore the stupid "from 1"
-#  counting of the Vector No. column in the datasheet.  Thanks for that Atmel.
-#
-
-################################################################################
-
 attiny87: TARGET       = attiny87
 attiny87: FLASH_SIZE   = 8192
 attiny87: RESET_VECTOR = 16
@@ -124,4 +56,4 @@ attiny87: FEATURES    += SOFT_UART VIRTUAL_BOOT_PARTITION
 attiny87: _optiboot_
 
 
-# }}}
+#############################################################################}}}

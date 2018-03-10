@@ -18,74 +18,12 @@
 #  avr-gcc so we are just treating them as the original version - this should
 #  be fine, as long as the signature bytes are not changing (usually don't).
 #
-################################################################################
-################################################################################
-#
-# Usage and General Development Notes 
-# (See Further Comments for Chip Specific Notes)
-#
-#  WARNING: DO NOT GENERATE MULTIPLE TARGETS IN A SINGLE MAKE INVOCATION
-#   DO NOT DO: `make X Y Z`
-#   INSTEAD  : for i in X Y Z; do AVR_FREQ=16000000L BAUD_RATE=57600 make $i; done
-#   REASON   : I hate gnu make and it hates me, if you try to do `make X Y Z` it
-#              *appears* to work, but actually the generated hex files are 
-#              wrong. 
-#   
-#     AVR_FREQ=16000000L BAUD_RATE=57600 make atmega328p
-#
-# to produce
-#
-#    optiboot_atmega328p_16000000L_57600.hex
-#
-# Note that if you use the _isp targets (eg atmega8_isp) the default 
-# fuses are for 8MHz internal oscillator for safety.
-#
-# If make were easier to write for occasionally, then I'd have included suggested
-# fuse values in the file names, but it's too hard (would have to look at AVR_FREQ
-# and choose fuse values from a table based on that).#
-#
-# WHAT IS THE .TEXT and .VERSION SECTION ADDRESSES
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# .text is the byte address of the start of the boot area, as determined by
-#  your (intended) fuse settings, if we assume that the boot section is at the
-#  top of the flash memory and you will use a 256 WORD (512 BYTE) boot section
-#  then the address should be CONVERT_TO_HEX(TOTAL_FLASH - 512)
-#
-# .version is CONVERT_TO_HEX(TOTAL_FLASH - 2) 
-#   - that is, the last 2 bytes of flash, I don't claim to know why, but it is
-#
-#  Eg: ATMega8 is 8192 bytes of Flash, we use a 256 Word Boot Area (512 Byte)
-#    .text    = 8192-512 = 7680 = 0x1E00
-#    .version = 8192-2   = 8190 = 0x1FFE
-#
+# See README.md for information in general about THIS version of optiboot.
 #
 ################################################################################
 
 
-
-
-
-
-
-################################################################################
-################################################################################
-#                                                                              #
-#  These are the ATMega-8 Controllers, they are essentially pin compatible     #
-#  with each other and differ mainly in the amount of Memory                   #
-#                                                                              #
-#  At current time, I think the full list of these similar beasts is           #
-#    8, 8A*, 88, 88p, 48*, 168, 168p, 328, 328p                                #
-#                                                                              #
-#  * the 8A has the same device signature as the 8 so they can be regarded     #
-#    as identical for our purposes.                                            #
-#  * has no boot section, so virtual boot mode is used                         #
-#                                                                              #
-################################################################################
-################################################################################
-# {{{
-
-## ATMEGA328 / 328P
+## ATMEGA328 / 328P                                                          {{{
 #  
 #  328 and 328p both result in the same code, but this is only because of the 
 #  fact that /usr/lib/avr/include/avr/io.h includes iom328p.h for both the 
@@ -122,7 +60,9 @@ atmega328pb:  FLASH_SIZE=32768
 atmega328pb:  _atmega8_
 
 
-## ATMEGA168/168p
+#############################################################################}}}
+
+## ATMEGA168/168p                                                            {{{
 #  
 # The 168 and 168p have different signatures, and avr/io.h treats them as 
 # different chips also, so unlike the 328/328p pairing, these ones do have 
@@ -154,7 +94,9 @@ atmega168pb:  MCU_TARGET=atmega168p
 atmega168pb:  FLASH_SIZE=16384
 atmega168pb:  _atmega8_
 
-## ATMEGA88/88P
+#############################################################################}}}
+
+## ATMEGA88/88P                                                              {{{
 #
 # The 88 and 88P have different signatures, and avr/io.h treats them as 
 # different chips also, so unlike the 328/328p pairing, these ones do have 
@@ -166,7 +108,6 @@ atmega168pb:  _atmega8_
 #  I suspect it's something to do with OS/X developers.
 #  On Linux, seems to be fine without but I'll leave it in anyway.
 ################################################################################
-
 
 atmega88:  TARGET=atmega88
 atmega88:  FLASH_SIZE=8192
@@ -190,7 +131,9 @@ atmega88pb:  MCU_TARGET = atmega88pa
 atmega88pb:  FLASH_SIZE=8192
 atmega88pb:  _atmega8_
 
-## ATMEGA8
+#############################################################################}}}
+
+## ATMEGA8                                                                   {{{
 #
 # The Atmega8 is similar to the Atmega88, main difference is that it doesn't have
 # pin change interrupts on all the pins like the 88 so only has the two explicit
@@ -214,8 +157,9 @@ atmega8a:  MCU_TARGET = atmega8
 atmega8a:  FLASH_SIZE=8192
 atmega8a:  _atmega8_
 
+#############################################################################}}}
 
-## ATMEGA48/48P
+## ATMEGA48/48P                                                              {{{
 #  
 # The 48 and 48P have different signatures, and avr/io.h treats them as 
 #  different chips also, so unlike the 328/328p pairing, these ones do have 
@@ -275,3 +219,5 @@ atmega48pb: _atmega48_
 
 atmega48a: TARGET       = atmega48a
 atmega48a: _atmega48_
+
+#############################################################################}}}

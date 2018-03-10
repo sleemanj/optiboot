@@ -148,3 +148,95 @@ edit pin_defs.h which defines UART and LED pins as necessary.
 
 Of course you may also need to edit optiboot.c to handle any special cases of
 your new chip, but that's left as an exercise for the reader!
+
+In general, the structure of a `Makefile.[family]` file is this...
+
+    _family_: [extra common family stuff 1...]
+    _family_: ...
+    _family_: [extra common family stuff n...]
+    _family_: _optiboot_
+    
+    specific: TARGET     = specific
+    specific: FLASH_SIZE = 1234
+    specific: FEATURES   += [...] 
+    specific: [extra specific stuff 1...]
+    (...)
+    specific: [extra specific stuff n...]
+    specific: _family_
+
+Where `FLASH_SIZE` is the total size of the chip in bytes, decimal, and 
+`TARGET` is just a repeat of the target name.  Generally speaking "family"
+stuff will override "specific" stuff because of how make works, except for 
++= in which case it will combine, so in other words, only put things that 
+absolutely apply to everything in the family in the family sections.
+
+Note that `_family_` and `specific` are not literally that, substitute
+with appropriate names, eg `_atmega8_` for `_family_` and `atmega328p` for 
+`specific`.  The `_optiboot_` however is literal, this is the Make target
+in `Makefile` which actually starts the build process.
+    
+The "stuff" in question is a variety of configurations which can be set...
+
+    MCU_TARGET	     = target_for_gcc
+      
+      The `TARGET` (name of the chip, eg attiny24a) is typically what you pass
+      to avrdude, however avr-gcc sometimes doesn't know about that name, and 
+      you have to pretend it's something else for avr-gcc 
+      (for example `attiny24`).  Defaults to same as TARGET.
+      
+    FEATURES        += [ list of features ]
+      
+      The features to enable, see the available features above, ones specified 
+      here will ALWAYS be set for the chip, so generally you will only use the 
+      following features here...
+      
+      SOFT_UART              : Use software serial (for optiboot)
+      VIRTUAL_BOOT_PARTITION : Use a "virtual" bootloader partition
+      
+      Defaults to no features.
+      
+    RESET_VECTOR     = nn
+    
+      When using a VIRTUAL_BOOT_PARTITION the bootloader "hijacks" this decimal
+      0-based index interrupt vector to use for virtual boot, this vector will
+      no longer be usable for uploaded sketches.  Good candidates are SPM_READY 
+      or EE_READY (sometimes SPM_RDY or EE_RDY), not all chips have the 
+      SPM_R(EA)DY interrupt so use EE_R(EA)DY in that case.  Note that the 
+      datasheet lists vectors starting from 1, we index them starting from ZERO
+      so subtract one from the datasheet index.
+      
+      No default, this is required if you specify VIRTUAL_BOOT_PARTITION feature.
+      
+    BOOTLOADER_RESERVED = nnnn
+      
+      The space to reserve (at top of memory) for the bootloader, including 4
+      extra bytes (3, but due to word addressing...), in bytes, decimal.  For 
+      chips with dedicated boot sections of flash (eg ATMega328) this should 
+      match that dedicated area size (depending on Fuse settings).  For 
+      VIRTUAL_BOOT_PARTITION this can be an arbitrary size but should always be
+      even (because word addressing).
+      
+      Without VIRTUAL_BOOT_PARTITION this option is REQUIRED
+      
+      With VIRTUAL_BOOT_PARTITION this option defaults to either 700 or 600 bytes
+      depending on if the given features look like they would make a  "big" 
+      bootloader or not.
+
+In addition to those there are some "stuffs" which you should never need to 
+set, but for completeness I will describe...
+
+    BOOTLOADER_ADDRESS = nnnn
+    
+      This is the byte address of the first byte of the bootloader code.
+      By default this is calculated from the FLASH_SIZE and BOOTLOADER_RESERVED
+      
+    VERSION_ADDRESS = nnnn
+    
+      This is the byte address of the first byte of the version bytes (2 of).
+      By default this is calculated from the FLASH_SIZE
+      
+    CAL_ADDRESS = nnnn
+    
+      This is the byte address of the OSCCAL Calibration Byte when using 
+      TUNABLE or OSCCAL_PROGMEM options. By default this is calculated from the
+      FLASH_SIZE
