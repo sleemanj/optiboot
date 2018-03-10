@@ -21,25 +21,66 @@ fi
 
 function build_hexs
 {
-  USINGMAKEFILES="$1" 
+	# Call without AVR_FREQ and BAUD_RATE set to generate a standardised set
+  if [ -z "$AVR_FREQ" ]
+  then
+    AVR_FREQ=1000000L  BAUD_RATE=$BAUD_RATE build_hexs "$1" "$2" "$3"
+    AVR_FREQ=8000000L  BAUD_RATE=$BAUD_RATE build_hexs "$1" "$2" "$3"
+    AVR_FREQ=16000000L BAUD_RATE=$BAUD_RATE build_hexs "$1" "$2" "$3"
+    return
+  fi
+  
+  if [ -z "$BAUD_RATE" ]
+  then
+    case "$AVR_FREQ" in
+			"1000000L") 
+				AVR_FREQ=$AVR_FREQ BAUD_RATE=9600 build_hexs "$1" "$2" "$3"
+				;;
+				
+			"8000000L") 
+				AVR_FREQ=$AVR_FREQ BAUD_RATE=38400 build_hexs "$1" "$2" "$3"
+				;;
+				
+			"16000000L") 
+				AVR_FREQ=$AVR_FREQ BAUD_RATE=57600 build_hexs "$1" "$2" "$3"
+				;;
+    esac
+    return
+  fi
+  
+  MAKEFILES="$1" 
   PACKAGENAME="$2"
   FEATURES="$3"
-  export USINGMAKEFILES
-
-  rm $DIST/$PACKAGENAME/avr/bootloaders/*.hex
+  
   pushd optiboot/bootloaders/optiboot   
 
-  FEATURES="$FEATURES" AVR_FREQ=1000000L BAUD_RATE=9600 ./makeall
-  cp optiboot*hex tunable*hex $DIST/$PACKAGENAME/avr/bootloaders
+
+  if ! FEATURES="$FEATURES" AVR_FREQ=$AVR_FREQ BAUD_RATE=$BAUD_RATE ./makeall $MAKEFILES
+  then
+    echo FEATURES=\""$FEATURES"\" AVR_FREQ=$AVR_FREQ BAUD_RATE=$BAUD_RATE ./makeall $MAKEFILES
+    exit 1
+  fi
+  # If tunables were generated, copy those but remove the tunable_ prefix
+  if [ -n "$(ls tunable_optiboot_*hex)" ]
+  then
+		for file in tunable_optiboot_*.hex
+		do
+			echo cp $file $DIST/$PACKAGENAME/avr/bootloaders/$(echo $file | sed -r 's/^tunable_//')
+			cp $file $DIST/$PACKAGENAME/avr/bootloaders/$(echo $file | sed -r 's/^tunable_//')
+	  done
+	fi
+	
+	# If non-tunables were generated, copy those if a tunable was NOT created
+	#  (it was copied above)
+	for file in optiboot_*.hex
+	do
+		if ! [ -f $DIST/$PACKAGENAME/avr/bootloaders/$file ]
+		then
+			cp $file $DIST/$PACKAGENAME/avr/bootloaders/$file
+		fi
+  done
   make clean 
 
-  FEATURES="$FEATURES" AVR_FREQ=8000000L BAUD_RATE=57600 ./makeall
-  cp optiboot*hex tunable*hex $DIST/$PACKAGENAME/avr/bootloaders
-  make clean 
-
-  FEATURES="$FEATURES" AVR_FREQ=16000000L BAUD_RATE=57600 ./makeall
-  cp optiboot*hex tunable*hex $DIST/$PACKAGENAME/avr/bootloaders
-  make clean 
   popd
 }
 
@@ -273,25 +314,55 @@ See the following URL for the automatic installation instructions
 function build_atmega8_hexs
 {
   PACKAGENAME="$1"
-  
-  # Make the standard 1MHz at 9600, 8MHz at 57600 and 16MHz at 57600
+  rm $DIST/$PACKAGENAME/avr/bootloaders/*.hex
+    
+  # Make the standard non tunable ones for all standard frequency
+  #  and baud rates
   build_hexs Makefile.atmega8 "$PACKAGENAME"
   
-  # And any extra ones we need
-  pushd optiboot/bootloaders/optiboot
-  AVR_FREQ=20000000L BAUD_RATE=57600 make atmega328p
-  AVR_FREQ=20000000L BAUD_RATE=57600 make atmega328
-  cp *hex $DIST/$PACKAGENAME/avr/bootloaders
-  make clean
-  popd
+  # Make high speed for the 328 (not tunable)
+  AVR_FREQ=20000000L BAUD_RATE=57600  make atmega328p atmega328
+  AVR_FREQ=20000000L BAUD_RATE=115200 make atmega328p atmega328
+  
+  # Copy all those to notuner_ variants
+  # Note that this means that except where tunable ones are generated again
+  # in the next step, optiboot_xxxx.hex and notuner_optiboot_xxxx.hex 
+  # will be duplicates.  
+  #
+  # In other words, for 16MHz and 20MHz both bootloaders optiboot_xxxx.hex
+  # and notuner_optiboot_xxxx.hex are the same.  
+  for file in $DIST/$PACKAGENAME/avr/bootloaders/optiboot*.hex
+  do
+    cp $file $(dirname $file)/notuner_$(basename $file)
+  done
+  
+  # Make tunable 1MHz and 8MHz
+  AVR_FREQ=1000000L build_hexs Makefile.atmega8 "$PACKAGENAME" "TUNABLE"
+  AVR_FREQ=8000000L build_hexs Makefile.atmega8 "$PACKAGENAME" "TUNABLE"
 }
 
 function build_attiny_hexs
 {
   PACKAGENAME="$1"
+  rm $DIST/$PACKAGENAME/avr/bootloaders/*.hex
+  
+  # Make the standard non tunable ones, and copy them to notuner_ variants
+  # note that this means that except where tunable ones are generated again
+  # in the next step, optiboot_xxxx.hex and notuner_optiboot_xxxx.hex 
+  # will be duplicates.  
+  #
+  # In other words, for 16MHz, both bootloaders optiboot_xxxx.hex
+  # and notuner_optiboot_xxxx.hex are the same.
+  
+  build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME"
+  for file in $DIST/$PACKAGENAME/avr/bootloaders/optiboot*.hex
+  do
+    cp $file $(dirname $file)/notuner_$(basename $file)
+  done
 
-  # Make the standard 1MHz at 9600, 8MHz at 57600 and 16MHz at 57600
-  build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
+  # Make tunable 1MHz and 8MHz
+  AVR_FREQ=1000000L build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
+  AVR_FREQ=8000000L build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
 }
 
 # Because of the menu-size in 1.0.x boards, we limit to only the 
@@ -302,7 +373,7 @@ function build_attiny_hexs
 # The 1.6.x format boards.txt includes all of the IC configs
 #  (well, most) by way of sub menus for variant, speed and boot
 #  so we don't need a long menu in 1.6.x
-AVAILOUT="$(pwd)/bootloader_sizes.txt"
+AVAILOUT="$(pwd)/upload_maximum_size.txt"
 rm -f "$AVAILOUT"
 export AVAILOUT
 package_for build_atmega8_hexs diy_atmega8_series "atmega328p atmega128a atmega88 atmega8a atmega48pa"

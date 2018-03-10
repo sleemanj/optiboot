@@ -191,6 +191,18 @@ The ATtiny series also include additional menus under the Tools which allow you 
 
 <sup>1</sup> Not all "boards" have a Processor Version menu.
 
+### Tunable Bootloaders
+
+The 8MHz and 1MHz versions of the bootloader include an "oscillator tuning" function which is active until you first upload a sketch using the bootloader, this is useful because the internal oscillator of AVR chips is not that accurate and a reasonable degree of accuracy is required for reliable serial communication.
+
+You can try uploading a sketch right after burning the bootloader, and if it works, it works, great, you **probably** didn't need to tune your oscillator.
+
+If however you do need to tune it, typically evidenced by not being able to upload, or getting garbage when trying to print stuff to serial, then immediately after burning the bootloader, open a serial monitor at 9600 Baud, and repeatedly send the letter x to it with say half a second between them. `x<enter>x<enter>x<enter>x<enter>...` and so forth. 
+
+After each x you send you should see some, possibly garbage, output from the serial, eventually (12-20 x's) it will start making sense as the oscillator "homes in", and finally it will tell you that it is complete and save the calibation.
+
+Once you get the complete message, you can upload a sketch and work as normal, you don't need to do anything else the calibration data has been saved into the bootloader forever (or until you wipe out the bootloader).
+
 ### Upload Using Programmer - EEPROM Auto Uploading
 
 Did you know that you can generate an EEPROM initialisation file right from your code?  Well you can, imagine you have this code...

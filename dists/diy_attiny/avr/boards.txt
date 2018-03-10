@@ -120,9 +120,15 @@ attiny25_diy.upload.maximum_data_size=128
 
 attiny25_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny25_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny25_diy.menu.boot.optiboot.upload.maximum_size=1494
+attiny25_diy.menu.boot.optiboot.upload.maximum_size=1490
 attiny25_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny25_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny25_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+attiny25_diy.menu.boot.optiboot_notune=Yes, Without Tuner
+attiny25_diy.menu.boot.optiboot_notune.upload.protocol=arduino
+attiny25_diy.menu.boot.optiboot_notune.upload.maximum_size=1504
+attiny25_diy.menu.boot.optiboot_notune.bootloader.extended_fuses=0xFE
+attiny25_diy.menu.boot.optiboot_notune.bootloader.file=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny25_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny25_diy.menu.boot.none.upload.maximum_size=2048
@@ -274,9 +280,15 @@ attiny45_diy.upload.maximum_data_size=256
 
 attiny45_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny45_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny45_diy.menu.boot.optiboot.upload.maximum_size=3544
+attiny45_diy.menu.boot.optiboot.upload.maximum_size=3540
 attiny45_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny45_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny45_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+attiny45_diy.menu.boot.optiboot_notune=Yes, Without Tuner
+attiny45_diy.menu.boot.optiboot_notune.upload.protocol=arduino
+attiny45_diy.menu.boot.optiboot_notune.upload.maximum_size=3554
+attiny45_diy.menu.boot.optiboot_notune.bootloader.extended_fuses=0xFE
+attiny45_diy.menu.boot.optiboot_notune.bootloader.file=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny45_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny45_diy.menu.boot.none.upload.maximum_size=4096
@@ -428,9 +440,15 @@ attiny85_diy.upload.maximum_data_size=512
 
 attiny85_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny85_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny85_diy.menu.boot.optiboot.upload.maximum_size=7638
+attiny85_diy.menu.boot.optiboot.upload.maximum_size=7634
 attiny85_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny85_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny85_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+attiny85_diy.menu.boot.optiboot_notune=Yes, Without Tuner
+attiny85_diy.menu.boot.optiboot_notune.upload.protocol=arduino
+attiny85_diy.menu.boot.optiboot_notune.upload.maximum_size=7634
+attiny85_diy.menu.boot.optiboot_notune.bootloader.extended_fuses=0xFE
+attiny85_diy.menu.boot.optiboot_notune.bootloader.file=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny85_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny85_diy.menu.boot.none.upload.maximum_size=8192
@@ -633,9 +651,15 @@ attiny24_diy.menu.version.attiny24a.build.mcu  = attiny24
 
 attiny24_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny24_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny24_diy.menu.boot.optiboot.upload.maximum_size=1494
+attiny24_diy.menu.boot.optiboot.upload.maximum_size=1490
 attiny24_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny24_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny24_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+attiny24_diy.menu.boot.optiboot_notune=Yes, Without Tuner
+attiny24_diy.menu.boot.optiboot_notune.upload.protocol=arduino
+attiny24_diy.menu.boot.optiboot_notune.upload.maximum_size=1504
+attiny24_diy.menu.boot.optiboot_notune.bootloader.extended_fuses=0xFE
+attiny24_diy.menu.boot.optiboot_notune.bootloader.file=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny24_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny24_diy.menu.boot.none.upload.maximum_size=2048
@@ -806,9 +830,15 @@ attiny44_diy.menu.version.attiny44a.build.mcu  = attiny44
 
 attiny44_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny44_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny44_diy.menu.boot.optiboot.upload.maximum_size=3542
+attiny44_diy.menu.boot.optiboot.upload.maximum_size=3538
 attiny44_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny44_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny44_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+attiny44_diy.menu.boot.optiboot_notune=Yes, Without Tuner
+attiny44_diy.menu.boot.optiboot_notune.upload.protocol=arduino
+attiny44_diy.menu.boot.optiboot_notune.upload.maximum_size=3552
+attiny44_diy.menu.boot.optiboot_notune.bootloader.extended_fuses=0xFE
+attiny44_diy.menu.boot.optiboot_notune.bootloader.file=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny44_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny44_diy.menu.boot.none.upload.maximum_size=4096
@@ -978,9 +1008,21 @@ attiny84_diy.menu.version.attiny84a.build.mcu  = attiny84
 
 attiny84_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 attiny84_diy.menu.boot.optiboot.upload.protocol=arduino
-attiny84_diy.menu.boot.optiboot.upload.maximum_size=7638
+attiny84_diy.menu.boot.optiboot.upload.maximum_size=7622
 attiny84_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
-attiny84_diy.menu.boot.optiboot.bootloader.file=tunable_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny84_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+# @NOTE - The Tiny84 has 7622 avail with tuner, the Tiny84A has 7634 avail with tuner
+#         unfortunately we can't easily distinguish the version here in the bootloader
+#         so I have selected the lowest so 12 bytes are wasted on the 84a
+#
+#         The build.mcu specified above is always attiny84 currently anyway.
+
+attiny84_diy.menu.boot.optiboot_notune=Yes, Without Tuner
+attiny84_diy.menu.boot.optiboot_notune.upload.protocol=arduino
+attiny84_diy.menu.boot.optiboot_notune.upload.maximum_size=7648
+attiny84_diy.menu.boot.optiboot_notune.bootloader.extended_fuses=0xFE
+attiny84_diy.menu.boot.optiboot_notune.bootloader.file=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny84_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny84_diy.menu.boot.none.upload.maximum_size=8192

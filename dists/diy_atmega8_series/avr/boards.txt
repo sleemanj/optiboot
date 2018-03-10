@@ -157,29 +157,18 @@ atmega8_diy.menu.lto.disable.ltoarcmd=
 
 
 ################################################################################
-# ATMEGA48p
-#
-# The ATMega48p has a small problem in the Arduino 1.0.5 because it's included 
-# avrdude doesn't support it, and will report an incorrect signature or unknown
-# device type.  1.6.x is fine.
-#
-# To fix this, edit your avrdude.conf, duplicate the section for the ATMega48 
-# and change the duplicated section such that:
-#
-#   id = "m48p";
-#   desc = "ATmega48P";
-#   signature = 0x1e 0x92 0x0a;
+# ATMEGA48
 #
 # The 48 does not have a separate boot section of memory, so this means that
 # optiboot uses a virtual boot method, this has a couple effects, firstly
-# it takes more flash for the boot process, secondly it sacrifices the analog 
-# comparator interrupt vector, and thirdly it means that the lock bits 
+# it takes more flash for the boot process, secondly it sacrifices the SPM_RDY
+# interrupt vector, and thirdly it means that the lock bits 
 # are just the simple set as with no bootloader.
 #
 ################################################################################
 # {{{
 
-atmega48_diy.name=ATmega48/A/P/PA/PB
+atmega48_diy.name=ATmega48/A
 atmega48_diy.bootloader.low_fuses=0xE2
 atmega48_diy.bootloader.high_fuses=0xDD
 atmega48_diy.bootloader.extended_fuses=0x00
@@ -197,15 +186,6 @@ atmega48_diy.bootloader.tool=arduino:avrdude
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-atmega48_diy.menu.version.atmega48p = Atmega48P
-atmega48_diy.menu.version.atmega48p.build.mcu = atmega48p
-
-atmega48_diy.menu.version.atmega48pa = Atmega48PA
-atmega48_diy.menu.version.atmega48pa.build.mcu = atmega48p
-
-atmega48_diy.menu.version.atmega48pb = Atmega48PB
-atmega48_diy.menu.version.atmega48pb.build.mcu = atmega48p
-
 atmega48_diy.menu.version.atmega48  = ATmega48
 atmega48_diy.menu.version.atmega48.build.mcu = atmega48
 
@@ -218,9 +198,15 @@ atmega48_diy.menu.version.atmega48a.build.mcu = atmega48
 
 atmega48_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 atmega48_diy.menu.boot.optiboot.upload.protocol=arduino
-atmega48_diy.menu.boot.optiboot.upload.maximum_size=3544
+atmega48_diy.menu.boot.optiboot.upload.maximum_size=3548
 atmega48_diy.menu.boot.optiboot.bootloader.high_fuses=0xDD
 atmega48_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+atmega48_diy.menu.boot.optiboot=Yes, Without Tuner
+atmega48_diy.menu.boot.optiboot.upload.protocol=arduino
+atmega48_diy.menu.boot.optiboot.upload.maximum_size=3564
+atmega48_diy.menu.boot.optiboot.bootloader.high_fuses=0xDD
+atmega48_diy.menu.boot.optiboot.bootloader.file=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 atmega48_diy.menu.boot.none=No (ISP Programmer Upload)
 atmega48_diy.menu.boot.none.upload.maximum_size=4096
@@ -257,6 +243,113 @@ atmega48_diy.menu.lto.disable.ltocflags=
 atmega48_diy.menu.lto.disable.ltoelfflags=
 atmega48_diy.menu.lto.disable.ltocppflags=
 atmega48_diy.menu.lto.disable.ltoarcmd=
+
+
+# }}}
+
+
+
+################################################################################
+# ATMEGA48p
+#
+# The ATMega48p has a small problem in the Arduino 1.0.5 because it's included 
+# avrdude doesn't support it, and will report an incorrect signature or unknown
+# device type.  1.6.x is fine.
+#
+# To fix this, edit your avrdude.conf, duplicate the section for the ATMega48 
+# and change the duplicated section such that:
+#
+#   id = "m48p";
+#   desc = "ATmega48P";
+#   signature = 0x1e 0x92 0x0a;
+#
+# The 48 does not have a separate boot section of memory, so this means that
+# optiboot uses a virtual boot method, this has a couple effects, firstly
+# it takes more flash for the boot process, secondly it sacrifices the SPM_RDY
+# interrupt vector, and thirdly it means that the lock bits 
+# are just the simple set as with no bootloader
+#
+################################################################################
+# {{{
+
+atmega48p_diy.name=ATmega48P/PA/PB
+atmega48p_diy.bootloader.low_fuses=0xE2
+atmega48p_diy.bootloader.high_fuses=0xDD
+atmega48p_diy.bootloader.extended_fuses=0x00
+atmega48p_diy.bootloader.unlock_bits=0x3F
+atmega48p_diy.bootloader.lock_bits=0x3F
+atmega48p_diy.build.mcu=atmega48p
+atmega48p_diy.build.f_cpu=8000000L
+atmega48p_diy.upload.speed=57600
+atmega48p_diy.build.core=arduino:arduino
+atmega48p_diy.build.variant=arduino:standard
+atmega48p_diy.build.board=ATMEGA48_DIY
+atmega48p_diy.upload.tool=arduino:avrdude
+atmega48p_diy.bootloader.tool=arduino:avrdude
+
+# Version Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega48p_diy.menu.version.atmega48p = Atmega48P
+atmega48p_diy.menu.version.atmega48p.build.mcu = atmega48p
+
+atmega48p_diy.menu.version.atmega48pa = Atmega48PA
+atmega48p_diy.menu.version.atmega48pa.build.mcu = atmega48p
+
+atmega48p_diy.menu.version.atmega48pb = Atmega48PB
+atmega48p_diy.menu.version.atmega48pb.build.mcu = atmega48p
+
+
+# Bootloader Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega48p_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
+atmega48p_diy.menu.boot.optiboot.upload.protocol=arduino
+atmega48p_diy.menu.boot.optiboot.upload.maximum_size=3538
+atmega48p_diy.menu.boot.optiboot.bootloader.high_fuses=0xDD
+atmega48p_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+atmega48p_diy.menu.boot.optiboot=Yes, Without Tuner
+atmega48p_diy.menu.boot.optiboot.upload.protocol=arduino
+atmega48p_diy.menu.boot.optiboot.upload.maximum_size=3554
+atmega48p_diy.menu.boot.optiboot.bootloader.high_fuses=0xDD
+atmega48p_diy.menu.boot.optiboot.bootloader.file=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+
+atmega48p_diy.menu.boot.none=No (ISP Programmer Upload)
+atmega48p_diy.menu.boot.none.upload.maximum_size=4096
+atmega48p_diy.menu.boot.none.bootloader.high_fuses=0xDD
+atmega48p_diy.menu.boot.none.upload.tool=arduino:avrdude
+atmega48p_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
+
+
+# Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega48p_diy.menu.clock.8MHz=8MHz Internal Oscillator
+atmega48p_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega48p_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
+
+atmega48p_diy.menu.clock.16MHz=16MHz Crystal/Resonator
+atmega48p_diy.menu.clock.16MHz.build.f_cpu=16000000L
+atmega48p_diy.menu.clock.16MHz.bootloader.low_fuses=0xF7
+
+atmega48p_diy.menu.clock.1MHz=1MHz Internal Oscillator
+atmega48p_diy.menu.clock.1MHz.build.f_cpu=1000000L
+atmega48p_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
+atmega48p_diy.menu.clock.1MHz.upload.speed=9600
+
+# Link Time Optimisation
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega48p_diy.menu.lto.enable=LTO Enabled
+atmega48p_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
+atmega48p_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
+atmega48p_diy.menu.lto.enable.ltocppflags=-flto
+atmega48p_diy.menu.lto.enable.ltoarcmd=gcc-
+atmega48p_diy.menu.lto.disable=LTO Disabled
+atmega48p_diy.menu.lto.disable.ltocflags=
+atmega48p_diy.menu.lto.disable.ltoelfflags=
+atmega48p_diy.menu.lto.disable.ltocppflags=
+atmega48p_diy.menu.lto.disable.ltoarcmd=
 
 
 # }}}
