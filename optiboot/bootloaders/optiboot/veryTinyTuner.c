@@ -28,6 +28,14 @@
  */
 #include "pin_defs.h"
 
+#if defined(DO_SPM) && DO_SPM
+/* For writing to the flash location we may need some assistance from
+ *  bootloader code.
+ */
+#include "../../examples/flash_program/optiboot.h"
+#else
+#undef DO_SPM
+#endif
 
 // Just make sure that if we haven't specified an LED that 
 //  we have disabled the stuff that might use it.
@@ -196,10 +204,22 @@ UART_PORT |= _BV(UART_TX_BIT); //set high!
   twoByte oscProg;
   oscProg.array[1] = OSCCAL; //store the new OSCCAL value in the program memory so it can be restored by the bootloader at startup.
   oscProg.array[0] = 0xFF;   //don't change the first word byte
+  
+
+#if defined(DO_SPM)
+  // For chips with a bootloader section (not virboot) we need can not 
+  // directly write to the bootloader section from here (we are application code)
+  // but we can use do_spm to do so which is a magic function located in boot
+  // section  
+  optiboot_page_fill((uint16_t)(void*)addrPtr,oscProg.integer); //store the two oscProg bytes to the temporary buffer
+  optiboot_page_write((uint16_t)(void*)addrPtr); //program the whole page. Any byte where temp=0xFF will remain as they were.
+  boot_spm_busy_wait(); //wait for completion
+#else
   __boot_page_fill_short((uint16_t)(void*)addrPtr,oscProg.integer); //store the two oscProg bytes to the temporary buffer
   __boot_page_write_short((uint16_t)(void*)addrPtr); //program the whole page. Any byte where temp=0xFF will remain as they were.
   boot_spm_busy_wait(); //wait for completion
-
+#endif
+	
 #if TUNER_SERIAL_OUTPUT > 1
   putstr_t(PSTR("Calibration saved\r\n"));
   putstr_t(PSTR("\r\n\r\nEnabling Bootloader and Rebooting\r\n\r\n"));

@@ -769,5 +769,7 @@ _check_baud_rate_:
 	@echo "Achieved (Theoretically): $(BAUD_ACTUAL)"
 	@echo -n "Error                   : "
 	@echo $$( echo "scale=1;(( 100*( $(BAUD_RATE) - $(BAUD_ACTUAL)) ) / $(BAUD_RATE))"| bc )"%"
-	@if [ $$(echo "scale=1;x = (( 100*( $(BAUD_RATE) - $(BAUD_ACTUAL)) ) / $(BAUD_RATE));if(x<0)x=0-x;if(x >= 1.9){x=1}else{x=0};x"| bc ) = 1 ]; then echo "Acceptable              : NO\n"; echo "    BAUD_RATE Error is too large, this would result in an unreliable bootloader.\n    Try a different (not necessarily lower) BAUD_RATE or AVR_FREQ.\n    Common combinations are 16MHz:57600, 8MHz:38400, 1MHz:9600"; echo "--------------------------------------------------------------------------------"; exit 1; else echo "Acceptable              : YES"; echo "--------------------------------------------------------------------------------"; exit 0; fi
+ifndef FORCE_BAUD
+	@if [ $$(echo "scale=1;x = (( 100*( $(BAUD_RATE) - $(BAUD_ACTUAL)) ) / $(BAUD_RATE));if(x<0)x=0-x;if(x >= 1.9){x=1}else{x=0};x"| bc ) = 1 ]; then echo "Acceptable              : NO\n"; echo "    Error is too large, this probably will result in an unreliable bootloader.\n    To ignore, set the FORCE_BAUD=1 environment variable.\n    Otherwise a different (not necessarily lower) BAUD_RATE or AVR_FREQ.\n    Common combinations are 16MHz:57600, 8MHz:38400, 1MHz:9600"; echo "--------------------------------------------------------------------------------"; exit 1; else echo "Acceptable              : YES"; echo "--------------------------------------------------------------------------------"; exit 0; fi
+endif
 	@echo
