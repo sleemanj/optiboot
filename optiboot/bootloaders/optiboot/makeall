@@ -172,11 +172,12 @@ do
 		
 		if [ -n "$AVAILOUT" ]
 		then
-		  printf "%-50s = %d\n" optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex $(($BOOTSTART)) >>$AVAILOUT
 		  # Note that the tunable is the same available space, because it gets nuked when you upload
 		  if echo $FEATURES | grep TUNABLE >/dev/null
 			then
 				printf "%-50s = %d\n" tunable_optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex $(($BOOTSTART)) >>$AVAILOUT 
+		  else
+		    printf "%-50s = %d\n" optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex $(($BOOTSTART)) >>$AVAILOUT
 		  fi
 		fi
   fi  
