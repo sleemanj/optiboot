@@ -95,7 +95,7 @@ do
     if ! ( BOOTLOADER_ADDRESS=0 make $chip 2>&1 ) >>$chip.build_log
     then
       echo "FAILED, SEE: $chip.build_log"
-      exit
+      exit 1
     else
       SIZE="$(avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf | grep -oP "[1-9][0-9]+" | head -1)"
       
@@ -132,7 +132,7 @@ do
   if ! ( make $chip 2>&1 ) >>$chip.build_log
   then
     echo "FAILED, SEE: $chip.build_log"
-    exit
+    exit 1
   else    
     echo -n "OK, SIZE: "
     echo -n $(avr-size optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex | grep -oP "[1-9][0-9]+" | head -1)
@@ -184,3 +184,4 @@ do
 done
 
 ls *hex
+exit 0
