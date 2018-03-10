@@ -128,6 +128,7 @@ atmega8_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader_noefuse
 
 atmega8_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega8_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega8_diy.menu.clock.8MHz.upload.speed=38400
 atmega8_diy.menu.clock.8MHz.bootloader.low_fuses=0xA4
 
 atmega8_diy.menu.clock.16MHz=16MHz Crystal/Resonator
@@ -220,6 +221,7 @@ atmega48_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
 
 atmega48_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega48_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega48_diy.menu.clock.8MHz.upload.speed=38400
 atmega48_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
 
 atmega48_diy.menu.clock.16MHz=16MHz Crystal/Resonator
@@ -327,6 +329,7 @@ atmega48p_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
 
 atmega48p_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega48p_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega48p_diy.menu.clock.8MHz.upload.speed=38400
 atmega48p_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
 
 atmega48p_diy.menu.clock.16MHz=16MHz Crystal/Resonator
@@ -474,6 +477,7 @@ atmega328_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
 
 atmega328_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega328_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega328_diy.menu.clock.8MHz.upload.speed=38400
 atmega328_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
 
 atmega328_diy.menu.clock.20MHz=20MHz Crystal/Resonator
@@ -584,6 +588,7 @@ atmega88_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
 
 atmega88_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega88_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega88_diy.menu.clock.8MHz.upload.speed=38400
 atmega88_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
 
 atmega88_diy.menu.clock.16MHz=16MHz Crystal/Resonator
@@ -690,6 +695,7 @@ atmega168_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
 
 atmega168_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega168_diy.menu.clock.8MHz.build.f_cpu=8000000L
+atmega168_diy.menu.clock.8MHz.upload.speed=38400
 atmega168_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
 
 atmega168_diy.menu.clock.16MHz=16MHz Crystal/Resonator
