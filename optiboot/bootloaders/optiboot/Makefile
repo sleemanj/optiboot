@@ -236,7 +236,8 @@ _CFLAGS							 = $(call has_feature, SOFT_UART)              \
 											 $(call has_feature, BIGBOOT)                \
 											 $(call has_feature, SUPPORT_EEPROM)         \
 											 $(call var_feature, OSCCAL_EEPROM_ADDR)     \
-											 $(call has_feature, OSCCAL_PROGMEM)
+											 $(call has_feature, OSCCAL_PROGMEM)         \
+											 $(call has_feature, DO_SPM)
 
 LDSECTIONS  = -Wl,--section-start=.text=$(_BOOTLOADER_ADDRESS) \
 							-Wl,--section-start=.osccal=$(_CAL_ADDRESS)      \
@@ -309,7 +310,25 @@ STK500-2 = $(STK500) -d$(_MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 
 
 OBJ        = $(PROGRAM).o
-OPTIMIZE = -Os -fno-split-wide-types -mrelax
+OPTIMIZE = -Os -fno-split-wide-types -mrelax -fno-caller-saves
+
+# -fno-caller-saves
+# -----------------------------------------------------------------------------
+#   This causes a decent reduction in code size (10 bytes)
+#   @majekw implemented it here
+#      https://github.com/majekw/optiboot/commit/6262a28c994034c9303185ce7d46a31ded0c8a00
+#   in order to fix what I think was an optimisation regression in GCC 4.7/4.8
+#
+#   According to 
+#      https://gcc.gnu.org/viewcvs/gcc/branches/gcc-6-branch/gcc/common/config/avr/avr-common.c?view=markup&pathrev=239080
+#      https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70677
+#      https://gcc.gnu.org/bugzilla/show_bug.cgi?id=52025
+#   this is the default in GCC 6 so it shouldn't cause any problem going by 
+#   the comments.
+#
+#   However it still doesn't resolve an 8-10 byte opt regression I see 
+#   between my local 4.8.2 and  the arduino distribution 4.9.2 with virboot 
+#   targets.
 
 DEFS       = 
 
