@@ -237,7 +237,9 @@ _CFLAGS							 = $(call has_feature, SOFT_UART)              \
 											 $(call has_feature, SUPPORT_EEPROM)         \
 											 $(call var_feature, OSCCAL_EEPROM_ADDR)     \
 											 $(call has_feature, TUNABLE, -DOSCCAL_PROGMEM)\
+											 $(if $(call has_feature, VIRTUAL_BOOT_PARTITION), , $(call has_feature, TUNABLE, '-DDO_SPM'))\
 											 $(call has_feature, OSCCAL_PROGMEM)         \
+											 $(if $(call has_feature, VIRTUAL_BOOT_PARTITION), , $(call has_feature, OSCCAL_PROGMEM, '-DDO_SPM'))\
 											 $(call has_feature, DO_SPM)
 
 LDSECTIONS  = -Wl,--section-start=.text=$(_BOOTLOADER_ADDRESS) \
