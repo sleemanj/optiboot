@@ -386,10 +386,15 @@ optiboot_osccal = 0xff;
 // {{{
 #define BAUD_SETTING (( (F_CPU + BAUD_RATE * 4L) / ((BAUD_RATE * 8L))) - 1 )
 #define BAUD_ACTUAL (F_CPU/(8 * ((BAUD_SETTING)+1)))
+
 #if BAUD_ACTUAL <= BAUD_RATE
   #define BAUD_ERROR (( 100*(BAUD_RATE - BAUD_ACTUAL) ) / BAUD_RATE)
   #if BAUD_ERROR >= 5
     #error BAUD_RATE error greater than -5%
+  #elif BAUD_ERROR >= 4
+    #error BAUD_RATE error greater than -4%
+  #elif BAUD_ERROR >= 3
+    #error BAUD_RATE error greater than -3%
   #elif BAUD_ERROR >= 2
     #warning BAUD_RATE error greater than -2%
   #endif
@@ -397,6 +402,10 @@ optiboot_osccal = 0xff;
   #define BAUD_ERROR (( 100*(BAUD_ACTUAL - BAUD_RATE) ) / BAUD_RATE)
   #if BAUD_ERROR >= 5
     #error BAUD_RATE error greater than 5%
+  #elif BAUD_ERROR >= 4
+    #error BAUD_RATE error greater than 4%
+  #elif BAUD_ERROR >= 3
+    #error BAUD_RATE error greater than 3%
   #elif BAUD_ERROR >= 2
     #warning BAUD_RATE error greater than 2%
   #endif
@@ -685,9 +694,9 @@ int main(void) {
 
 #if USE_2X
   UART_SRA = _BV(UART_U2X); //Double speed mode USART0
-#warning Double Speed
+// #warning Double Speed
 #else
-#warning Single Speed
+// #warning Single Speed
   // Since this is a bootloader, the register should already be zero,
   // right?  Hope so.  Saves us some bytes.
 #endif
@@ -1115,10 +1124,7 @@ static inline void writebuffer(int8_t memtype, uint8_t *mybuff,
 #if !defined(DO_SPM)
 		__boot_page_fill_short((uint16_t)(void*)addrPtr,*bufPtr++);
 #else
-		uint16_t a;
-		a = *bufPtr++;
-		a |= (*bufPtr++) << 8;
-		do_spm((uint16_t)(void*)addrPtr,__BOOT_PAGE_FILL,a);
+		do_spm((uint16_t)(void*)addrPtr,__BOOT_PAGE_FILL,*bufPtr++);
 #endif
 		addrPtr += 2;
 	    } while (len -= 2);

@@ -236,6 +236,7 @@ _CFLAGS							 = $(call has_feature, SOFT_UART)              \
 											 $(call has_feature, BIGBOOT)                \
 											 $(call has_feature, SUPPORT_EEPROM)         \
 											 $(call var_feature, OSCCAL_EEPROM_ADDR)     \
+											 $(call has_feature, TUNABLE, -DOSCCAL_PROGMEM)\
 											 $(call has_feature, OSCCAL_PROGMEM)         \
 											 $(call has_feature, DO_SPM)
 
@@ -727,8 +728,8 @@ _optiboot_tuner_: hex_relocate_reset.bin
 	@echo "Tunable   : tunable_$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"
 	@echo "Available : $$((0x$$($(OBJDUMP) -h  $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex | grep .sec1 | sed -r 's/^\s*[0-9]+\s.sec1\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$$/\1/') - 1)) Bytes"
 	@echo 
-
-_optiboot_only_: 
+	
+_optiboot_only_: _check_baud_rate_
 	@echo
 	@echo "Building Optiboot Bootloader"
 	@echo "--------------------------------------------------------------------------------"
@@ -747,3 +748,26 @@ _optiboot_only_:
 	@echo "Available : $$((0x$$($(OBJDUMP) -h  $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex | grep .sec1 | sed -r 's/^\s*[0-9]+\s.sec1\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$$/\1/'))) Bytes"
 	@echo
 	
+# This target replaces the old baudcheck target and causes the process to stop
+#  if the error is >= 2%, experience shows that >= 2% is unreliable especially
+#  with the CH340G when reading flash through avrdude for some unknown reason
+#  it actually works ok at (-)2% for general sending, but not for reading flash
+#  I don't know why.  This is experienced using 8MHz clock and 57600 Baud Rate
+#  dropping to 38400 Baud reduces the error to near zero and this is fine at 8MHz
+#
+# Even tuning the oscillator doesn't help, which is weird, you'd think it would.
+#
+# Anyway, the BAUD_ACTUAL is derived from the calculations in the old baudcheck.c
+#  don't ask me how it works I didn't decipher it.
+#
+_check_baud_rate_:BAUD_ACTUAL=$$(( $$(echo "($(AVR_FREQ)/(8 * (($$(( $$(echo "(( ($(AVR_FREQ) + $(BAUD_RATE) * 4) / (($(BAUD_RATE) * 8))) - 1 )" | sed -r 's/L//g') )))+1)))" | sed -r 's/L//g') ))
+_check_baud_rate_:
+	@echo
+	@echo "Check That Baud Rate Will Probably Be Ok"
+	@echo "--------------------------------------------------------------------------------"
+	@echo "Desired                 : $(BAUD_RATE)"
+	@echo "Achieved (Theoretically): $(BAUD_ACTUAL)"
+	@echo -n "Error                   : "
+	@echo $$( echo "scale=1;(( 100*( $(BAUD_RATE) - $(BAUD_ACTUAL)) ) / $(BAUD_RATE))"| bc )"%"
+	@if [ $$(echo "scale=1;x = (( 100*( $(BAUD_RATE) - $(BAUD_ACTUAL)) ) / $(BAUD_RATE));if(x<0)x=0-x;if(x >= 1.9){x=1}else{x=0};x"| bc ) = 1 ]; then echo "Acceptable              : NO\n"; echo "    BAUD_RATE Error is too large, this would result in an unreliable bootloader.\n    Try a different (not necessarily lower) BAUD_RATE or AVR_FREQ.\n    Common combinations are 16MHz:57600, 8MHz:38400, 1MHz:9600"; echo "--------------------------------------------------------------------------------"; exit 1; else echo "Acceptable              : YES"; echo "--------------------------------------------------------------------------------"; exit 0; fi
+	@echo
