@@ -240,3 +240,71 @@ set, but for completeness I will describe...
       This is the byte address of the OSCCAL Calibration Byte when using 
       TUNABLE or OSCCAL_PROGMEM options. By default this is calculated from the
       FLASH_SIZE
+
+Burning Bootloaders (Picking Fuses)
+------------------------------------------------------------------------------
+Burning a bootloader is typically done with avrdude, a command line such as...
+
+    avrdude -c usbasp -p atmega328 \
+    -U flash:w:tunable_optiboot_atmega328_8000000L_38400.hex:i  \
+    -U lfuse:w:0x??:m \
+    -U hfuse:w:0x??:m \
+    -U efuse:w:0x??:m
+
+Where `??` is a value for each fo the low, high and extended fuses (some 
+chips don't have high or extended fuses at all in which case you would omit
+those parts of the command entirely of course).
+
+You must be very careful when setting fuse values, if you get it wrong you 
+brick your chip which can be recovered in the best case with injecting a 
+square wave, and in the worst case with using an appropriate high voltage 
+programmer.
+
+To calculate fuses, use an AVR Fuse Calculator, I tpically use 
+
+    http://www.engbedded.com/fusecalc/
+
+the options look daunting, but it's not too complicated really, here are
+general tips, not all chips have all options so if you can't find it skip 
+that, the particularly dangerous ones I have highlighted below.
+
+  1. First select your chip in the AVR part name drop down.
+  2. Find **"Reset Disabled"** make sure it is **not ticked**.
+  3. Find **"Serial Program downloading"** make sure that it **is ticked**
+  4. Find **"Debug Wire"** make sure it is **not ticked**.
+  5. Find "Boot Reset vector", make sure it is ticked.
+  6. Find "Boot Flash" (dropdown), choose the section size in words which 
+  is appropriate (1 Word = 2 Bytes) for the bootloader generated, typically 
+  this is 256 Words (512 Bytes) or 512 Words (1024 Bytes).
+  7. Find "Watch-dog Timer always on" make sure it is not ticked.
+  Unless you know what you are doing.
+  8. Find "Preserve EEPROM memory", tick it or not as you desire.
+  9. Find "Brown-out detection" (dropdown), choose as you desire.
+  Brown-outs are when the voltage drops below the selected value, it will
+  cause the chip to RESET when it does (rather than potentially start to
+  misbehave).
+  10. Find "Clock output", make sure it is not ticked.
+  Unless you know what you are doing.
+  
+Now you need to choose the oscillator frequency from the drop-down which is
+appropriate for your chip, it is important to get this right or it's bricked.
+Here are some suggestions...
+
+  * Higher than 8MHz - look for an "External Crystal" or "External Crystal Osc."
+  option, usually there are multiple speed ranges, the highest likely 
+  covers everything above 8MHz The startup time  is not that important, making 
+  it longer to start is done to allow your power to stabilise.  Ensure that 
+  "Divide click by 8" is not ticked.  :warning: If you select an external ("Ext.")
+  option, you MUST provide that timing, you will not be able to program the 
+  chip again without it, not even to change it back to the internal oscillator.
+  
+  * 8Mhz - look for an "Int RC Osc 8MHz" option.  The startup time 
+  is not that important, making it longer to start is done to allow your 
+  power to stabilise.  Ensure that "Divide click by 8" is not ticked.
+  
+  * 1Mhz - look for an "Int RC Osc 8MHz" option.  The startup time 
+  is not that important, making it longer to start is done to allow your 
+  power to stabilise.  Ensure that "Divide click by 8" is ticked.
+   
+  
+
