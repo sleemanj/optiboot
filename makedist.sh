@@ -61,7 +61,7 @@ function build_hexs
     exit 1
   fi
   # If tunables were generated, copy those but remove the tunable_ prefix
-  if [ -n "$(ls tunable_optiboot_*hex)" ]
+  if [ -n "$(ls tunable_optiboot_*hex 2>/dev/null)" ]
   then
 		for file in tunable_optiboot_*.hex
 		do
@@ -321,8 +321,8 @@ function build_atmega8_hexs
   build_hexs Makefile.atmega8 "$PACKAGENAME"
   
   # Make high speed for the 328 (not tunable)
-  AVR_FREQ=20000000L BAUD_RATE=57600  make atmega328p atmega328
-  AVR_FREQ=20000000L BAUD_RATE=115200 make atmega328p atmega328
+  AVR_FREQ=20000000L BAUD_RATE=57600  build_hexs "atmega328p atmega328" "$PACKAGENAME"
+  AVR_FREQ=20000000L BAUD_RATE=115200 build_hexs "atmega328p atmega328" "$PACKAGENAME"
   
   # Copy all those to notuner_ variants
   # Note that this means that except where tunable ones are generated again
