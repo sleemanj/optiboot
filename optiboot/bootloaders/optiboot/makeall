@@ -113,7 +113,8 @@ do
       # after calculating, divide by 2 and multiply back by 2 (integer math)
       #BOOTLOADER_ADDRESS="$(printf "0x%0.4X" $(($(($FLASHEND - $SIZE - 3)) / 2 * 2)))"
       #echo " BOOTLOADER_ADDRESS: $BOOTLOADER_ADDRESS"
-      rm -r optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf
+      rm -f optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf \
+            tunable_optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.hex tunable_optiboot_${chip}_${AVR_FREQ}_${BAUD_RATE}.elf
     fi
   elif [ "$RESERVED_SIZE" == "fixed" ]
   then

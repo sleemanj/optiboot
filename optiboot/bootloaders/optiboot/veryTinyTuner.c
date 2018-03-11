@@ -78,6 +78,7 @@
 // watch the search helpfully
 // #define DEBUG_START_WITH_OSCCAL 100
 // #define DEBUG_SERIAL_OUTPUT_USE_OSCCAL 147
+// #define DEBUG_SERIAL_OUTPUT_USE_OSCCAL 65
 
 #if TUNER_SERIAL_OUTPUT > 0
   void putcal();
@@ -160,6 +161,7 @@ UART_PORT |= _BV(UART_TX_BIT); //set high!
     LED_PIN |= _BV(LED); //toggle pin
 #endif
 #endif
+		
   }
 
 #if TUNER_SERIAL_OUTPUT > 1
@@ -230,7 +232,12 @@ UART_PORT |= _BV(UART_TX_BIT); //set high!
 	
 #if TUNER_SERIAL_OUTPUT > 1
   putstr_t(PSTR("Calibration saved\r\n"));
-  putstr_t(PSTR("\r\n\r\nEnabling Bootloader and Rebooting\r\n\r\n"));
+  putstr_t(PSTR("You can upload your sketch now.\r\n"));
+	#if TUNER_SERIAL_OUTPUT >= 4	
+	uint8_t i = 0, j = 0;
+	for(i = 0; i < 3; i++)  { for(j = 0; j < 80; j++) { putch_t('*'); } putch_t('\r');putch_t('\n'); }	
+	#endif
+	while(1); // Busy wait so people don't keep tuning needlessly, avrdude will issue a reset to start the bootloader
 #endif
 
   __asm__ __volatile__ (
@@ -361,11 +368,17 @@ uint8_t update( )
 {
 	// What is the error at the current OSCCAL value
   static uint16_t error = 0xFFFF;
+	static uint8_t  original;
+	static uint8_t  cycles = 1;
+	
 	if(error == 0xFFFF)
 	{
+	  original = OSCCAL;
 		error = sampleError(OSCCAL);
     
-    #if TUNER_SERIAL_OUTPUT >= 4
+    #if TUNER_SERIAL_OUTPUT >= 4		
+		if(cycles++ == 1)
+		{
       putstr_t(PSTR("Initial Error: "));
       char buf[20]; 
       snprintf(buf, sizeof(buf), "%d/%d", error, 7500); 
@@ -373,101 +386,124 @@ uint8_t update( )
       putstr_t(PSTR(" with OSCCAL= "));
       snprintf(buf, sizeof(buf), "%d\n", OSCCAL);
       putstr(buf);
+		}
     #endif
 	}
 	
-	// Now have a peek forward and backward
-	uint8_t steps[] = { 30, 15, 5, 3, 1 };
-	uint8_t x = 0;
-	
-	int16_t peekError;
-	int16_t peekCal;
-	
-	// When we get increased error, decrease this range
+  // When we get increased error, decrease this range
 	//  we will then exclude stuff outside that range from the search
 	static int16_t minGood = 0;
 	static int16_t maxGood = 254;
-	
-	for(x = 0; x < sizeof(steps); x++)
+		
+	// Don't check if the error is very low or very high
+	if(error > 37 && error < 3750 )
 	{
-		// If we have not already looked above that distance from here
-		//  try that
-		peekCal = OSCCAL+steps[x];
-		peekCal = min(peekCal, maxGood);
-		peekCal = max(peekCal, minGood);
+		// Now have a peek forward and backward
+		uint8_t steps[] = { 30, 15, 5, 3, 1 };
+		uint8_t x = 0;
 		
-		if(peekCal<maxGood)
+		int16_t peekError;
+		int16_t peekCal;
+				
+		for(x = 0; x < sizeof(steps); x++)
 		{
-			peekError = sampleError(peekCal);
-			if(peekError < error)
+			// If we have not already looked above that distance from here
+			//  try that
+			peekCal = OSCCAL+steps[x];
+			peekCal = min(peekCal, maxGood);
+			peekCal = max(peekCal, minGood);
+			
+			if(peekCal<maxGood)
 			{
-				// Error seems to improve, keep looking from there, do not 
-				// come down below this point again
-				minGood = OSCCAL;
-				OSCCAL = peekCal;
-				error  = peekError;
-        
-        // Show the activity now after we change to the better
-        // cal value
-        showSampleActivity(peekCal, '~');
-				return true;
-			}
-			else
-			{
-				if(peekError > error)
+				peekError = sampleError(peekCal);
+				if(peekError < error)
 				{
-					// We are looking too far, don't check here again
-					maxGood = peekCal;
-					showSampleActivity(peekCal, '<');
+					// Error seems to improve, keep looking from there, do not 
+					// come down below this point again
+					minGood = OSCCAL;
+					OSCCAL = peekCal;
+					error  = peekError;
+					
+					// Show the activity now after we change to the better
+					// cal value
+					showSampleActivity(peekCal, '~');
+					return true;
 				}
 				else
-        {
-          showSampleActivity(peekCal, '*');
-        }
-			}
-		}
-		
-		peekCal = OSCCAL-steps[x];
-		peekCal = min(peekCal, maxGood);
-		peekCal = max(peekCal, minGood);
-		if(peekCal > minGood)
-		{
-			peekError = sampleError(peekCal);
-			if(peekError < error)
-			{				
-				// Error seems to improve, keep looking from there,
-				// do not come up above this point again
-				maxGood = OSCCAL;
-				OSCCAL = peekCal;
-				error  = peekError;
-        
-        // Show the activity now after we change to the better
-        // cal value
-        showSampleActivity(peekCal, '~');
-				return true;
-			}
-			else
-			{
-				if(peekError > error)
 				{
-					// We are looking too far, don't check here again
-					minGood = peekCal;
-					showSampleActivity(peekCal,'>');
+					if(peekError > error)
+					{
+						// We are looking too far, don't check here again
+						maxGood = peekCal;
+						showSampleActivity(peekCal, '<');
+					}
+					else
+					{
+						showSampleActivity(peekCal, '*');
+					}
+				}
+			}
+			
+			peekCal = OSCCAL-steps[x];
+			peekCal = min(peekCal, maxGood);
+			peekCal = max(peekCal, minGood);
+			if(peekCal > minGood)
+			{
+				peekError = sampleError(peekCal);
+				if(peekError < error)
+				{				
+					// Error seems to improve, keep looking from there,
+					// do not come up above this point again
+					maxGood = OSCCAL;
+					OSCCAL = peekCal;
+					error  = peekError;
+					
+					// Show the activity now after we change to the better
+					// cal value
+					showSampleActivity(peekCal, '~');
+					return true;
 				}
 				else
-        {
-          showSampleActivity(peekCal,'*');
-        }
+				{
+					if(peekError > error)
+					{
+						// We are looking too far, don't check here again
+						minGood = peekCal;
+						showSampleActivity(peekCal,'>');
+					}
+					else
+					{
+						showSampleActivity(peekCal,'*');
+					}
+				}
 			}
 		}
 	}
-	
+
 	// If we got here then the error isn't improving nearby
 	//   in either direction so we are probably as good as
-	//   we are going to get	
+	//   we are going to get at this location
+	
+	// Check that the error is less than 0.5% (37/7500)
+	char buf[20];	
+	if(error>37)
+	{
+		showSampleActivity(OSCCAL, '!');
+		OSCCAL = (uint8_t)((uint8_t)original + (uint8_t)97);
+		error  = 0xFFFF;
+		minGood = 0;
+		maxGood = 254;
+		
+		#if TUNER_SERIAL_OUTPUT >= 4
+//		putstr_t(PSTR("Error too large here, starting again from: "));
+//		snprintf(buf, sizeof(buf), "%d\n", OSCCAL);	
+//		putstr(buf);		
+    #endif
+		return true;
+	}
+	
 	#if TUNER_SERIAL_OUTPUT >= 4
 		putstr_t(PSTR("Final Error: "));
-		char buf[20];	
 		snprintf(buf, sizeof(buf), "%d/%d", error, 7500);	
 		putstr(buf);
 		putstr_t(PSTR(" with OSCCAL= "));
