@@ -196,7 +196,7 @@ atmega8a:  _atmega8_
 ################################################################################
 
 
-_atmega48_: FLASH_SIZE   = 4092
+_atmega48_: FLASH_SIZE   = 4096
 _atmega48_: RESET_VECTOR = 25
 _atmega48_: FEATURES    += VIRTUAL_BOOT_PARTITION
 _atmega48_: _optiboot_
