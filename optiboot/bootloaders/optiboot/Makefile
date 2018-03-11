@@ -728,7 +728,7 @@ _optiboot_tuner_: hex_relocate_reset.bin
 	@echo "Bootloader: $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"	
 	@echo "Tuner     : $(_MCU_TARGET)_$(_AVR_FREQ).tuner.hex"
 	@echo "Tunable   : tunable_$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"
-	@echo "Size      : $(BOOTLOADER_RESERVED) Bytes ($$(( $(BOOTLOADER_RESERVED) / 2 )) Words)"
+	@echo "Size      : $(_BOOTLOADER_RESERVED) Bytes ($$(( $(_BOOTLOADER_RESERVED) / 2 )) Words)"
 	@echo "Available : $$((0x$$($(OBJDUMP) -h  $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex | grep .sec1 | sed -r 's/^\s*[0-9]+\s.sec1\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$$/\1/') - 1)) Bytes"
 	@echo -n "Burning   : avrdude -c usbasp -p $(TARGET) "
 	@if [ -n "$(LFUSE)" ] ; then echo -n " -U lfuse:w:$(LFUSE):m "; fi
@@ -758,7 +758,7 @@ _optiboot_only_: _check_baud_rate_
 	  make $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex
 	@echo "--------------------------------------------------------------------------------"
 	@echo "Bootloader: $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"
-	@echo "Size      : $(BOOTLOADER_RESERVED) Bytes ($$(( $(BOOTLOADER_RESERVED) / 2 )) Words)"
+	@echo "Size      : $(_BOOTLOADER_RESERVED) Bytes ($$(( $(_BOOTLOADER_RESERVED) / 2 )) Words)"
 	@echo "Available : $$((0x$$($(OBJDUMP) -h  $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex | grep .sec1 | sed -r 's/^\s*[0-9]+\s.sec1\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$$/\1/'))) Bytes"
 	@echo -n "Burning   : avrdude -c usbasp -p $(TARGET) "
 	@if [ -n "$(LFUSE)" ] ; then echo -n " -U lfuse:w:$(LFUSE):m "; fi
