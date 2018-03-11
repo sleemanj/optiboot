@@ -1,3 +1,18 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Optiboot - Small bootloader for Atmel AVR8 Microcontrollers](#optiboot---small-bootloader-for-atmel-avr8-microcontrollers)
+  - [Building A Single Bootloader](#building-a-single-bootloader)
+  - [Using The `makeall` Script For Better Betterness](#using-the-makeall-script-for-better-betterness)
+  - [Available Features](#available-features)
+  - [Building "Tunable" Bootloaders](#building-tunable-bootloaders)
+  - [Using The Tuner](#using-the-tuner)
+  - [Adding New Chips](#adding-new-chips)
+  - [Burning Bootloaders (Picking Fuses)](#burning-bootloaders-picking-fuses)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 Optiboot - Small bootloader for Atmel AVR8 Microcontrollers
 ===============================================================================
 
@@ -306,5 +321,5 @@ Here are some suggestions...
   is not that important, making it longer to start is done to allow your 
   power to stabilise.  Ensure that "Divide click by 8" is ticked.
    
-  
+
 
