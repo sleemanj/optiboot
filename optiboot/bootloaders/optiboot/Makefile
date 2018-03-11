@@ -725,11 +725,22 @@ _optiboot_tuner_: hex_relocate_reset.bin
 	cat $@.tmp | ./hex_relocate_reset.bin $(_RESET_VECTOR) $(_BOOTLOADER_ADDRESS) >tunable_$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex
 	rm  $@.tmp
 	@echo "--------------------------------------------------------------------------------"
-	@echo "Bootloader: $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"
+	@echo "Bootloader: $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"	
 	@echo "Tuner     : $(_MCU_TARGET)_$(_AVR_FREQ).tuner.hex"
 	@echo "Tunable   : tunable_$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"
+	@echo "Size      : $(BOOTLOADER_RESERVED) Bytes ($$(( $(BOOTLOADER_RESERVED) / 2 )) Words)"
 	@echo "Available : $$((0x$$($(OBJDUMP) -h  $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex | grep .sec1 | sed -r 's/^\s*[0-9]+\s.sec1\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$$/\1/') - 1)) Bytes"
-	@echo 
+	@echo -n "Burning   : avrdude -c usbasp -p $(TARGET) "
+	@if [ -n "$(LFUSE)" ] ; then echo -n " -U lfuse:w:$(LFUSE):m "; fi
+	@if [ -n "$(HFUSE)" ] ; then echo -n " -U hfuse:w:$(LFUSE):m "; fi
+	@if [ -n "$(EFUSE)" ] ; then echo -n " -U efuse:w:$(LFUSE):m "; fi	
+	@echo "-U flash:w:tunable_$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex:i "
+	@if [ -z "$(LFUSE)" ] ; then echo "            * Caution you should set LFUSE appropriatey with -U lfuse:w:0x??:m"; fi
+	@if [ -z "$(HFUSE)" ] ; then echo "            * Caution you may wish to set HFUSE appropriatey with -U hfuse:w:0x??:m"; fi
+	@if [ -z "$(EFUSE)" ] ; then echo "            * Caution you may wish to set EFUSE appropriatey with -U efuse:w:0x??:m"; fi
+	@echo "            * Use http://www.engbedded.com/fusecalc/ to calculate fuses"
+	@echo "            * See README.md for tips on fuses."
+	@echo
 	
 _optiboot_only_: _check_baud_rate_
 	@echo
@@ -747,7 +758,18 @@ _optiboot_only_: _check_baud_rate_
 	  make $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex
 	@echo "--------------------------------------------------------------------------------"
 	@echo "Bootloader: $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex"
+	@echo "Size      : $(BOOTLOADER_RESERVED) Bytes ($$(( $(BOOTLOADER_RESERVED) / 2 )) Words)"
 	@echo "Available : $$((0x$$($(OBJDUMP) -h  $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex | grep .sec1 | sed -r 's/^\s*[0-9]+\s.sec1\s*[0-9a-f]+\s*0+([0-9a-f]{3,8}).*$$/\1/'))) Bytes"
+	@echo -n "Burning   : avrdude -c usbasp -p $(TARGET) "
+	@if [ -n "$(LFUSE)" ] ; then echo -n " -U lfuse:w:$(LFUSE):m "; fi
+	@if [ -n "$(HFUSE)" ] ; then echo -n " -U hfuse:w:$(LFUSE):m "; fi
+	@if [ -n "$(EFUSE)" ] ; then echo -n " -U efuse:w:$(LFUSE):m "; fi	
+	@echo "-U flash:w:$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE).hex:i "
+	@if [ -z "$(LFUSE)" ] ; then echo "            * You must set LFUSE appropriatey with -U lfuse:w:0x??:m"; fi
+	@if [ -z "$(HFUSE)" ] ; then echo "            * You must set HFUSE appropriatey with -U hfuse:w:0x??:m"; fi
+	@if [ -z "$(EFUSE)" ] ; then echo "            * You must set EFUSE appropriatey with -U efuse:w:0x??:m"; fi
+	@echo "            * Use http://www.engbedded.com/fusecalc/ to calculate fuses"
+	@echo "            * See README.md for tips on fuses."
 	@echo
 	
 # This target replaces the old baudcheck target and causes the process to stop
