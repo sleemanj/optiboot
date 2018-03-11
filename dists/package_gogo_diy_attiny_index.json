@@ -15,142 +15,16 @@
 {
   "name": "DIY ATtiny",
   "architecture": "avr",
-  "version": "2017.10.29",
+  "version": "2018.3.11",
   "category": "Contributed",
   "help": {
       "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#attiny"
   },
-  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2017_10_29.zip",
-  "archiveFileName": "diy_attiny_2017_10_29.zip",
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2018_3_11.zip",
+  "archiveFileName": "diy_attiny_2018_3_11.zip",
   
-  "checksum": "SHA-256:4f6e8f0e826c511de75384c73900ab55b759e3cc27a0cbca0309f5571c3386f8",
-  "size": "617614",
-
-  "boards": [
-    {"name": "ATtiny4"},    
-    {"name": "ATtiny5"},    
-    {"name": "ATtiny9"},    
-    {"name": "ATtiny10"},    
-    {"name": "ATtiny13"},    
-    {"name": "ATtiny24"},
-    {"name": "ATtiny44"},
-    {"name": "ATtiny84"},
-    {"name": "ATtiny25"},
-    {"name": "ATtiny45"},
-    {"name": "ATtiny85"},
-    {"name": "and variants thereof"}
-  ],
-  "toolsDependencies": [
-    {
-      "packager": "arduino",
-      "name": "avrdude",
-      "version": "6.3.0-arduino9"
-    },
-    {
-      "packager": "arduino",
-      "name": "avr-gcc",
-      "version": "4.9.2-atmel3.5.4-arduino2"
-    }
-  ]
-},
-
-{
-  "name": "DIY ATtiny",
-  "architecture": "avr",
-  "version": "2017.10.28",
-  "category": "Contributed",
-  "help": {
-      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#attiny"
-  },
-  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2017_10_28.zip",
-  "archiveFileName": "diy_attiny_2017_10_28.zip",
-  
-  "checksum": "SHA-256:d88842f0ca737324a6c563be248bb560ae0d738a7630dfe887ebe5eca848ed9a",
-  "size": "617604",
-
-  "boards": [
-    {"name": "ATtiny4"},    
-    {"name": "ATtiny5"},    
-    {"name": "ATtiny9"},    
-    {"name": "ATtiny10"},    
-    {"name": "ATtiny13"},    
-    {"name": "ATtiny24"},
-    {"name": "ATtiny44"},
-    {"name": "ATtiny84"},
-    {"name": "ATtiny25"},
-    {"name": "ATtiny45"},
-    {"name": "ATtiny85"},
-    {"name": "and variants thereof"}
-  ],
-  "toolsDependencies": [
-    {
-      "packager": "arduino",
-      "name": "avrdude",
-      "version": "6.3.0-arduino9"
-    },
-    {
-      "packager": "arduino",
-      "name": "avr-gcc",
-      "version": "4.9.2-atmel3.5.4-arduino2"
-    }
-  ]
-},
-
-{
-  "name": "DIY ATtiny",
-  "architecture": "avr",
-  "version": "2017.10.23",
-  "category": "Contributed",
-  "help": {
-      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#attiny"
-  },
-  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2017_10_23.zip",
-  "archiveFileName": "diy_attiny_2017_10_23.zip",
-  
-  "checksum": "SHA-256:0a76cf720c899652855a41b31823f4e22c9b9e50856b77a736a50d84d1e522aa",
-  "size": "611958",
-
-  "boards": [
-    {"name": "ATtiny4"},    
-    {"name": "ATtiny5"},    
-    {"name": "ATtiny9"},    
-    {"name": "ATtiny10"},    
-    {"name": "ATtiny13"},    
-    {"name": "ATtiny24"},
-    {"name": "ATtiny44"},
-    {"name": "ATtiny84"},
-    {"name": "ATtiny25"},
-    {"name": "ATtiny45"},
-    {"name": "ATtiny85"},
-    {"name": "and variants thereof"}
-  ],
-  "toolsDependencies": [
-    {
-      "packager": "arduino",
-      "name": "avrdude",
-      "version": "6.3.0-arduino9"
-    },
-    {
-      "packager": "arduino",
-      "name": "avr-gcc",
-      "version": "4.9.2-atmel3.5.4-arduino2"
-    }
-  ]
-},
-
-{
-  "name": "DIY ATtiny",
-  "architecture": "avr",
-  "version": "2017.10.22",
-  "category": "Contributed",
-  "help": {
-      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#attiny"
-  },
-  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2017_10_22.zip",
-  "archiveFileName": "diy_attiny_2017_10_22.zip",
-  
-  "checksum": "SHA-256:f4a23330290b35a6664de43f39613c0ff7348fcb350d55d47939a88e90b18792",
-  "size": "567047",
+  "checksum": "SHA-256:b48f53367d34e9783a67b7a61d3d6081fed2e9716096e56c4c6c43c0d10dadea",
+  "size": "700706",
 
   "boards": [
     {"name": "ATtiny4"},    
@@ -309,6 +183,216 @@
 {
   "name": "DIY ATtiny",
   "architecture": "avr",
+  "version": "2017.10.28",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#attiny"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2017_10_28.zip",
+  "archiveFileName": "diy_attiny_2017_10_28.zip",
+  
+  "checksum": "SHA-256:d88842f0ca737324a6c563be248bb560ae0d738a7630dfe887ebe5eca848ed9a",
+  "size": "617604",
+
+  "boards": [
+    {"name": "ATtiny4"},    
+    {"name": "ATtiny5"},    
+    {"name": "ATtiny9"},    
+    {"name": "ATtiny10"},    
+    {"name": "ATtiny13"},    
+    {"name": "ATtiny24"},
+    {"name": "ATtiny44"},
+    {"name": "ATtiny84"},
+    {"name": "ATtiny25"},
+    {"name": "ATtiny45"},
+    {"name": "ATtiny85"},
+    {"name": "and variants thereof"}
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.3.0-arduino9"
+    },
+    {
+      "packager": "arduino",
+      "name": "avr-gcc",
+      "version": "4.9.2-atmel3.5.4-arduino2"
+    }
+  ]
+},
+
+{
+  "name": "DIY ATtiny",
+  "architecture": "avr",
+  "version": "2017.10.29",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#attiny"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2017_10_29.zip",
+  "archiveFileName": "diy_attiny_2017_10_29.zip",
+  
+  "checksum": "SHA-256:4f6e8f0e826c511de75384c73900ab55b759e3cc27a0cbca0309f5571c3386f8",
+  "size": "617614",
+
+  "boards": [
+    {"name": "ATtiny4"},    
+    {"name": "ATtiny5"},    
+    {"name": "ATtiny9"},    
+    {"name": "ATtiny10"},    
+    {"name": "ATtiny13"},    
+    {"name": "ATtiny24"},
+    {"name": "ATtiny44"},
+    {"name": "ATtiny84"},
+    {"name": "ATtiny25"},
+    {"name": "ATtiny45"},
+    {"name": "ATtiny85"},
+    {"name": "and variants thereof"}
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.3.0-arduino9"
+    },
+    {
+      "packager": "arduino",
+      "name": "avr-gcc",
+      "version": "4.9.2-atmel3.5.4-arduino2"
+    }
+  ]
+},
+
+{
+  "name": "DIY ATtiny",
+  "architecture": "avr",
+  "version": "2017.10.22",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#attiny"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2017_10_22.zip",
+  "archiveFileName": "diy_attiny_2017_10_22.zip",
+  
+  "checksum": "SHA-256:f4a23330290b35a6664de43f39613c0ff7348fcb350d55d47939a88e90b18792",
+  "size": "567047",
+
+  "boards": [
+    {"name": "ATtiny4"},    
+    {"name": "ATtiny5"},    
+    {"name": "ATtiny9"},    
+    {"name": "ATtiny10"},    
+    {"name": "ATtiny13"},    
+    {"name": "ATtiny24"},
+    {"name": "ATtiny44"},
+    {"name": "ATtiny84"},
+    {"name": "ATtiny25"},
+    {"name": "ATtiny45"},
+    {"name": "ATtiny85"},
+    {"name": "and variants thereof"}
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.3.0-arduino9"
+    },
+    {
+      "packager": "arduino",
+      "name": "avr-gcc",
+      "version": "4.9.2-atmel3.5.4-arduino2"
+    }
+  ]
+},
+
+{
+  "name": "DIY ATtiny",
+  "architecture": "avr",
+  "version": "2017.10.23",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#attiny"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2017_10_23.zip",
+  "archiveFileName": "diy_attiny_2017_10_23.zip",
+  
+  "checksum": "SHA-256:0a76cf720c899652855a41b31823f4e22c9b9e50856b77a736a50d84d1e522aa",
+  "size": "611958",
+
+  "boards": [
+    {"name": "ATtiny4"},    
+    {"name": "ATtiny5"},    
+    {"name": "ATtiny9"},    
+    {"name": "ATtiny10"},    
+    {"name": "ATtiny13"},    
+    {"name": "ATtiny24"},
+    {"name": "ATtiny44"},
+    {"name": "ATtiny84"},
+    {"name": "ATtiny25"},
+    {"name": "ATtiny45"},
+    {"name": "ATtiny85"},
+    {"name": "and variants thereof"}
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.3.0-arduino9"
+    },
+    {
+      "packager": "arduino",
+      "name": "avr-gcc",
+      "version": "4.9.2-atmel3.5.4-arduino2"
+    }
+  ]
+},
+
+{
+  "name": "DIY ATtiny",
+  "architecture": "avr",
+  "version": "2016.12.1",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/dists/"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2016_12_1.zip",  
+  "archiveFileName": "diy_attiny_2016_12_1.zip",
+  
+  "checksum": "SHA-256:2b99b6c4e2a9c67364fe75ac569a3784c84bcad17a1fd99a624b9a387cef6f85",
+  "size": "536112",
+
+  "boards": [
+    {"name": "ATtiny4"},    
+    {"name": "ATtiny5"},    
+    {"name": "ATtiny9"},    
+    {"name": "ATtiny10"},    
+    {"name": "ATtiny13"},    
+    {"name": "ATtiny24"},
+    {"name": "ATtiny44"},
+    {"name": "ATtiny84"},
+    {"name": "ATtiny25"},
+    {"name": "ATtiny45"},
+    {"name": "ATtiny85"},
+    {"name": "and variants thereof"}
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.3.0-arduino6"
+    },
+    {
+      "packager": "arduino",
+      "name": "avr-gcc",
+      "version": "4.9.2-atmel3.5.3-arduino2"
+    }
+  ]
+},
+
+{
+  "name": "DIY ATtiny",
+  "architecture": "avr",
   "version": "2016.7.18",
   "category": "Contributed",
   "help": {
@@ -373,48 +457,6 @@
       "packager": "arduino",
       "name": "avrdude",
       "version": "6.0.1-arduino5"
-    }
-  ]
-},
-
-{
-  "name": "DIY ATtiny",
-  "architecture": "avr",
-  "version": "2016.12.1",
-  "category": "Contributed",
-  "help": {
-      "online": "https://github.com/sleemanj/optiboot/dists/"
-  },
-  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_attiny_2016_12_1.zip",  
-  "archiveFileName": "diy_attiny_2016_12_1.zip",
-  
-  "checksum": "SHA-256:2b99b6c4e2a9c67364fe75ac569a3784c84bcad17a1fd99a624b9a387cef6f85",
-  "size": "536112",
-
-  "boards": [
-    {"name": "ATtiny4"},    
-    {"name": "ATtiny5"},    
-    {"name": "ATtiny9"},    
-    {"name": "ATtiny10"},    
-    {"name": "ATtiny13"},    
-    {"name": "ATtiny24"},
-    {"name": "ATtiny44"},
-    {"name": "ATtiny84"},
-    {"name": "ATtiny25"},
-    {"name": "ATtiny45"},
-    {"name": "ATtiny85"},
-    {"name": "and variants thereof"}
-  ],
-  "toolsDependencies": [
-    {
-      "packager": "arduino",
-      "name": "avrdude",
-      "version": "6.3.0-arduino6"
-    },
-    {
-      "packager": "arduino",
-      "name": "avr-gcc",
-      "version": "4.9.2-atmel3.5.3-arduino2"
     }
   ]
 },

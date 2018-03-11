@@ -15,6 +15,42 @@
 {
   "name": "DIY ATmega8, ATmega48, ATmega88, ATmega168, ATmega328",
   "architecture": "avr",
+  "version": "2018.3.11",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/dists/"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_atmega8_series_2018_3_11.zip",  
+  "archiveFileName": "diy_atmega8_series_2018_3_11.zip",
+  
+  "checksum": "SHA-256:4b03ae5d77994fe8d43bd60596cde990f989fde0acdccb6138fcc245e0f3adb2",
+  "size": "316628",
+
+  "boards": [
+    {"name": "ATmega8"},
+    {"name": "ATmega48"},
+    {"name": "ATmega88"},
+    {"name": "ATmega168"},
+    {"name": "ATmega328"},
+    {"name": "and variants thereof"}                                 
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.3.0-arduino6"
+    },
+    {
+      "packager": "arduino",
+      "name": "avr-gcc",
+      "version": "4.9.2-atmel3.5.3-arduino2"
+    }
+  ]
+},
+
+{
+  "name": "DIY ATmega8, ATmega48, ATmega88, ATmega168, ATmega328",
+  "architecture": "avr",
   "version": "2016.12.1",
   "category": "Contributed",
   "help": {
@@ -44,6 +80,37 @@
       "packager": "arduino",
       "name": "avr-gcc",
       "version": "4.9.2-atmel3.5.3-arduino2"
+    }
+  ]
+},
+
+{
+  "name": "DIY ATmega",
+  "architecture": "avr",
+  "version": "2016.7.21",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#atmega-x8-series-84888168328"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_atmega8_series_2016_7_21.zip",
+  "archiveFileName": "diy_atmega8_series_2016_7_21.zip",
+  
+  "checksum": "SHA-256:ac1f646a3e458c71e79e34bb558ddafc59c9c20179918ca625ab47e19f8fd8f3",
+  "size": "66738",
+
+  "boards": [
+    {"name": "ATmega8"},
+    {"name": "ATmega48"},
+    {"name": "ATmega88"},
+    {"name": "ATmega168"},
+    {"name": "ATmega328"},
+    {"name": "and variants thereof"}
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.0.1-arduino5"
     }
   ]
 },
@@ -184,48 +251,17 @@
 },
 
 {
-  "name": "DIY ATmega",
-  "architecture": "avr",
-  "version": "2016.7.21",
-  "category": "Contributed",
-  "help": {
-      "online": "https://github.com/sleemanj/optiboot/blob/master/dists/README.md#atmega-x8-series-84888168328"
-  },
-  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_atmega8_series_2016_7_21.zip",
-  "archiveFileName": "diy_atmega8_series_2016_7_21.zip",
-  
-  "checksum": "SHA-256:ac1f646a3e458c71e79e34bb558ddafc59c9c20179918ca625ab47e19f8fd8f3",
-  "size": "66738",
-
-  "boards": [
-    {"name": "ATmega8"},
-    {"name": "ATmega48"},
-    {"name": "ATmega88"},
-    {"name": "ATmega168"},
-    {"name": "ATmega328"},
-    {"name": "and variants thereof"}
-  ],
-  "toolsDependencies": [
-    {
-      "packager": "arduino",
-      "name": "avrdude",
-      "version": "6.0.1-arduino5"
-    }
-  ]
-},
-
-{
   "name": "DIY ATmega8, ATmega48, ATmega88, ATmega168, ATmega328",
   "architecture": "avr",
-  "version": "2015.10.26",
+  "version": "2015.10.27",
   "category": "Contributed",
   "help": {
       "online": "https://github.com/sleemanj/optiboot/dists/"
   },
-  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_atmega8_series_2015_10_26.zip",
-  "archiveFileName": "diy_atmega8_series_2015_10_26.zip",
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_atmega8_series_2015_10_27.zip",
+  "archiveFileName": "diy_atmega8_series_2015_10_27.zip",
   
-  "checksum": "SHA-256:a3b5ee9ef2d419771834fbfdc3fe7120dbf01a64f15f7c4fa88d948597a3808a",
+  "checksum": "SHA-256:0d5fec491939863c66c1c9ce4752b5c300caab094700a71f0220126ec555a094",
   "size": "65912",
 
   "boards": [
@@ -262,15 +298,15 @@
 {
   "name": "DIY ATmega8, ATmega48, ATmega88, ATmega168, ATmega328",
   "architecture": "avr",
-  "version": "2015.10.27",
+  "version": "2015.10.26",
   "category": "Contributed",
   "help": {
       "online": "https://github.com/sleemanj/optiboot/dists/"
   },
-  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_atmega8_series_2015_10_27.zip",
-  "archiveFileName": "diy_atmega8_series_2015_10_27.zip",
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_atmega8_series_2015_10_26.zip",
+  "archiveFileName": "diy_atmega8_series_2015_10_26.zip",
   
-  "checksum": "SHA-256:0d5fec491939863c66c1c9ce4752b5c300caab094700a71f0220126ec555a094",
+  "checksum": "SHA-256:a3b5ee9ef2d419771834fbfdc3fe7120dbf01a64f15f7c4fa88d948597a3808a",
   "size": "65912",
 
   "boards": [
