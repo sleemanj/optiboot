@@ -21,6 +21,16 @@ fi
 
 function build_hexs
 {
+  #########################################################################
+  # ATTENTION
+  #########################################################################
+  #  The tunable hex files are NOT just a concatenation of the 
+  #   non-tunable bootloader and tuner.  The bootloader for tunable
+  #   includes the OSCCAL_PROGMEM and DO_SPM stuff which the non-tunable
+  #   does not.  So yes, they don't match, this is fine.  Don't waste
+  #   a day trying to work out WTF is going on.
+  #########################################################################
+
 	# Call without AVR_FREQ and BAUD_RATE set to generate a standardised set
   if [ -z "$AVR_FREQ" ]
   then
@@ -320,9 +330,9 @@ function build_atmega8_hexs
   #  and baud rates
   build_hexs Makefile.atmega8 "$PACKAGENAME"
   
-  # Make high speed for the 328 (not tunable)
-  AVR_FREQ=20000000L BAUD_RATE=57600  build_hexs "atmega328p atmega328" "$PACKAGENAME"
-  AVR_FREQ=20000000L BAUD_RATE=115200 build_hexs "atmega328p atmega328" "$PACKAGENAME"
+  # Make high speed for some chips
+  AVR_FREQ=20000000L BAUD_RATE=57600  build_hexs "Makefile.atmega8" "$PACKAGENAME"
+  AVR_FREQ=19200000L BAUD_RATE=57600  build_hexs "Makefile.atmega8" "$PACKAGENAME"
   
   # Copy all those to notuner_ variants
   # Note that this means that except where tunable ones are generated again
@@ -355,6 +365,11 @@ function build_attiny_hexs
   # and notuner_optiboot_xxxx.hex are the same.
   
   build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME"
+  
+  # Make high speed for some chips
+  AVR_FREQ=20000000L BAUD_RATE=57600  build_hexs "Makefile.attinyx5" "$PACKAGENAME"
+  AVR_FREQ=19200000L BAUD_RATE=57600  build_hexs "Makefile.attinyx5" "$PACKAGENAME"
+
   for file in $DIST/$PACKAGENAME/avr/bootloaders/optiboot*.hex
   do
     cp $file $(dirname $file)/notuner_$(basename $file)
