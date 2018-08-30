@@ -130,6 +130,7 @@ atmega8_diy.menu.boot.optiboot.upload.protocol=arduino
 atmega8_diy.menu.boot.optiboot.upload.maximum_size=7680
 atmega8_diy.menu.boot.optiboot.bootloader.high_fuses=0xCC
 atmega8_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega8_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 atmega8_diy.menu.boot.none=No (ISP Programmer Upload)
 atmega8_diy.menu.boot.none.upload.maximum_size=8192
@@ -215,6 +216,7 @@ atmega48_diy.menu.boot.optiboot.upload.protocol=arduino
 atmega48_diy.menu.boot.optiboot.upload.maximum_size=3548
 atmega48_diy.menu.boot.optiboot.bootloader.high_fuses=0xDD
 atmega48_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega48_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 atmega48_diy.menu.boot.optiboot_notuner=Yes, Without Tuner
 atmega48_diy.menu.boot.optiboot_notuner.upload.protocol=arduino
@@ -331,6 +333,7 @@ atmega48p_diy.menu.boot.optiboot.upload.protocol=arduino
 atmega48p_diy.menu.boot.optiboot.upload.maximum_size=3538
 atmega48p_diy.menu.boot.optiboot.bootloader.high_fuses=0xDD
 atmega48p_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega48p_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 atmega48p_diy.menu.boot.optiboot_notuner=Yes, Without Tuner
 atmega48p_diy.menu.boot.optiboot_notuner.upload.protocol=arduino
@@ -493,6 +496,7 @@ atmega328_diy.menu.boot.optiboot.upload.protocol=arduino
 atmega328_diy.menu.boot.optiboot.upload.maximum_size=32256
 atmega328_diy.menu.boot.optiboot.bootloader.high_fuses=0xDE
 atmega328_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega328_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 atmega328_diy.menu.boot.none=No (ISP Programmer Upload)
 atmega328_diy.menu.boot.none.upload.maximum_size=32768
@@ -608,6 +612,7 @@ atmega88_diy.menu.boot.optiboot.upload.protocol=arduino
 atmega88_diy.menu.boot.optiboot.upload.maximum_size=7680
 atmega88_diy.menu.boot.optiboot.bootloader.extended_fuses=0x04
 atmega88_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega88_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 atmega88_diy.menu.boot.none=No (ISP Programmer Upload)
 atmega88_diy.menu.boot.none.upload.maximum_size=8192
@@ -723,6 +728,7 @@ atmega168_diy.menu.boot.optiboot.upload.protocol=arduino
 atmega168_diy.menu.boot.optiboot.upload.maximum_size=15872
 atmega168_diy.menu.boot.optiboot.bootloader.extended_fuses=0x04
 atmega168_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega168_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 atmega168_diy.menu.boot.none=No (ISP Programmer Upload)
 atmega168_diy.menu.boot.none.upload.maximum_size=16384

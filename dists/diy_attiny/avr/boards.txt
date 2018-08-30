@@ -123,6 +123,7 @@ attiny25_diy.menu.boot.optiboot.upload.protocol=arduino
 attiny25_diy.menu.boot.optiboot.upload.maximum_size=1490
 attiny25_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
 attiny25_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny25_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny25_diy.menu.boot.optiboot_notune=Yes, Without Tuner
 attiny25_diy.menu.boot.optiboot_notune.upload.protocol=arduino
@@ -293,6 +294,7 @@ attiny45_diy.menu.boot.optiboot.upload.protocol=arduino
 attiny45_diy.menu.boot.optiboot.upload.maximum_size=3540
 attiny45_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
 attiny45_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny45_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny45_diy.menu.boot.optiboot_notune=Yes, Without Tuner
 attiny45_diy.menu.boot.optiboot_notune.upload.protocol=arduino
@@ -461,6 +463,7 @@ attiny85_diy.menu.boot.optiboot.upload.protocol=arduino
 attiny85_diy.menu.boot.optiboot.upload.maximum_size=7634
 attiny85_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
 attiny85_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny85_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny85_diy.menu.boot.optiboot_notune=Yes, Without Tuner
 attiny85_diy.menu.boot.optiboot_notune.upload.protocol=arduino
@@ -681,6 +684,7 @@ attiny24_diy.menu.boot.optiboot.upload.protocol=arduino
 attiny24_diy.menu.boot.optiboot.upload.maximum_size=1490
 attiny24_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
 attiny24_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny24_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny24_diy.menu.boot.optiboot_notune=Yes, Without Tuner
 attiny24_diy.menu.boot.optiboot_notune.upload.protocol=arduino
@@ -861,6 +865,7 @@ attiny44_diy.menu.boot.optiboot.upload.protocol=arduino
 attiny44_diy.menu.boot.optiboot.upload.maximum_size=3538
 attiny44_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
 attiny44_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny44_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny44_diy.menu.boot.optiboot_notune=Yes, Without Tuner
 attiny44_diy.menu.boot.optiboot_notune.upload.protocol=arduino
@@ -1040,6 +1045,7 @@ attiny84_diy.menu.boot.optiboot.upload.protocol=arduino
 attiny84_diy.menu.boot.optiboot.upload.maximum_size=7622
 attiny84_diy.menu.boot.optiboot.bootloader.extended_fuses=0xFE
 attiny84_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+attiny84_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 # @NOTE - The Tiny84 has 7622 avail with tuner, the Tiny84A has 7634 avail with tuner
 #         unfortunately we can't easily distinguish the version here in the bootloader
@@ -1255,6 +1261,7 @@ attiny13_diy.menu.version.attiny13a.build.mcu  = attiny13
 # attiny13_diy.menu.boot.optiboot.upload.maximum_size=457
 # attiny13_diy.menu.boot.optiboot.bootloader.extended_fuses=0xEB
 # attiny13_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+# attiny13_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny13_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny13_diy.menu.boot.none.upload.maximum_size=1024
@@ -1502,6 +1509,7 @@ attiny4_diy.menu.clock.1MHz.build.f_cpu=1000000L
 # attiny4_diy.menu.boot.optiboot.upload.maximum_size=457
 # attiny4_diy.menu.boot.optiboot.bootloader.extended_fuses=0xEB
 # attiny4_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+# attiny4_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny4_diy.menu.boot.none=No (TPI Programmer Upload)
 attiny4_diy.menu.boot.none.upload.maximum_size=512
@@ -1706,6 +1714,7 @@ attiny9_diy.menu.clock.1MHz.build.f_cpu=1000000L
 # attiny9_diy.menu.boot.optiboot.upload.maximum_size=457
 # attiny9_diy.menu.boot.optiboot.bootloader.extended_fuses=0xEB
 # attiny9_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+# attiny9_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny9_diy.menu.boot.none=No (TPI Programmer Upload)
 attiny9_diy.menu.boot.none.upload.maximum_size=1024
@@ -1912,6 +1921,7 @@ attiny5_diy.menu.clock.1MHz.build.f_cpu=1000000L
 # attiny5_diy.menu.boot.optiboot.upload.maximum_size=457
 # attiny5_diy.menu.boot.optiboot.bootloader.extended_fuses=0xEB
 # attiny5_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+# attiny5_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny5_diy.menu.boot.none=No (TPI Programmer Upload)
 attiny5_diy.menu.boot.none.upload.maximum_size=512
@@ -2114,6 +2124,7 @@ attiny10_diy.menu.clock.1MHz.build.f_cpu=1000000L
 # attiny10_diy.menu.boot.optiboot.upload.maximum_size=457
 # attiny10_diy.menu.boot.optiboot.bootloader.extended_fuses=0xEB
 # attiny10_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+# attiny10_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 attiny10_diy.menu.boot.none=No (TPI Programmer Upload)
 attiny10_diy.menu.boot.none.upload.maximum_size=1024
