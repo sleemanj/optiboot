@@ -36,15 +36,18 @@
 #
 ################################################################################
 
-menu.version    = Processor Version
-menu.clock      = Processor Speed
-menu.boot       = Use Bootloader
-menu.core       = Millis, Tone Support
-menu.millis_ppm  = Millis Accuracy
-menu.print      = Print Support
-menu.serial     = Serial Support
-menu.lto        = Link Time Optimisation (1.6.11+ only)
-menu.bodlevel   = Brown-out Detection Level
+menu.version    = ​ Processor Version
+menu.clock      = ​​ Processor Speed
+menu.boot       = ​​​ Use Bootloader
+menu.core       = ​​​​​ Millis, Tone Support
+menu.millis_ppm  = ​​​​​ Millis Accuracy
+menu.print      = ​​​​​​ Print Support
+menu.serial     = ​​​​​​​ Serial Support
+menu.lto        = ​​​​​​​​ Link Time Optimisation (1.6.11+ only)
+menu.bodlevel   = ​​​​​​​​​ Brown-out Detection Level
+menu.advclk     = ​​​​​​​​​​ Override Clock Source
+menu.advfrq     = ​​​​​​​​​​​ Override Frequency
+menu.advups     = ​​​​​​​​​​​​ Override Upload Speed
 
 # The names are put here in the order they will appear in the boards menu
 #  you can repeat these definitions in each board section for completeness
@@ -143,7 +146,6 @@ attiny25_diy.menu.clock.8MHz.build.f_cpu=8000000L
 attiny25_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
 attiny25_diy.menu.clock.8MHz.upload.speed=38400
 
-
 attiny25_diy.menu.clock.20MHz=20MHz Crystal/Resonator
 attiny25_diy.menu.clock.20MHz.build.f_cpu=20000000L
 attiny25_diy.menu.clock.20MHz.bootloader.low_fuses=0xFF
@@ -160,6 +162,11 @@ attiny25_diy.menu.clock.1MHz=1MHz Internal Oscillator
 attiny25_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny25_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny25_diy.menu.clock.1MHz.upload.speed=9600
+
+attiny25_diy.menu.clock.over=Special Speed (Override)
+attiny25_diy.menu.clock.over.build.f_cpu=8000000L
+attiny25_diy.menu.clock.over.bootloader.low_fuses=0xE2
+attiny25_diy.menu.clock.over.upload.speed=38400
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -258,6 +265,155 @@ attiny25_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
 attiny25_diy.menu.bodlevel.1v8=1.8v
 attiny25_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
 
+
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny25_diy.menu.advclk.auto=Default
+
+attiny25_diy.menu.advclk.x16=Internal Oscillator 16 MHz (PLL)
+attiny25_diy.menu.advclk.x16.bootloader.low_fuses=0xF1
+attiny25_diy.menu.advclk.x16.build.f_cpu=16000000L
+
+attiny25_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+attiny25_diy.menu.advclk.i8.bootloader.low_fuses=0xE2
+attiny25_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+attiny25_diy.menu.advclk.i64=Internal Oscillator 6.4 MHz
+attiny25_diy.menu.advclk.i64.bootloader.low_fuses=0xD3
+attiny25_diy.menu.advclk.i64.build.f_cpu=6400000L
+
+attiny25_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+attiny25_diy.menu.advclk.i1.bootloader.low_fuses=0x62
+attiny25_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+attiny25_diy.menu.advclk.i128=Internal Oscillator 128 kHz (WDT)
+attiny25_diy.menu.advclk.i128.bootloader.low_fuses=0xE4
+attiny25_diy.menu.advclk.i128.build.f_cpu=128000L
+
+attiny25_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+attiny25_diy.menu.advclk.xlf.bootloader.low_fuses=0xE6
+
+attiny25_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+attiny25_diy.menu.advclk.x400.bootloader.low_fuses=0xF9
+
+attiny25_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+attiny25_diy.menu.advclk.x900.bootloader.low_fuses=0xFB
+
+attiny25_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+attiny25_diy.menu.advclk.x3.bootloader.low_fuses=0xFD
+
+attiny25_diy.menu.advclk.x8=Crystal/Resonator 8 MHz +
+attiny25_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
+
+attiny25_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+attiny25_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny25_diy.menu.advfrq.auto=Default
+
+attiny25_diy.menu.advfrq.32k768=32.768 kHz
+attiny25_diy.menu.advfrq.32k768.build.f_cpu=32768L
+attiny25_diy.menu.advfrq.32k768.upload.speed=150
+
+attiny25_diy.menu.advfrq.128k=128 kHz
+attiny25_diy.menu.advfrq.128k.build.f_cpu=128000L
+attiny25_diy.menu.advfrq.128k.upload.speed=300
+
+attiny25_diy.menu.advfrq.1M=1 MHz
+attiny25_diy.menu.advfrq.1M.build.f_cpu=1000000L
+attiny25_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny25_diy.menu.advfrq.4M608=4.608 MHz
+attiny25_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+attiny25_diy.menu.advfrq.4M608.upload.speed=115200
+
+attiny25_diy.menu.advfrq.4M8=4.8 MHz
+attiny25_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+attiny25_diy.menu.advfrq.4M8.upload.speed=19200
+
+attiny25_diy.menu.advfrq.6M=6 MHz
+attiny25_diy.menu.advfrq.6M.build.f_cpu=6000000L
+attiny25_diy.menu.advfrq.6M.upload.speed=57600
+
+attiny25_diy.menu.advfrq.6M4=6.4 MHz
+attiny25_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+attiny25_diy.menu.advfrq.6M4.upload.speed=115200
+
+attiny25_diy.menu.advfrq.8M=8 MHz
+attiny25_diy.menu.advfrq.8M.build.f_cpu=8000000L
+attiny25_diy.menu.advfrq.8M.upload.speed=38400
+
+attiny25_diy.menu.advfrq.9M6=9.6 MHz
+attiny25_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+attiny25_diy.menu.advfrq.9M6.upload.speed=57600
+
+attiny25_diy.menu.advfrq.10M=10 MHz
+attiny25_diy.menu.advfrq.10M.build.f_cpu=10000000L
+attiny25_diy.menu.advfrq.10M.upload.speed=115200
+
+attiny25_diy.menu.advfrq.12M=12 MHz
+attiny25_diy.menu.advfrq.12M.build.f_cpu=12000000L
+attiny25_diy.menu.advfrq.12M.upload.speed=115200
+
+attiny25_diy.menu.advfrq.12M8=12.8 MHz
+attiny25_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+attiny25_diy.menu.advfrq.12M8.upload.speed=115200
+
+attiny25_diy.menu.advfrq.15M36=15.36 MHz
+attiny25_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+attiny25_diy.menu.advfrq.15M36.upload.speed=57600
+
+attiny25_diy.menu.advfrq.16M=16 MHz
+attiny25_diy.menu.advfrq.16M.build.f_cpu=16000000L
+attiny25_diy.menu.advfrq.16M.upload.speed=57600
+
+attiny25_diy.menu.advfrq.19M2=19.2 MHz
+attiny25_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+attiny25_diy.menu.advfrq.19M2.upload.speed=115200
+
+attiny25_diy.menu.advfrq.20M=20 MHz
+attiny25_diy.menu.advfrq.20M.build.f_cpu=20000000L
+attiny25_diy.menu.advfrq.20M.upload.speed=115200
+
+attiny25_diy.menu.advfrq.24M=24 MHz
+attiny25_diy.menu.advfrq.24M.build.f_cpu=24000000L
+attiny25_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny25_diy.menu.advups.auto=Default
+
+attiny25_diy.menu.advups.115200=115200
+attiny25_diy.menu.advups.115200.upload.speed=115200
+
+attiny25_diy.menu.advups.57600=57600
+attiny25_diy.menu.advups.57600.upload.speed=57600
+
+attiny25_diy.menu.advups.38400=38400
+attiny25_diy.menu.advups.38400.upload.speed=38400
+
+attiny25_diy.menu.advups.19200=19200
+attiny25_diy.menu.advups.19200.upload.speed=19200
+
+attiny25_diy.menu.advups.9600=9600
+attiny25_diy.menu.advups.9600.upload.speed=9600
+
+attiny25_diy.menu.advups.2400=2400
+attiny25_diy.menu.advups.2400.upload.speed=2400
+
+attiny25_diy.menu.advups.1200=1200
+attiny25_diy.menu.advups.1200.upload.speed=1200
+
+attiny25_diy.menu.advups.300=300
+attiny25_diy.menu.advups.300.upload.speed=300
+
+attiny25_diy.menu.advups.150=150
+attiny25_diy.menu.advups.150.upload.speed=150
+
 # }}}
 
 # {{{ ############### ATtiny45 #################################################
@@ -312,6 +468,7 @@ attiny45_diy.menu.boot.none.bootloader.tool=diy_attiny:avrdude_nobootloader
 attiny45_diy.menu.clock.8MHz=8MHz Internal Oscillator
 attiny45_diy.menu.clock.8MHz.build.f_cpu=8000000L
 attiny45_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
+attiny45_diy.menu.clock.8MHz.upload.speed=38400
 
 attiny45_diy.menu.clock.20MHz=20MHz Crystal/Resonator
 attiny45_diy.menu.clock.20MHz.build.f_cpu=20000000L
@@ -329,6 +486,11 @@ attiny45_diy.menu.clock.1MHz=1MHz Internal Oscillator
 attiny45_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny45_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny45_diy.menu.clock.1MHz.upload.speed=9600
+
+attiny45_diy.menu.clock.over=Special Speed (Override)
+attiny45_diy.menu.clock.over.build.f_cpu=8000000L
+attiny45_diy.menu.clock.over.bootloader.low_fuses=0xE2
+attiny45_diy.menu.clock.over.upload.speed=38400
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -427,6 +589,154 @@ attiny45_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
 attiny45_diy.menu.bodlevel.1v8=1.8v
 attiny45_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
 
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny45_diy.menu.advclk.auto=Default
+
+attiny45_diy.menu.advclk.x16=Internal Oscillator 16 MHz (PLL)
+attiny45_diy.menu.advclk.x16.bootloader.low_fuses=0xF1
+attiny45_diy.menu.advclk.x16.build.f_cpu=16000000L
+
+attiny45_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+attiny45_diy.menu.advclk.i8.bootloader.low_fuses=0xE2
+attiny45_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+attiny45_diy.menu.advclk.i64=Internal Oscillator 6.4 MHz
+attiny45_diy.menu.advclk.i64.bootloader.low_fuses=0xD3
+attiny45_diy.menu.advclk.i64.build.f_cpu=6400000L
+
+attiny45_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+attiny45_diy.menu.advclk.i1.bootloader.low_fuses=0x62
+attiny45_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+attiny45_diy.menu.advclk.i128=Internal Oscillator 128 kHz (WDT)
+attiny45_diy.menu.advclk.i128.bootloader.low_fuses=0xE4
+attiny45_diy.menu.advclk.i128.build.f_cpu=128000L
+
+attiny45_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+attiny45_diy.menu.advclk.xlf.bootloader.low_fuses=0xE6
+
+attiny45_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+attiny45_diy.menu.advclk.x400.bootloader.low_fuses=0xF9
+
+attiny45_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+attiny45_diy.menu.advclk.x900.bootloader.low_fuses=0xFB
+
+attiny45_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+attiny45_diy.menu.advclk.x3.bootloader.low_fuses=0xFD
+
+attiny45_diy.menu.advclk.x8=Crystal/Resonator 8 MHz +
+attiny45_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
+
+attiny45_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+attiny45_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny45_diy.menu.advfrq.auto=Default
+
+attiny45_diy.menu.advfrq.32k768=32.768 kHz
+attiny45_diy.menu.advfrq.32k768.build.f_cpu=32768L
+attiny45_diy.menu.advfrq.32k768.upload.speed=150
+
+attiny45_diy.menu.advfrq.128k=128 kHz
+attiny45_diy.menu.advfrq.128k.build.f_cpu=128000L
+attiny45_diy.menu.advfrq.128k.upload.speed=300
+
+attiny45_diy.menu.advfrq.1M=1 MHz
+attiny45_diy.menu.advfrq.1M.build.f_cpu=1000000L
+attiny45_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny45_diy.menu.advfrq.4M608=4.608 MHz
+attiny45_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+attiny45_diy.menu.advfrq.4M608.upload.speed=115200
+
+attiny45_diy.menu.advfrq.4M8=4.8 MHz
+attiny45_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+attiny45_diy.menu.advfrq.4M8.upload.speed=19200
+
+attiny45_diy.menu.advfrq.6M=6 MHz
+attiny45_diy.menu.advfrq.6M.build.f_cpu=6000000L
+attiny45_diy.menu.advfrq.6M.upload.speed=57600
+
+attiny45_diy.menu.advfrq.6M4=6.4 MHz
+attiny45_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+attiny45_diy.menu.advfrq.6M4.upload.speed=115200
+
+attiny45_diy.menu.advfrq.8M=8 MHz
+attiny45_diy.menu.advfrq.8M.build.f_cpu=8000000L
+attiny45_diy.menu.advfrq.8M.upload.speed=38400
+
+attiny45_diy.menu.advfrq.9M6=9.6 MHz
+attiny45_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+attiny45_diy.menu.advfrq.9M6.upload.speed=57600
+
+attiny45_diy.menu.advfrq.10M=10 MHz
+attiny45_diy.menu.advfrq.10M.build.f_cpu=10000000L
+attiny45_diy.menu.advfrq.10M.upload.speed=115200
+
+attiny45_diy.menu.advfrq.12M=12 MHz
+attiny45_diy.menu.advfrq.12M.build.f_cpu=12000000L
+attiny45_diy.menu.advfrq.12M.upload.speed=115200
+
+attiny45_diy.menu.advfrq.12M8=12.8 MHz
+attiny45_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+attiny45_diy.menu.advfrq.12M8.upload.speed=115200
+
+attiny45_diy.menu.advfrq.15M36=15.36 MHz
+attiny45_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+attiny45_diy.menu.advfrq.15M36.upload.speed=57600
+
+attiny45_diy.menu.advfrq.16M=16 MHz
+attiny45_diy.menu.advfrq.16M.build.f_cpu=16000000L
+attiny45_diy.menu.advfrq.16M.upload.speed=57600
+
+attiny45_diy.menu.advfrq.19M2=19.2 MHz
+attiny45_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+attiny45_diy.menu.advfrq.19M2.upload.speed=115200
+
+attiny45_diy.menu.advfrq.20M=20 MHz
+attiny45_diy.menu.advfrq.20M.build.f_cpu=20000000L
+attiny45_diy.menu.advfrq.20M.upload.speed=115200
+
+attiny45_diy.menu.advfrq.24M=24 MHz
+attiny45_diy.menu.advfrq.24M.build.f_cpu=24000000L
+attiny45_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny45_diy.menu.advups.auto=Default
+
+attiny45_diy.menu.advups.115200=115200
+attiny45_diy.menu.advups.115200.upload.speed=115200
+
+attiny45_diy.menu.advups.57600=57600
+attiny45_diy.menu.advups.57600.upload.speed=57600
+
+attiny45_diy.menu.advups.38400=38400
+attiny45_diy.menu.advups.38400.upload.speed=38400
+
+attiny45_diy.menu.advups.19200=19200
+attiny45_diy.menu.advups.19200.upload.speed=19200
+
+attiny45_diy.menu.advups.9600=9600
+attiny45_diy.menu.advups.9600.upload.speed=9600
+
+attiny45_diy.menu.advups.2400=2400
+attiny45_diy.menu.advups.2400.upload.speed=2400
+
+attiny45_diy.menu.advups.1200=1200
+attiny45_diy.menu.advups.1200.upload.speed=1200
+
+attiny45_diy.menu.advups.300=300
+attiny45_diy.menu.advups.300.upload.speed=300
+
+attiny45_diy.menu.advups.150=150
+attiny45_diy.menu.advups.150.upload.speed=150
+
 # }}}
 
 # {{{ ############### ATtiny85 #################################################
@@ -499,6 +809,11 @@ attiny85_diy.menu.clock.1MHz=1MHz Internal Oscillator
 attiny85_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny85_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny85_diy.menu.clock.1MHz.upload.speed=9600
+
+attiny85_diy.menu.clock.over=Special Speed (Override)
+attiny85_diy.menu.clock.over.build.f_cpu=8000000L
+attiny85_diy.menu.clock.over.bootloader.low_fuses=0xE2
+attiny85_diy.menu.clock.over.upload.speed=38400
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -597,6 +912,153 @@ attiny85_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
 attiny85_diy.menu.bodlevel.1v8=1.8v
 attiny85_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
 
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny85_diy.menu.advclk.auto=Default
+
+attiny85_diy.menu.advclk.x16=Internal Oscillator 16 MHz (PLL)
+attiny85_diy.menu.advclk.x16.bootloader.low_fuses=0xF1
+attiny85_diy.menu.advclk.x16.build.f_cpu=16000000L
+
+attiny85_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+attiny85_diy.menu.advclk.i8.bootloader.low_fuses=0xE2
+attiny85_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+attiny85_diy.menu.advclk.i64=Internal Oscillator 6.4 MHz
+attiny85_diy.menu.advclk.i64.bootloader.low_fuses=0xD3
+attiny85_diy.menu.advclk.i64.build.f_cpu=6400000L
+
+attiny85_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+attiny85_diy.menu.advclk.i1.bootloader.low_fuses=0x62
+attiny85_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+attiny85_diy.menu.advclk.i128=Internal Oscillator 128 kHz (WDT)
+attiny85_diy.menu.advclk.i128.bootloader.low_fuses=0xE4
+attiny85_diy.menu.advclk.i128.build.f_cpu=128000L
+
+attiny85_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+attiny85_diy.menu.advclk.xlf.bootloader.low_fuses=0xE6
+
+attiny85_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+attiny85_diy.menu.advclk.x400.bootloader.low_fuses=0xF9
+
+attiny85_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+attiny85_diy.menu.advclk.x900.bootloader.low_fuses=0xFB
+
+attiny85_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+attiny85_diy.menu.advclk.x3.bootloader.low_fuses=0xFD
+
+attiny85_diy.menu.advclk.x8=Crystal/Resonator 8 MHz +
+attiny85_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
+
+attiny85_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+attiny85_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny85_diy.menu.advfrq.auto=Default
+
+attiny85_diy.menu.advfrq.32k768=32.768 kHz
+attiny85_diy.menu.advfrq.32k768.build.f_cpu=32768L
+attiny85_diy.menu.advfrq.32k768.upload.speed=150
+
+attiny85_diy.menu.advfrq.128k=128 kHz
+attiny85_diy.menu.advfrq.128k.build.f_cpu=128000L
+attiny85_diy.menu.advfrq.128k.upload.speed=300
+
+attiny85_diy.menu.advfrq.1M=1 MHz
+attiny85_diy.menu.advfrq.1M.build.f_cpu=1000000L
+attiny85_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny85_diy.menu.advfrq.4M608=4.608 MHz
+attiny85_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+attiny85_diy.menu.advfrq.4M608.upload.speed=115200
+
+attiny85_diy.menu.advfrq.4M8=4.8 MHz
+attiny85_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+attiny85_diy.menu.advfrq.4M8.upload.speed=19200
+
+attiny85_diy.menu.advfrq.6M=6 MHz
+attiny85_diy.menu.advfrq.6M.build.f_cpu=6000000L
+attiny85_diy.menu.advfrq.6M.upload.speed=57600
+
+attiny85_diy.menu.advfrq.6M4=6.4 MHz
+attiny85_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+attiny85_diy.menu.advfrq.6M4.upload.speed=115200
+
+attiny85_diy.menu.advfrq.8M=8 MHz
+attiny85_diy.menu.advfrq.8M.build.f_cpu=8000000L
+attiny85_diy.menu.advfrq.8M.upload.speed=38400
+
+attiny85_diy.menu.advfrq.9M6=9.6 MHz
+attiny85_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+attiny85_diy.menu.advfrq.9M6.upload.speed=57600
+
+attiny85_diy.menu.advfrq.10M=10 MHz
+attiny85_diy.menu.advfrq.10M.build.f_cpu=10000000L
+attiny85_diy.menu.advfrq.10M.upload.speed=115200
+
+attiny85_diy.menu.advfrq.12M=12 MHz
+attiny85_diy.menu.advfrq.12M.build.f_cpu=12000000L
+attiny85_diy.menu.advfrq.12M.upload.speed=115200
+
+attiny85_diy.menu.advfrq.12M8=12.8 MHz
+attiny85_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+attiny85_diy.menu.advfrq.12M8.upload.speed=115200
+
+attiny85_diy.menu.advfrq.15M36=15.36 MHz
+attiny85_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+attiny85_diy.menu.advfrq.15M36.upload.speed=57600
+
+attiny85_diy.menu.advfrq.16M=16 MHz
+attiny85_diy.menu.advfrq.16M.build.f_cpu=16000000L
+attiny85_diy.menu.advfrq.16M.upload.speed=57600
+
+attiny85_diy.menu.advfrq.19M2=19.2 MHz
+attiny85_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+attiny85_diy.menu.advfrq.19M2.upload.speed=115200
+
+attiny85_diy.menu.advfrq.20M=20 MHz
+attiny85_diy.menu.advfrq.20M.build.f_cpu=20000000L
+attiny85_diy.menu.advfrq.20M.upload.speed=115200
+
+attiny85_diy.menu.advfrq.24M=24 MHz
+attiny85_diy.menu.advfrq.24M.build.f_cpu=24000000L
+attiny85_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny85_diy.menu.advups.auto=Default
+
+attiny85_diy.menu.advups.115200=115200
+attiny85_diy.menu.advups.115200.upload.speed=115200
+
+attiny85_diy.menu.advups.57600=57600
+attiny85_diy.menu.advups.57600.upload.speed=57600
+
+attiny85_diy.menu.advups.38400=38400
+attiny85_diy.menu.advups.38400.upload.speed=38400
+
+attiny85_diy.menu.advups.19200=19200
+attiny85_diy.menu.advups.19200.upload.speed=19200
+
+attiny85_diy.menu.advups.9600=9600
+attiny85_diy.menu.advups.9600.upload.speed=9600
+
+attiny85_diy.menu.advups.2400=2400
+attiny85_diy.menu.advups.2400.upload.speed=2400
+
+attiny85_diy.menu.advups.1200=1200
+attiny85_diy.menu.advups.1200.upload.speed=1200
+
+attiny85_diy.menu.advups.300=300
+attiny85_diy.menu.advups.300.upload.speed=300
+
+attiny85_diy.menu.advups.150=150
+attiny85_diy.menu.advups.150.upload.speed=150
 
 # }}}
 
@@ -713,6 +1175,11 @@ attiny24_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny24_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny24_diy.menu.clock.1MHz.upload.speed=9600
 
+attiny24_diy.menu.clock.over=Special Speed (Override)
+attiny24_diy.menu.clock.over.build.f_cpu=8000000L
+attiny24_diy.menu.clock.over.bootloader.low_fuses=0xE2
+attiny24_diy.menu.clock.over.upload.speed=38400
+
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 attiny24_diy.menu.core.SmallerCore=Millis Available, No Tone
@@ -823,6 +1290,145 @@ attiny24_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
 # attiny24_diy.menu.bodlevel.1v9=1.9v
 # attiny24_diy.menu.bodlevel.1v9.bootloader.bod_bits=001
 
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny24_diy.menu.advclk.auto=Default
+
+attiny24_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+attiny24_diy.menu.advclk.i8.bootloader.low_fuses=0xE2
+attiny24_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+attiny24_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+attiny24_diy.menu.advclk.i1.bootloader.low_fuses=0x62
+attiny24_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+attiny24_diy.menu.advclk.i128=Internal Oscillator 128 kHz (WDT)
+attiny24_diy.menu.advclk.i128.bootloader.low_fuses=0xE4
+attiny24_diy.menu.advclk.i128.build.f_cpu=128000L
+
+attiny24_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+attiny24_diy.menu.advclk.xlf.bootloader.low_fuses=0xE6
+
+attiny24_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+attiny24_diy.menu.advclk.x400.bootloader.low_fuses=0xF9
+
+attiny24_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+attiny24_diy.menu.advclk.x900.bootloader.low_fuses=0xFB
+
+attiny24_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+attiny24_diy.menu.advclk.x3.bootloader.low_fuses=0xFD
+
+attiny24_diy.menu.advclk.x8=Crystal/Resonator 8 MHz +
+attiny24_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
+
+attiny24_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+attiny24_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny24_diy.menu.advfrq.auto=Default
+
+attiny24_diy.menu.advfrq.32k768=32.768 kHz
+attiny24_diy.menu.advfrq.32k768.build.f_cpu=32768L
+attiny24_diy.menu.advfrq.32k768.upload.speed=150
+
+attiny24_diy.menu.advfrq.128k=128 kHz
+attiny24_diy.menu.advfrq.128k.build.f_cpu=128000L
+attiny24_diy.menu.advfrq.128k.upload.speed=300
+
+attiny24_diy.menu.advfrq.1M=1 MHz
+attiny24_diy.menu.advfrq.1M.build.f_cpu=1000000L
+attiny24_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny24_diy.menu.advfrq.4M608=4.608 MHz
+attiny24_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+attiny24_diy.menu.advfrq.4M608.upload.speed=115200
+
+attiny24_diy.menu.advfrq.4M8=4.8 MHz
+attiny24_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+attiny24_diy.menu.advfrq.4M8.upload.speed=19200
+
+attiny24_diy.menu.advfrq.6M=6 MHz
+attiny24_diy.menu.advfrq.6M.build.f_cpu=6000000L
+attiny24_diy.menu.advfrq.6M.upload.speed=57600
+
+attiny24_diy.menu.advfrq.6M4=6.4 MHz
+attiny24_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+attiny24_diy.menu.advfrq.6M4.upload.speed=115200
+
+attiny24_diy.menu.advfrq.8M=8 MHz
+attiny24_diy.menu.advfrq.8M.build.f_cpu=8000000L
+attiny24_diy.menu.advfrq.8M.upload.speed=38400
+
+attiny24_diy.menu.advfrq.9M6=9.6 MHz
+attiny24_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+attiny24_diy.menu.advfrq.9M6.upload.speed=57600
+
+attiny24_diy.menu.advfrq.10M=10 MHz
+attiny24_diy.menu.advfrq.10M.build.f_cpu=10000000L
+attiny24_diy.menu.advfrq.10M.upload.speed=115200
+
+attiny24_diy.menu.advfrq.12M=12 MHz
+attiny24_diy.menu.advfrq.12M.build.f_cpu=12000000L
+attiny24_diy.menu.advfrq.12M.upload.speed=115200
+
+attiny24_diy.menu.advfrq.12M8=12.8 MHz
+attiny24_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+attiny24_diy.menu.advfrq.12M8.upload.speed=115200
+
+attiny24_diy.menu.advfrq.15M36=15.36 MHz
+attiny24_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+attiny24_diy.menu.advfrq.15M36.upload.speed=57600
+
+attiny24_diy.menu.advfrq.16M=16 MHz
+attiny24_diy.menu.advfrq.16M.build.f_cpu=16000000L
+attiny24_diy.menu.advfrq.16M.upload.speed=57600
+
+attiny24_diy.menu.advfrq.19M2=19.2 MHz
+attiny24_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+attiny24_diy.menu.advfrq.19M2.upload.speed=115200
+
+attiny24_diy.menu.advfrq.20M=20 MHz
+attiny24_diy.menu.advfrq.20M.build.f_cpu=20000000L
+attiny24_diy.menu.advfrq.20M.upload.speed=115200
+
+attiny24_diy.menu.advfrq.24M=24 MHz
+attiny24_diy.menu.advfrq.24M.build.f_cpu=24000000L
+attiny24_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny24_diy.menu.advups.auto=Default
+
+attiny24_diy.menu.advups.115200=115200
+attiny24_diy.menu.advups.115200.upload.speed=115200
+
+attiny24_diy.menu.advups.57600=57600
+attiny24_diy.menu.advups.57600.upload.speed=57600
+
+attiny24_diy.menu.advups.38400=38400
+attiny24_diy.menu.advups.38400.upload.speed=38400
+
+attiny24_diy.menu.advups.19200=19200
+attiny24_diy.menu.advups.19200.upload.speed=19200
+
+attiny24_diy.menu.advups.9600=9600
+attiny24_diy.menu.advups.9600.upload.speed=9600
+
+attiny24_diy.menu.advups.2400=2400
+attiny24_diy.menu.advups.2400.upload.speed=2400
+
+attiny24_diy.menu.advups.1200=1200
+attiny24_diy.menu.advups.1200.upload.speed=1200
+
+attiny24_diy.menu.advups.300=300
+attiny24_diy.menu.advups.300.upload.speed=300
+
+attiny24_diy.menu.advups.150=150
+attiny24_diy.menu.advups.150.upload.speed=150
 
 # }}}
 
@@ -893,6 +1499,11 @@ attiny44_diy.menu.clock.1MHz=1MHz Internal Oscillator
 attiny44_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny44_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny44_diy.menu.clock.1MHz.upload.speed=9600
+
+attiny44_diy.menu.clock.over=Special Speed (Override)
+attiny44_diy.menu.clock.over.build.f_cpu=8000000L
+attiny44_diy.menu.clock.over.bootloader.low_fuses=0xE2
+attiny44_diy.menu.clock.over.upload.speed=38400
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1003,6 +1614,145 @@ attiny44_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
 # attiny44_diy.menu.bodlevel.1v9=1.9v
 # attiny44_diy.menu.bodlevel.1v9.bootloader.bod_bits=001
 
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny44_diy.menu.advclk.auto=Default
+
+attiny44_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+attiny44_diy.menu.advclk.i8.bootloader.low_fuses=0xE2
+attiny44_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+attiny44_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+attiny44_diy.menu.advclk.i1.bootloader.low_fuses=0x62
+attiny44_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+attiny44_diy.menu.advclk.i128=Internal Oscillator 128 kHz (WDT)
+attiny44_diy.menu.advclk.i128.bootloader.low_fuses=0xE4
+attiny44_diy.menu.advclk.i128.build.f_cpu=128000L
+
+attiny44_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+attiny44_diy.menu.advclk.xlf.bootloader.low_fuses=0xE6
+
+attiny44_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+attiny44_diy.menu.advclk.x400.bootloader.low_fuses=0xF9
+
+attiny44_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+attiny44_diy.menu.advclk.x900.bootloader.low_fuses=0xFB
+
+attiny44_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+attiny44_diy.menu.advclk.x3.bootloader.low_fuses=0xFD
+
+attiny44_diy.menu.advclk.x8=Crystal/Resonator 8 MHz +
+attiny44_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
+
+attiny44_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+attiny44_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny44_diy.menu.advfrq.auto=Default
+
+attiny44_diy.menu.advfrq.32k768=32.768 kHz
+attiny44_diy.menu.advfrq.32k768.build.f_cpu=32768L
+attiny44_diy.menu.advfrq.32k768.upload.speed=150
+
+attiny44_diy.menu.advfrq.128k=128 kHz
+attiny44_diy.menu.advfrq.128k.build.f_cpu=128000L
+attiny44_diy.menu.advfrq.128k.upload.speed=300
+
+attiny44_diy.menu.advfrq.1M=1 MHz
+attiny44_diy.menu.advfrq.1M.build.f_cpu=1000000L
+attiny44_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny44_diy.menu.advfrq.4M608=4.608 MHz
+attiny44_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+attiny44_diy.menu.advfrq.4M608.upload.speed=115200
+
+attiny44_diy.menu.advfrq.4M8=4.8 MHz
+attiny44_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+attiny44_diy.menu.advfrq.4M8.upload.speed=19200
+
+attiny44_diy.menu.advfrq.6M=6 MHz
+attiny44_diy.menu.advfrq.6M.build.f_cpu=6000000L
+attiny44_diy.menu.advfrq.6M.upload.speed=57600
+
+attiny44_diy.menu.advfrq.6M4=6.4 MHz
+attiny44_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+attiny44_diy.menu.advfrq.6M4.upload.speed=115200
+
+attiny44_diy.menu.advfrq.8M=8 MHz
+attiny44_diy.menu.advfrq.8M.build.f_cpu=8000000L
+attiny44_diy.menu.advfrq.8M.upload.speed=38400
+
+attiny44_diy.menu.advfrq.9M6=9.6 MHz
+attiny44_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+attiny44_diy.menu.advfrq.9M6.upload.speed=57600
+
+attiny44_diy.menu.advfrq.10M=10 MHz
+attiny44_diy.menu.advfrq.10M.build.f_cpu=10000000L
+attiny44_diy.menu.advfrq.10M.upload.speed=115200
+
+attiny44_diy.menu.advfrq.12M=12 MHz
+attiny44_diy.menu.advfrq.12M.build.f_cpu=12000000L
+attiny44_diy.menu.advfrq.12M.upload.speed=115200
+
+attiny44_diy.menu.advfrq.12M8=12.8 MHz
+attiny44_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+attiny44_diy.menu.advfrq.12M8.upload.speed=115200
+
+attiny44_diy.menu.advfrq.15M36=15.36 MHz
+attiny44_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+attiny44_diy.menu.advfrq.15M36.upload.speed=57600
+
+attiny44_diy.menu.advfrq.16M=16 MHz
+attiny44_diy.menu.advfrq.16M.build.f_cpu=16000000L
+attiny44_diy.menu.advfrq.16M.upload.speed=57600
+
+attiny44_diy.menu.advfrq.19M2=19.2 MHz
+attiny44_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+attiny44_diy.menu.advfrq.19M2.upload.speed=115200
+
+attiny44_diy.menu.advfrq.20M=20 MHz
+attiny44_diy.menu.advfrq.20M.build.f_cpu=20000000L
+attiny44_diy.menu.advfrq.20M.upload.speed=115200
+
+attiny44_diy.menu.advfrq.24M=24 MHz
+attiny44_diy.menu.advfrq.24M.build.f_cpu=24000000L
+attiny44_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny44_diy.menu.advups.auto=Default
+
+attiny44_diy.menu.advups.115200=115200
+attiny44_diy.menu.advups.115200.upload.speed=115200
+
+attiny44_diy.menu.advups.57600=57600
+attiny44_diy.menu.advups.57600.upload.speed=57600
+
+attiny44_diy.menu.advups.38400=38400
+attiny44_diy.menu.advups.38400.upload.speed=38400
+
+attiny44_diy.menu.advups.19200=19200
+attiny44_diy.menu.advups.19200.upload.speed=19200
+
+attiny44_diy.menu.advups.9600=9600
+attiny44_diy.menu.advups.9600.upload.speed=9600
+
+attiny44_diy.menu.advups.2400=2400
+attiny44_diy.menu.advups.2400.upload.speed=2400
+
+attiny44_diy.menu.advups.1200=1200
+attiny44_diy.menu.advups.1200.upload.speed=1200
+
+attiny44_diy.menu.advups.300=300
+attiny44_diy.menu.advups.300.upload.speed=300
+
+attiny44_diy.menu.advups.150=150
+attiny44_diy.menu.advups.150.upload.speed=150
 
 # }}}
 
@@ -1079,6 +1829,11 @@ attiny84_diy.menu.clock.1MHz=1MHz Internal Oscillator
 attiny84_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny84_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny84_diy.menu.clock.1MHz.upload.speed=9600
+
+attiny84_diy.menu.clock.over=Special Speed (Override)
+attiny84_diy.menu.clock.over.build.f_cpu=8000000L
+attiny84_diy.menu.clock.over.bootloader.low_fuses=0xE2
+attiny84_diy.menu.clock.over.upload.speed=38400
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1189,6 +1944,146 @@ attiny84_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
 # attiny84_diy.menu.bodlevel.1v9=1.9v
 # attiny84_diy.menu.bodlevel.1v9.bootloader.bod_bits=001
 
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny84_diy.menu.advclk.auto=Default
+
+attiny84_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+attiny84_diy.menu.advclk.i8.bootloader.low_fuses=0xE2
+attiny84_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+attiny84_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+attiny84_diy.menu.advclk.i1.bootloader.low_fuses=0x62
+attiny84_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+attiny84_diy.menu.advclk.i128=Internal Oscillator 128 kHz (WDT)
+attiny84_diy.menu.advclk.i128.bootloader.low_fuses=0xE4
+attiny84_diy.menu.advclk.i128.build.f_cpu=128000L
+
+attiny84_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+attiny84_diy.menu.advclk.xlf.bootloader.low_fuses=0xE6
+
+attiny84_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+attiny84_diy.menu.advclk.x400.bootloader.low_fuses=0xF9
+
+attiny84_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+attiny84_diy.menu.advclk.x900.bootloader.low_fuses=0xFB
+
+attiny84_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+attiny84_diy.menu.advclk.x3.bootloader.low_fuses=0xFD
+
+attiny84_diy.menu.advclk.x8=Crystal/Resonator 8 MHz +
+attiny84_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
+
+attiny84_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+attiny84_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny84_diy.menu.advfrq.auto=Default
+
+attiny84_diy.menu.advfrq.32k768=32.768 kHz
+attiny84_diy.menu.advfrq.32k768.build.f_cpu=32768L
+attiny84_diy.menu.advfrq.32k768.upload.speed=150
+
+attiny84_diy.menu.advfrq.128k=128 kHz
+attiny84_diy.menu.advfrq.128k.build.f_cpu=128000L
+attiny84_diy.menu.advfrq.128k.upload.speed=300
+
+attiny84_diy.menu.advfrq.1M=1 MHz
+attiny84_diy.menu.advfrq.1M.build.f_cpu=1000000L
+attiny84_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny84_diy.menu.advfrq.4M608=4.608 MHz
+attiny84_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+attiny84_diy.menu.advfrq.4M608.upload.speed=115200
+
+attiny84_diy.menu.advfrq.4M8=4.8 MHz
+attiny84_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+attiny84_diy.menu.advfrq.4M8.upload.speed=19200
+
+attiny84_diy.menu.advfrq.6M=6 MHz
+attiny84_diy.menu.advfrq.6M.build.f_cpu=6000000L
+attiny84_diy.menu.advfrq.6M.upload.speed=57600
+
+attiny84_diy.menu.advfrq.6M4=6.4 MHz
+attiny84_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+attiny84_diy.menu.advfrq.6M4.upload.speed=115200
+
+attiny84_diy.menu.advfrq.8M=8 MHz
+attiny84_diy.menu.advfrq.8M.build.f_cpu=8000000L
+attiny84_diy.menu.advfrq.8M.upload.speed=38400
+
+attiny84_diy.menu.advfrq.9M6=9.6 MHz
+attiny84_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+attiny84_diy.menu.advfrq.9M6.upload.speed=57600
+
+attiny84_diy.menu.advfrq.10M=10 MHz
+attiny84_diy.menu.advfrq.10M.build.f_cpu=10000000L
+attiny84_diy.menu.advfrq.10M.upload.speed=115200
+
+attiny84_diy.menu.advfrq.12M=12 MHz
+attiny84_diy.menu.advfrq.12M.build.f_cpu=12000000L
+attiny84_diy.menu.advfrq.12M.upload.speed=115200
+
+attiny84_diy.menu.advfrq.12M8=12.8 MHz
+attiny84_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+attiny84_diy.menu.advfrq.12M8.upload.speed=115200
+
+attiny84_diy.menu.advfrq.15M36=15.36 MHz
+attiny84_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+attiny84_diy.menu.advfrq.15M36.upload.speed=57600
+
+attiny84_diy.menu.advfrq.16M=16 MHz
+attiny84_diy.menu.advfrq.16M.build.f_cpu=16000000L
+attiny84_diy.menu.advfrq.16M.upload.speed=57600
+
+attiny84_diy.menu.advfrq.19M2=19.2 MHz
+attiny84_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+attiny84_diy.menu.advfrq.19M2.upload.speed=115200
+
+attiny84_diy.menu.advfrq.20M=20 MHz
+attiny84_diy.menu.advfrq.20M.build.f_cpu=20000000L
+attiny84_diy.menu.advfrq.20M.upload.speed=115200
+
+attiny84_diy.menu.advfrq.24M=24 MHz
+attiny84_diy.menu.advfrq.24M.build.f_cpu=24000000L
+attiny84_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny84_diy.menu.advups.auto=Default
+
+attiny84_diy.menu.advups.115200=115200
+attiny84_diy.menu.advups.115200.upload.speed=115200
+
+attiny84_diy.menu.advups.57600=57600
+attiny84_diy.menu.advups.57600.upload.speed=57600
+
+attiny84_diy.menu.advups.38400=38400
+attiny84_diy.menu.advups.38400.upload.speed=38400
+
+attiny84_diy.menu.advups.19200=19200
+attiny84_diy.menu.advups.19200.upload.speed=19200
+
+attiny84_diy.menu.advups.9600=9600
+attiny84_diy.menu.advups.9600.upload.speed=9600
+
+attiny84_diy.menu.advups.2400=2400
+attiny84_diy.menu.advups.2400.upload.speed=2400
+
+attiny84_diy.menu.advups.1200=1200
+attiny84_diy.menu.advups.1200.upload.speed=1200
+
+attiny84_diy.menu.advups.300=300
+attiny84_diy.menu.advups.300.upload.speed=300
+
+attiny84_diy.menu.advups.150=150
+attiny84_diy.menu.advups.150.upload.speed=150
+
 # }}}
 
 
@@ -1287,6 +2182,10 @@ attiny13_diy.menu.clock.4_8MHz.bootloader.low_fuses=0x79
 attiny13_diy.menu.clock.1_2MHz=1.2MHz Internal Oscillator
 attiny13_diy.menu.clock.1_2MHz.build.f_cpu=1200000L
 attiny13_diy.menu.clock.1_2MHz.bootloader.low_fuses=0x62
+
+attiny13_diy.menu.clock.over=Special Speed (Override)
+attiny13_diy.menu.clock.over.build.f_cpu=9600000L
+attiny13_diy.menu.clock.over.bootloader.low_fuses=0x7A
 
 
 # Core Menu
@@ -1410,6 +2309,139 @@ attiny13_diy.menu.bodlevel.1v8=1.8v
 attiny13_diy.menu.bodlevel.1v8.bootloader.bod_bits=10
 attiny13_diy.menu.bodlevel.4v3=4.3v
 attiny13_diy.menu.bodlevel.4v3.bootloader.bod_bits=00
+
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny13_diy.menu.advclk.auto=Default
+
+attiny13_diy.menu.advclk.i9M6=Internal Oscillator 9.6 MHz
+attiny13_diy.menu.advclk.i9M6.bootloader.low_fuses=0x7A
+attiny13_diy.menu.advclk.i9M6.build.f_cpu=9600000L
+
+attiny13_diy.menu.advclk.i1M2=Internal Oscillator 1.2 MHz
+attiny13_diy.menu.advclk.i1M2.bootloader.low_fuses=0x6A
+attiny13_diy.menu.advclk.i1M2.build.f_cpu=1200000L
+
+attiny13_diy.menu.advclk.i4M8=Internal Oscillator 4.8 MHz
+attiny13_diy.menu.advclk.i4M8.bootloader.low_fuses=0x79
+attiny13_diy.menu.advclk.i4M8.build.f_cpu=4800000L
+
+attiny13_diy.menu.advclk.i600K=Internal Oscillator 600 kHz
+attiny13_diy.menu.advclk.i600K.bootloader.low_fuses=0x69
+attiny13_diy.menu.advclk.i600K.build.f_cpu=600000L
+
+attiny13_diy.menu.advclk.i128K=Internal Oscillator 128 kHz
+attiny13_diy.menu.advclk.i128K.bootloader.low_fuses=0x7B
+attiny13_diy.menu.advclk.i128K.build.f_cpu=128000L
+
+attiny13_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+attiny13_diy.menu.advclk.xc.bootloader.low_fuses=0x78
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny13_diy.menu.advfrq.auto=Default
+
+attiny13_diy.menu.advfrq.32k768=32.768 kHz
+attiny13_diy.menu.advfrq.32k768.build.f_cpu=32768L
+attiny13_diy.menu.advfrq.32k768.upload.speed=150
+
+attiny13_diy.menu.advfrq.128k=128 kHz
+attiny13_diy.menu.advfrq.128k.build.f_cpu=128000L
+attiny13_diy.menu.advfrq.128k.upload.speed=300
+
+attiny13_diy.menu.advfrq.1M=1 MHz
+attiny13_diy.menu.advfrq.1M.build.f_cpu=1000000L
+attiny13_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny13_diy.menu.advfrq.4M608=4.608 MHz
+attiny13_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+attiny13_diy.menu.advfrq.4M608.upload.speed=115200
+
+attiny13_diy.menu.advfrq.4M8=4.8 MHz
+attiny13_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+attiny13_diy.menu.advfrq.4M8.upload.speed=19200
+
+attiny13_diy.menu.advfrq.6M=6 MHz
+attiny13_diy.menu.advfrq.6M.build.f_cpu=6000000L
+attiny13_diy.menu.advfrq.6M.upload.speed=57600
+
+attiny13_diy.menu.advfrq.6M4=6.4 MHz
+attiny13_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+attiny13_diy.menu.advfrq.6M4.upload.speed=115200
+
+attiny13_diy.menu.advfrq.8M=8 MHz
+attiny13_diy.menu.advfrq.8M.build.f_cpu=8000000L
+attiny13_diy.menu.advfrq.8M.upload.speed=38400
+
+attiny13_diy.menu.advfrq.9M6=9.6 MHz
+attiny13_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+attiny13_diy.menu.advfrq.9M6.upload.speed=57600
+
+attiny13_diy.menu.advfrq.10M=10 MHz
+attiny13_diy.menu.advfrq.10M.build.f_cpu=10000000L
+attiny13_diy.menu.advfrq.10M.upload.speed=115200
+
+attiny13_diy.menu.advfrq.12M=12 MHz
+attiny13_diy.menu.advfrq.12M.build.f_cpu=12000000L
+attiny13_diy.menu.advfrq.12M.upload.speed=115200
+
+attiny13_diy.menu.advfrq.12M8=12.8 MHz
+attiny13_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+attiny13_diy.menu.advfrq.12M8.upload.speed=115200
+
+attiny13_diy.menu.advfrq.15M36=15.36 MHz
+attiny13_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+attiny13_diy.menu.advfrq.15M36.upload.speed=57600
+
+attiny13_diy.menu.advfrq.16M=16 MHz
+attiny13_diy.menu.advfrq.16M.build.f_cpu=16000000L
+attiny13_diy.menu.advfrq.16M.upload.speed=57600
+
+attiny13_diy.menu.advfrq.19M2=19.2 MHz
+attiny13_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+attiny13_diy.menu.advfrq.19M2.upload.speed=115200
+
+attiny13_diy.menu.advfrq.20M=20 MHz
+attiny13_diy.menu.advfrq.20M.build.f_cpu=20000000L
+attiny13_diy.menu.advfrq.20M.upload.speed=115200
+
+attiny13_diy.menu.advfrq.24M=24 MHz
+attiny13_diy.menu.advfrq.24M.build.f_cpu=24000000L
+attiny13_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+attiny13_diy.menu.advups.auto=Default
+
+attiny13_diy.menu.advups.115200=115200
+attiny13_diy.menu.advups.115200.upload.speed=115200
+
+attiny13_diy.menu.advups.57600=57600
+attiny13_diy.menu.advups.57600.upload.speed=57600
+
+attiny13_diy.menu.advups.38400=38400
+attiny13_diy.menu.advups.38400.upload.speed=38400
+
+attiny13_diy.menu.advups.19200=19200
+attiny13_diy.menu.advups.19200.upload.speed=19200
+
+attiny13_diy.menu.advups.9600=9600
+attiny13_diy.menu.advups.9600.upload.speed=9600
+
+attiny13_diy.menu.advups.2400=2400
+attiny13_diy.menu.advups.2400.upload.speed=2400
+
+attiny13_diy.menu.advups.1200=1200
+attiny13_diy.menu.advups.1200.upload.speed=1200
+
+attiny13_diy.menu.advups.300=300
+attiny13_diy.menu.advups.300.upload.speed=300
+
+attiny13_diy.menu.advups.150=150
+attiny13_diy.menu.advups.150.upload.speed=150
 
 # }}}
 
