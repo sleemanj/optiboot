@@ -76,8 +76,17 @@
 menu.version    = Processor Version
 menu.clock      = Processor Speed
 menu.boot       = Use Bootloader
-menu.lto        = Link Time Optimisation (1.6.11+ only)
+menu.lto        = Link Time Optimisation
+menu.bodlevel   = Brown-out Detection Level
+menu.advclk     = Override Clock Source
+menu.advfrq     = Override Frequency
 
+# The mega8 has a CKOPT fuse which increases drive strength to crystals
+#  or enables some internal capacitors for low frequency crystal
+#  and clock inputs.
+menu.advckopt   = Override CKOPT
+
+menu.advups     = Override Upload Speed
 
 ################################################################################
 # ATMEGA8
@@ -101,8 +110,12 @@ menu.lto        = Link Time Optimisation (1.6.11+ only)
 
 atmega8_diy.name=ATmega8/A
 atmega8_diy.build.mcu=atmega8
-atmega8_diy.bootloader.low_fuses=0xA4
-atmega8_diy.bootloader.high_fuses=0xCC
+atmega8_diy.bootloader.low_fuses=0b{bootloader.bod_bits}{bootloader.clock_bits}
+atmega8_diy.bootloader.bod_bits=11
+atmega8_diy.bootloader.clock_bits=100100
+atmega8_diy.bootloader.high_fuses=0b110{bootloader.ckopt_bit}1{bootloader.bootloader_bits}
+atmega8_diy.bootloader.ckopt_bit=0
+atmega8_diy.bootloader.bootloader_bits=111
 atmega8_diy.bootloader.unlock_bits=0x3F
 atmega8_diy.bootloader.lock_bits=0x3F
 atmega8_diy.build.f_cpu=8000000L
@@ -128,13 +141,13 @@ atmega8_diy.menu.version.atmega8.build.mcu = atmega8
 atmega8_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
 atmega8_diy.menu.boot.optiboot.upload.protocol=arduino
 atmega8_diy.menu.boot.optiboot.upload.maximum_size=7680
-atmega8_diy.menu.boot.optiboot.bootloader.high_fuses=0xCC
+atmega8_diy.menu.boot.optiboot.bootloader.bootloader_bits=100
 atmega8_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 atmega8_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
 
 atmega8_diy.menu.boot.none=No (ISP Programmer Upload)
 atmega8_diy.menu.boot.none.upload.maximum_size=8192
-atmega8_diy.menu.boot.none.bootloader.high_fuses=0xCD
+atmega8_diy.menu.boot.none.bootloader.bootloader_bits=101
 atmega8_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader_noefuse
 
 # Speed Menu
@@ -143,16 +156,38 @@ atmega8_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader_noefuse
 atmega8_diy.menu.clock.8MHz=8MHz Internal Oscillator
 atmega8_diy.menu.clock.8MHz.build.f_cpu=8000000L
 atmega8_diy.menu.clock.8MHz.upload.speed=38400
-atmega8_diy.menu.clock.8MHz.bootloader.low_fuses=0xA4
+atmega8_diy.menu.clock.8MHz.bootloader.clock_bits=100100
+atmega8_diy.menu.clock.8MHz.bootloader.ckopt_bit=1
 
 atmega8_diy.menu.clock.16MHz=16MHz Crystal/Resonator
 atmega8_diy.menu.clock.16MHz.build.f_cpu=16000000L
-atmega8_diy.menu.clock.16MHz.bootloader.low_fuses=0xBF
+atmega8_diy.menu.clock.16MHz.bootloader.clock_bits=111111
+atmega8_diy.menu.clock.16MHz.bootloader.ckopt_bit=0
+
+atmega8_diy.menu.clock.12MHz=12MHz Crystal/Resonator
+atmega8_diy.menu.clock.12MHz.build.f_cpu=12000000L
+atmega8_diy.menu.clock.12MHz.bootloader.clock_bits=111111
+atmega8_diy.menu.clock.12MHz.bootloader.ckopt_bit=0
+atmega8_diy.menu.clock.12MHz.upload.speed=115200
+
+atmega8_diy.menu.clock.4MHz=4MHz Internal Oscillator
+atmega8_diy.menu.clock.4MHz.build.f_cpu=4000000L
+atmega8_diy.menu.clock.4MHz.bootloader.clock_bits=100011
+atmega8_diy.menu.clock.4MHz.bootloader.ckopt_bit=1
+atmega8_diy.menu.clock.4MHz.upload.speed=38400
+
+atmega8_diy.menu.clock.2MHz=2MHz Internal Oscillator
+atmega8_diy.menu.clock.2MHz.build.f_cpu=2000000L
+atmega8_diy.menu.clock.2MHz.bootloader.clock_bits=100010
+atmega8_diy.menu.clock.2MHz.bootloader.ckopt_bit=1
+atmega8_diy.menu.clock.2MHz.upload.speed=19200
 
 atmega8_diy.menu.clock.1MHz=1MHz Internal Oscillator
 atmega8_diy.menu.clock.1MHz.build.f_cpu=1000000L
-atmega8_diy.menu.clock.1MHz.bootloader.low_fuses=0xA1
+atmega8_diy.menu.clock.1MHz.bootloader.clock_bits=100001
+atmega8_diy.menu.clock.1MHz.bootloader.ckopt_bit=1
 atmega8_diy.menu.clock.1MHz.upload.speed=9600
+
 
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -167,108 +202,202 @@ atmega8_diy.menu.lto.disable.ltoelfflags=
 atmega8_diy.menu.lto.disable.ltocppflags=
 atmega8_diy.menu.lto.disable.ltoarcmd=
 
-# }}}
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega8_diy.menu.bodlevel.2v7=2.7v
+atmega8_diy.menu.bodlevel.2v7.bootloader.bod_bits=10
+atmega8_diy.menu.bodlevel.disabled=Disabled
+atmega8_diy.menu.bodlevel.disabled.bootloader.bod_bits=11
+atmega8_diy.menu.bodlevel.4v0=4.0v
+atmega8_diy.menu.bodlevel.4v0.bootloader.bod_bits=00
 
 
-
-################################################################################
-# ATMEGA48
-#
-# The 48 does not have a separate boot section of memory, so this means that
-# optiboot uses a virtual boot method, this has a couple effects, firstly
-# it takes more flash for the boot process, secondly it sacrifices the SPM_RDY
-# interrupt vector, and thirdly it means that the lock bits 
-# are just the simple set as with no bootloader.
-#
-################################################################################
-# {{{
-
-atmega48_diy.name=ATmega48/A
-atmega48_diy.bootloader.low_fuses=0xE2
-atmega48_diy.bootloader.high_fuses=0xDD
-atmega48_diy.bootloader.extended_fuses=0x00
-atmega48_diy.bootloader.unlock_bits=0x3F
-atmega48_diy.bootloader.lock_bits=0x3F
-atmega48_diy.build.mcu=atmega48p
-atmega48_diy.build.f_cpu=8000000L
-atmega48_diy.upload.speed=57600
-atmega48_diy.build.core=arduino:arduino
-atmega48_diy.build.variant=arduino:standard
-atmega48_diy.build.board=ATMEGA48_DIY
-atmega48_diy.upload.tool=arduino:avrdude
-atmega48_diy.bootloader.tool=arduino:avrdude
-
-# Version Menu
+# Override: Clock Source Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-atmega48_diy.menu.version.atmega48  = ATmega48
-atmega48_diy.menu.version.atmega48.build.mcu = atmega48
+atmega8_diy.menu.advclk.auto=Default
 
-atmega48_diy.menu.version.atmega48a = Atmega48A
-atmega48_diy.menu.version.atmega48a.build.mcu = atmega48
+atmega8_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+atmega8_diy.menu.advclk.i8.bootloader.clock_bits=100100
+atmega8_diy.menu.advclk.i8.bootloader.ckopt_bit=1
+atmega8_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+atmega8_diy.menu.advclk.i4=Internal Oscillator 4 MHz
+atmega8_diy.menu.advclk.i4.bootloader.clock_bits=100011
+atmega8_diy.menu.advclk.i4.bootloader.ckopt_bit=1
+atmega8_diy.menu.advclk.i4.build.f_cpu=4000000L
+
+atmega8_diy.menu.advclk.i3=Internal Oscillator 2 MHz
+atmega8_diy.menu.advclk.i3.bootloader.clock_bits=100010
+atmega8_diy.menu.advclk.i3.bootloader.ckopt_bit=1
+atmega8_diy.menu.advclk.i3.build.f_cpu=2000000L
+
+atmega8_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+atmega8_diy.menu.advclk.i1.bootloader.clock_bits=100001
+atmega8_diy.menu.advclk.i1.bootloader.ckopt_bit=1
+atmega8_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+atmega8_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+atmega8_diy.menu.advclk.xlf.bootloader.clock_bits=101001
+atmega8_diy.menu.advclk.xlf.bootloader.ckopt_bit=1
+
+atmega8_diy.menu.advclk.xfs=Full Swing Crystal/Resonator 1+ MHz
+atmega8_diy.menu.advclk.xfs.bootloader.clock_bits=111111
+atmega8_diy.menu.advclk.xfs.bootloader.ckopt_bit=0
+
+atmega8_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+atmega8_diy.menu.advclk.x400.bootloader.clock_bits=111011
+atmega8_diy.menu.advclk.x400.bootloader.ckopt_bit=1
+
+atmega8_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+atmega8_diy.menu.advclk.x900.bootloader.clock_bits=111101
+atmega8_diy.menu.advclk.x900.bootloader.ckopt_bit=1
+
+atmega8_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+atmega8_diy.menu.advclk.x3.bootloader.clock_bits=111111
+atmega8_diy.menu.advclk.x3.bootloader.ckopt_bit=1
+
+atmega8_diy.menu.advclk.x8=Crystal/Resonator 8+ MHz 
+atmega8_diy.menu.advclk.x8.bootloader.clock_bits=111111
+atmega8_diy.menu.advclk.x8.bootloader.ckopt_bit=0
+
+atmega8_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+atmega8_diy.menu.advclk.xc.bootloader.clock_bits=100000
+atmega8_diy.menu.advclk.xc.bootloader.ckopt_bit=1
+
+atmega8_diy.menu.advclk.xrclf=External RC Oscillator <= 900 kHz
+atmega8_diy.menu.advclk.xrclf.bootloader.clock_bits=100101
+atmega8_diy.menu.advclk.xrclf.bootloader.ckopt_bit=1
+
+atmega8_diy.menu.advclk.xrc900=External RC Oscillator 900 kHz - 3 MHz
+atmega8_diy.menu.advclk.xrc900.bootloader.clock_bits=100110
+atmega8_diy.menu.advclk.xrc900.bootloader.ckopt_bit=1
+
+atmega8_diy.menu.advclk.xrc3=External RC Oscillator 3 MHz - 8 MHz
+atmega8_diy.menu.advclk.xrc3.bootloader.clock_bits=100111
+atmega8_diy.menu.advclk.xrc3.bootloader.ckopt_bit=1
+
+atmega8_diy.menu.advclk.xrc8=External RC Oscillator 8 MHz - 12 MHz
+atmega8_diy.menu.advclk.xrc8.bootloader.clock_bits=101000
+atmega8_diy.menu.advclk.xrc8.bootloader.ckopt_bit=1
 
 
-# Bootloader Menu
+# Override: Frequency Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-atmega48_diy.menu.boot.optiboot=Yes (Normal Arduino Serial/USB Upload)
-atmega48_diy.menu.boot.optiboot.upload.protocol=arduino
-atmega48_diy.menu.boot.optiboot.upload.maximum_size=3548
-atmega48_diy.menu.boot.optiboot.bootloader.high_fuses=0xDD
-atmega48_diy.menu.boot.optiboot.bootloader.file=optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
-atmega48_diy.menu.boot.optiboot.bootloader.noblink=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega8_diy.menu.advfrq.auto=Default
 
-atmega48_diy.menu.boot.optiboot_notuner=Yes, Without Tuner
-atmega48_diy.menu.boot.optiboot_notuner.upload.protocol=arduino
-atmega48_diy.menu.boot.optiboot_notuner.upload.maximum_size=3564
-atmega48_diy.menu.boot.optiboot_notuner.bootloader.high_fuses=0xDD
-atmega48_diy.menu.boot.optiboot_notuner.bootloader.file=notuner_optiboot_{build.mcu}_{build.f_cpu}_{upload.speed}.hex
+atmega8_diy.menu.advfrq.32k768=32.768 kHz
+atmega8_diy.menu.advfrq.32k768.build.f_cpu=32768L
+atmega8_diy.menu.advfrq.32k768.upload.speed=150
 
-atmega48_diy.menu.boot.none=No (ISP Programmer Upload)
-atmega48_diy.menu.boot.none.upload.maximum_size=4096
-atmega48_diy.menu.boot.none.bootloader.high_fuses=0xDD
-atmega48_diy.menu.boot.none.upload.tool=arduino:avrdude
-atmega48_diy.menu.boot.none.bootloader.tool=avrdude_nobootloader
+atmega8_diy.menu.advfrq.128k=128 kHz
+atmega8_diy.menu.advfrq.128k.build.f_cpu=128000L
+atmega8_diy.menu.advfrq.128k.upload.speed=300
 
+atmega8_diy.menu.advfrq.1M=1 MHz
+atmega8_diy.menu.advfrq.1M.build.f_cpu=1000000L
+atmega8_diy.menu.advfrq.1M.upload.speed=9600
 
-# Speed Menu
+atmega8_diy.menu.advfrq.4M608=4.608 MHz
+atmega8_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+atmega8_diy.menu.advfrq.4M608.upload.speed=115200
+
+atmega8_diy.menu.advfrq.4M8=4.8 MHz
+atmega8_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+atmega8_diy.menu.advfrq.4M8.upload.speed=19200
+
+atmega8_diy.menu.advfrq.6M=6 MHz
+atmega8_diy.menu.advfrq.6M.build.f_cpu=6000000L
+atmega8_diy.menu.advfrq.6M.upload.speed=57600
+
+atmega8_diy.menu.advfrq.6M4=6.4 MHz
+atmega8_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+atmega8_diy.menu.advfrq.6M4.upload.speed=115200
+
+atmega8_diy.menu.advfrq.8M=8 MHz
+atmega8_diy.menu.advfrq.8M.build.f_cpu=8000000L
+atmega8_diy.menu.advfrq.8M.upload.speed=38400
+
+atmega8_diy.menu.advfrq.9M6=9.6 MHz
+atmega8_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+atmega8_diy.menu.advfrq.9M6.upload.speed=57600
+
+atmega8_diy.menu.advfrq.10M=10 MHz
+atmega8_diy.menu.advfrq.10M.build.f_cpu=10000000L
+atmega8_diy.menu.advfrq.10M.upload.speed=115200
+
+atmega8_diy.menu.advfrq.12M=12 MHz
+atmega8_diy.menu.advfrq.12M.build.f_cpu=12000000L
+atmega8_diy.menu.advfrq.12M.upload.speed=115200
+
+atmega8_diy.menu.advfrq.12M8=12.8 MHz
+atmega8_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+atmega8_diy.menu.advfrq.12M8.upload.speed=115200
+
+atmega8_diy.menu.advfrq.15M36=15.36 MHz
+atmega8_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+atmega8_diy.menu.advfrq.15M36.upload.speed=57600
+
+atmega8_diy.menu.advfrq.16M=16 MHz
+atmega8_diy.menu.advfrq.16M.build.f_cpu=16000000L
+atmega8_diy.menu.advfrq.16M.upload.speed=57600
+
+atmega8_diy.menu.advfrq.19M2=19.2 MHz
+atmega8_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+atmega8_diy.menu.advfrq.19M2.upload.speed=115200
+
+atmega8_diy.menu.advfrq.20M=20 MHz
+atmega8_diy.menu.advfrq.20M.build.f_cpu=20000000L
+atmega8_diy.menu.advfrq.20M.upload.speed=115200
+
+atmega8_diy.menu.advfrq.24M=24 MHz
+atmega8_diy.menu.advfrq.24M.build.f_cpu=24000000L
+atmega8_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-atmega48_diy.menu.clock.8MHz=8MHz Internal Oscillator
-atmega48_diy.menu.clock.8MHz.build.f_cpu=8000000L
-atmega48_diy.menu.clock.8MHz.upload.speed=38400
-atmega48_diy.menu.clock.8MHz.bootloader.low_fuses=0xE2
+atmega8_diy.menu.advups.auto=Default
 
-atmega48_diy.menu.clock.20MHz=20MHz Crystal/Resonator
-atmega48_diy.menu.clock.20MHz.build.f_cpu=20000000L
-atmega48_diy.menu.clock.20MHz.bootloader.low_fuses=0xFF
+atmega8_diy.menu.advups.115200=115200
+atmega8_diy.menu.advups.115200.upload.speed=115200
 
-atmega48_diy.menu.clock.19_2MHz=19.2MHz Crystal/Resonator
-atmega48_diy.menu.clock.19_2MHz.build.f_cpu=19200000L
-atmega48_diy.menu.clock.19_2MHz.bootloader.low_fuses=0xFF
+atmega8_diy.menu.advups.57600=57600
+atmega8_diy.menu.advups.57600.upload.speed=57600
 
-atmega48_diy.menu.clock.16MHz=16MHz Crystal/Resonator
-atmega48_diy.menu.clock.16MHz.build.f_cpu=16000000L
-atmega48_diy.menu.clock.16MHz.bootloader.low_fuses=0xF7
+atmega8_diy.menu.advups.38400=38400
+atmega8_diy.menu.advups.38400.upload.speed=38400
 
-atmega48_diy.menu.clock.1MHz=1MHz Internal Oscillator
-atmega48_diy.menu.clock.1MHz.build.f_cpu=1000000L
-atmega48_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
-atmega48_diy.menu.clock.1MHz.upload.speed=9600
+atmega8_diy.menu.advups.19200=19200
+atmega8_diy.menu.advups.19200.upload.speed=19200
 
-# Link Time Optimisation
+atmega8_diy.menu.advups.9600=9600
+atmega8_diy.menu.advups.9600.upload.speed=9600
+
+atmega8_diy.menu.advups.2400=2400
+atmega8_diy.menu.advups.2400.upload.speed=2400
+
+atmega8_diy.menu.advups.1200=1200
+atmega8_diy.menu.advups.1200.upload.speed=1200
+
+atmega8_diy.menu.advups.300=300
+atmega8_diy.menu.advups.300.upload.speed=300
+
+atmega8_diy.menu.advups.150=150
+atmega8_diy.menu.advups.150.upload.speed=150
+
+
+# Override: CKOPT Fuse
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-atmega48_diy.menu.lto.enable=LTO Enabled
-atmega48_diy.menu.lto.enable.ltocflags=-flto -fno-fat-lto-objects
-atmega48_diy.menu.lto.enable.ltoelfflags=-g -flto -fuse-linker-plugin
-atmega48_diy.menu.lto.enable.ltocppflags=-flto
-atmega48_diy.menu.lto.enable.ltoarcmd=gcc-
-atmega48_diy.menu.lto.disable=LTO Disabled
-atmega48_diy.menu.lto.disable.ltocflags=
-atmega48_diy.menu.lto.disable.ltoelfflags=
-atmega48_diy.menu.lto.disable.ltocppflags=
-atmega48_diy.menu.lto.disable.ltoarcmd=
 
+atmega8_diy.menu.advckopt.auto=Default
+
+atmega8_diy.menu.advckopt.programmed=CKOPT = 0
+atmega8_diy.menu.advckopt.programmed.bootloader.ckopt_bit=0
+
+atmega8_diy.menu.advckopt.unprogrammed=CKOPT = 1
+atmega8_diy.menu.advckopt.unprogrammed.bootloader.ckopt_bit=1
 
 # }}}
 
@@ -297,9 +426,10 @@ atmega48_diy.menu.lto.disable.ltoarcmd=
 ################################################################################
 # {{{
 
-atmega48p_diy.name=ATmega48P/PA/PB
+atmega48p_diy.name=ATmega48/A/P/PA/PB
 atmega48p_diy.bootloader.low_fuses=0xE2
-atmega48p_diy.bootloader.high_fuses=0xDD
+atmega48p_diy.bootloader.high_fuses=0b11011{bootloader.bod_bits}
+atmega48p_diy.bootloader.bod_bits=101
 atmega48p_diy.bootloader.extended_fuses=0x00
 atmega48p_diy.bootloader.unlock_bits=0x3F
 atmega48p_diy.bootloader.lock_bits=0x3F
@@ -315,14 +445,21 @@ atmega48p_diy.bootloader.tool=arduino:avrdude
 # Version Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-atmega48p_diy.menu.version.atmega48p = Atmega48P
-atmega48p_diy.menu.version.atmega48p.build.mcu = atmega48p
-
 atmega48p_diy.menu.version.atmega48pa = Atmega48PA
 atmega48p_diy.menu.version.atmega48pa.build.mcu = atmega48p
 
+
+atmega48p_diy.menu.version.atmega48p = Atmega48P
+atmega48p_diy.menu.version.atmega48p.build.mcu = atmega48p
+
 atmega48p_diy.menu.version.atmega48pb = Atmega48PB
 atmega48p_diy.menu.version.atmega48pb.build.mcu = atmega48p
+
+atmega48p_diy.menu.version.atmega48a = Atmega48A
+atmega48p_diy.menu.version.atmega48a.build.mcu = atmega48
+
+atmega48p_diy.menu.version.atmega48  = ATmega48
+atmega48p_diy.menu.version.atmega48.build.mcu = atmega48
 
 
 # Bootloader Menu
@@ -386,6 +523,159 @@ atmega48p_diy.menu.lto.disable.ltoelfflags=
 atmega48p_diy.menu.lto.disable.ltocppflags=
 atmega48p_diy.menu.lto.disable.ltoarcmd=
 
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega48p_diy.menu.bodlevel.2v7=2.7v
+atmega48p_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
+atmega48p_diy.menu.bodlevel.disabled=Disabled
+atmega48p_diy.menu.bodlevel.disabled.bootloader.bod_bits=111
+atmega48p_diy.menu.bodlevel.4v3=4.3v
+atmega48p_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
+atmega48p_diy.menu.bodlevel.1v8=1.8v
+atmega48p_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
+
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega48p_diy.menu.advclk.auto=Default
+
+atmega48p_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+atmega48p_diy.menu.advclk.i8.bootloader.low_fuses=0xE2
+atmega48p_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+atmega48p_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+atmega48p_diy.menu.advclk.i1.bootloader.low_fuses=0x62
+atmega48p_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+atmega48p_diy.menu.advclk.i128=Internal Oscillator 128 kHz
+atmega48p_diy.menu.advclk.i128.bootloader.low_fuses=0xE3
+atmega48p_diy.menu.advclk.i128.build.f_cpu=128000L
+
+atmega48p_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+atmega48p_diy.menu.advclk.xlf.bootloader.low_fuses=0xE5
+
+atmega48p_diy.menu.advclk.xlf=Full Swing Crystal/Resonator 0.4-20 MHz
+atmega48p_diy.menu.advclk.xlf.bootloader.low_fuses=0xF7
+
+atmega48p_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+atmega48p_diy.menu.advclk.x400.bootloader.low_fuses=0xF9
+
+atmega48p_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+atmega48p_diy.menu.advclk.x900.bootloader.low_fuses=0xFB
+
+atmega48p_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+atmega48p_diy.menu.advclk.x3.bootloader.low_fuses=0xFD
+
+atmega48p_diy.menu.advclk.x8=Crystal/Resonator 8-16 MHz 
+atmega48p_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
+
+atmega48p_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+atmega48p_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega48p_diy.menu.advfrq.auto=Default
+
+atmega48p_diy.menu.advfrq.32k768=32.768 kHz
+atmega48p_diy.menu.advfrq.32k768.build.f_cpu=32768L
+atmega48p_diy.menu.advfrq.32k768.upload.speed=150
+
+atmega48p_diy.menu.advfrq.128k=128 kHz
+atmega48p_diy.menu.advfrq.128k.build.f_cpu=128000L
+atmega48p_diy.menu.advfrq.128k.upload.speed=300
+
+atmega48p_diy.menu.advfrq.1M=1 MHz
+atmega48p_diy.menu.advfrq.1M.build.f_cpu=1000000L
+atmega48p_diy.menu.advfrq.1M.upload.speed=9600
+
+atmega48p_diy.menu.advfrq.4M608=4.608 MHz
+atmega48p_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+atmega48p_diy.menu.advfrq.4M608.upload.speed=115200
+
+atmega48p_diy.menu.advfrq.4M8=4.8 MHz
+atmega48p_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+atmega48p_diy.menu.advfrq.4M8.upload.speed=19200
+
+atmega48p_diy.menu.advfrq.6M=6 MHz
+atmega48p_diy.menu.advfrq.6M.build.f_cpu=6000000L
+atmega48p_diy.menu.advfrq.6M.upload.speed=57600
+
+atmega48p_diy.menu.advfrq.6M4=6.4 MHz
+atmega48p_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+atmega48p_diy.menu.advfrq.6M4.upload.speed=115200
+
+atmega48p_diy.menu.advfrq.8M=8 MHz
+atmega48p_diy.menu.advfrq.8M.build.f_cpu=8000000L
+atmega48p_diy.menu.advfrq.8M.upload.speed=38400
+
+atmega48p_diy.menu.advfrq.9M6=9.6 MHz
+atmega48p_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+atmega48p_diy.menu.advfrq.9M6.upload.speed=57600
+
+atmega48p_diy.menu.advfrq.10M=10 MHz
+atmega48p_diy.menu.advfrq.10M.build.f_cpu=10000000L
+atmega48p_diy.menu.advfrq.10M.upload.speed=115200
+
+atmega48p_diy.menu.advfrq.12M=12 MHz
+atmega48p_diy.menu.advfrq.12M.build.f_cpu=12000000L
+atmega48p_diy.menu.advfrq.12M.upload.speed=115200
+
+atmega48p_diy.menu.advfrq.12M8=12.8 MHz
+atmega48p_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+atmega48p_diy.menu.advfrq.12M8.upload.speed=115200
+
+atmega48p_diy.menu.advfrq.15M36=15.36 MHz
+atmega48p_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+atmega48p_diy.menu.advfrq.15M36.upload.speed=57600
+
+atmega48p_diy.menu.advfrq.16M=16 MHz
+atmega48p_diy.menu.advfrq.16M.build.f_cpu=16000000L
+atmega48p_diy.menu.advfrq.16M.upload.speed=57600
+
+atmega48p_diy.menu.advfrq.19M2=19.2 MHz
+atmega48p_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+atmega48p_diy.menu.advfrq.19M2.upload.speed=115200
+
+atmega48p_diy.menu.advfrq.20M=20 MHz
+atmega48p_diy.menu.advfrq.20M.build.f_cpu=20000000L
+atmega48p_diy.menu.advfrq.20M.upload.speed=115200
+
+atmega48p_diy.menu.advfrq.24M=24 MHz
+atmega48p_diy.menu.advfrq.24M.build.f_cpu=24000000L
+atmega48p_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega48p_diy.menu.advups.auto=Default
+
+atmega48p_diy.menu.advups.115200=115200
+atmega48p_diy.menu.advups.115200.upload.speed=115200
+
+atmega48p_diy.menu.advups.57600=57600
+atmega48p_diy.menu.advups.57600.upload.speed=57600
+
+atmega48p_diy.menu.advups.38400=38400
+atmega48p_diy.menu.advups.38400.upload.speed=38400
+
+atmega48p_diy.menu.advups.19200=19200
+atmega48p_diy.menu.advups.19200.upload.speed=19200
+
+atmega48p_diy.menu.advups.9600=9600
+atmega48p_diy.menu.advups.9600.upload.speed=9600
+
+atmega48p_diy.menu.advups.2400=2400
+atmega48p_diy.menu.advups.2400.upload.speed=2400
+
+atmega48p_diy.menu.advups.1200=1200
+atmega48p_diy.menu.advups.1200.upload.speed=1200
+
+atmega48p_diy.menu.advups.300=300
+atmega48p_diy.menu.advups.300.upload.speed=300
+
+atmega48p_diy.menu.advups.150=150
+atmega48p_diy.menu.advups.150.upload.speed=150
 
 # }}}
 
@@ -463,7 +753,8 @@ atmega48p_diy.menu.lto.disable.ltoarcmd=
 
 atmega328_diy.name=ATmega328/P/PB
 atmega328_diy.bootloader.low_fuses=0xE2
-atmega328_diy.bootloader.high_fuses=0xDE
+atmega328_diy.bootloader.high_fuses=0b11011{bootloader.bod_bits}
+atmega328_diy.bootloader.bod_bits=101
 atmega328_diy.bootloader.extended_fuses=0x05
 atmega328_diy.bootloader.unlock_bits=0x3F
 atmega328_diy.bootloader.lock_bits=0x3F
@@ -543,6 +834,159 @@ atmega328_diy.menu.lto.disable.ltoelfflags=
 atmega328_diy.menu.lto.disable.ltocppflags=
 atmega328_diy.menu.lto.disable.ltoarcmd=
 
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega328_diy.menu.bodlevel.2v7=2.7v
+atmega328_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
+atmega328_diy.menu.bodlevel.disabled=Disabled
+atmega328_diy.menu.bodlevel.disabled.bootloader.bod_bits=111
+atmega328_diy.menu.bodlevel.4v3=4.3v
+atmega328_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
+atmega328_diy.menu.bodlevel.1v8=1.8v
+atmega328_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
+
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega328_diy.menu.advclk.auto=Default
+
+atmega328_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+atmega328_diy.menu.advclk.i8.bootloader.low_fuses=0xE2
+atmega328_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+atmega328_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+atmega328_diy.menu.advclk.i1.bootloader.low_fuses=0x62
+atmega328_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+atmega328_diy.menu.advclk.i128=Internal Oscillator 128 kHz
+atmega328_diy.menu.advclk.i128.bootloader.low_fuses=0xE3
+atmega328_diy.menu.advclk.i128.build.f_cpu=128000L
+
+atmega328_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+atmega328_diy.menu.advclk.xlf.bootloader.low_fuses=0xE5
+
+atmega328_diy.menu.advclk.xlf=Full Swing Crystal/Resonator 0.4-20 MHz
+atmega328_diy.menu.advclk.xlf.bootloader.low_fuses=0xF7
+
+atmega328_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+atmega328_diy.menu.advclk.x400.bootloader.low_fuses=0xF9
+
+atmega328_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+atmega328_diy.menu.advclk.x900.bootloader.low_fuses=0xFB
+
+atmega328_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+atmega328_diy.menu.advclk.x3.bootloader.low_fuses=0xFD
+
+atmega328_diy.menu.advclk.x8=Crystal/Resonator 8-16 MHz 
+atmega328_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
+
+atmega328_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+atmega328_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega328_diy.menu.advfrq.auto=Default
+
+atmega328_diy.menu.advfrq.32k768=32.768 kHz
+atmega328_diy.menu.advfrq.32k768.build.f_cpu=32768L
+atmega328_diy.menu.advfrq.32k768.upload.speed=150
+
+atmega328_diy.menu.advfrq.128k=128 kHz
+atmega328_diy.menu.advfrq.128k.build.f_cpu=128000L
+atmega328_diy.menu.advfrq.128k.upload.speed=300
+
+atmega328_diy.menu.advfrq.1M=1 MHz
+atmega328_diy.menu.advfrq.1M.build.f_cpu=1000000L
+atmega328_diy.menu.advfrq.1M.upload.speed=9600
+
+atmega328_diy.menu.advfrq.4M608=4.608 MHz
+atmega328_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+atmega328_diy.menu.advfrq.4M608.upload.speed=115200
+
+atmega328_diy.menu.advfrq.4M8=4.8 MHz
+atmega328_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+atmega328_diy.menu.advfrq.4M8.upload.speed=19200
+
+atmega328_diy.menu.advfrq.6M=6 MHz
+atmega328_diy.menu.advfrq.6M.build.f_cpu=6000000L
+atmega328_diy.menu.advfrq.6M.upload.speed=57600
+
+atmega328_diy.menu.advfrq.6M4=6.4 MHz
+atmega328_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+atmega328_diy.menu.advfrq.6M4.upload.speed=115200
+
+atmega328_diy.menu.advfrq.8M=8 MHz
+atmega328_diy.menu.advfrq.8M.build.f_cpu=8000000L
+atmega328_diy.menu.advfrq.8M.upload.speed=38400
+
+atmega328_diy.menu.advfrq.9M6=9.6 MHz
+atmega328_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+atmega328_diy.menu.advfrq.9M6.upload.speed=57600
+
+atmega328_diy.menu.advfrq.10M=10 MHz
+atmega328_diy.menu.advfrq.10M.build.f_cpu=10000000L
+atmega328_diy.menu.advfrq.10M.upload.speed=115200
+
+atmega328_diy.menu.advfrq.12M=12 MHz
+atmega328_diy.menu.advfrq.12M.build.f_cpu=12000000L
+atmega328_diy.menu.advfrq.12M.upload.speed=115200
+
+atmega328_diy.menu.advfrq.12M8=12.8 MHz
+atmega328_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+atmega328_diy.menu.advfrq.12M8.upload.speed=115200
+
+atmega328_diy.menu.advfrq.15M36=15.36 MHz
+atmega328_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+atmega328_diy.menu.advfrq.15M36.upload.speed=57600
+
+atmega328_diy.menu.advfrq.16M=16 MHz
+atmega328_diy.menu.advfrq.16M.build.f_cpu=16000000L
+atmega328_diy.menu.advfrq.16M.upload.speed=57600
+
+atmega328_diy.menu.advfrq.19M2=19.2 MHz
+atmega328_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+atmega328_diy.menu.advfrq.19M2.upload.speed=115200
+
+atmega328_diy.menu.advfrq.20M=20 MHz
+atmega328_diy.menu.advfrq.20M.build.f_cpu=20000000L
+atmega328_diy.menu.advfrq.20M.upload.speed=115200
+
+atmega328_diy.menu.advfrq.24M=24 MHz
+atmega328_diy.menu.advfrq.24M.build.f_cpu=24000000L
+atmega328_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega328_diy.menu.advups.auto=Default
+
+atmega328_diy.menu.advups.115200=115200
+atmega328_diy.menu.advups.115200.upload.speed=115200
+
+atmega328_diy.menu.advups.57600=57600
+atmega328_diy.menu.advups.57600.upload.speed=57600
+
+atmega328_diy.menu.advups.38400=38400
+atmega328_diy.menu.advups.38400.upload.speed=38400
+
+atmega328_diy.menu.advups.19200=19200
+atmega328_diy.menu.advups.19200.upload.speed=19200
+
+atmega328_diy.menu.advups.9600=9600
+atmega328_diy.menu.advups.9600.upload.speed=9600
+
+atmega328_diy.menu.advups.2400=2400
+atmega328_diy.menu.advups.2400.upload.speed=2400
+
+atmega328_diy.menu.advups.1200=1200
+atmega328_diy.menu.advups.1200.upload.speed=1200
+
+atmega328_diy.menu.advups.300=300
+atmega328_diy.menu.advups.300.upload.speed=300
+
+atmega328_diy.menu.advups.150=150
+atmega328_diy.menu.advups.150.upload.speed=150
 
 # }}}
 
@@ -573,7 +1017,8 @@ atmega328_diy.menu.lto.disable.ltoarcmd=
 
 atmega88_diy.name=ATmega88/A/P/PA/PB
 atmega88_diy.bootloader.low_fuses=0xE2
-atmega88_diy.bootloader.high_fuses=0xDD
+atmega88_diy.bootloader.high_fuses=0b11011{bootloader.bod_bits}
+atmega88_diy.bootloader.bod_bits=101
 atmega88_diy.bootloader.extended_fuses=0x04
 atmega88_diy.bootloader.unlock_bits=0x3F
 atmega88_diy.bootloader.lock_bits=0x3F
@@ -660,6 +1105,159 @@ atmega88_diy.menu.lto.disable.ltoelfflags=
 atmega88_diy.menu.lto.disable.ltocppflags=
 atmega88_diy.menu.lto.disable.ltoarcmd=
 
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega88_diy.menu.bodlevel.2v7=2.7v
+atmega88_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
+atmega88_diy.menu.bodlevel.disabled=Disabled
+atmega88_diy.menu.bodlevel.disabled.bootloader.bod_bits=111
+atmega88_diy.menu.bodlevel.4v3=4.3v
+atmega88_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
+atmega88_diy.menu.bodlevel.1v8=1.8v
+atmega88_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
+
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega88_diy.menu.advclk.auto=Default
+
+atmega88_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+atmega88_diy.menu.advclk.i8.bootloader.low_fuses=0xE2
+atmega88_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+atmega88_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+atmega88_diy.menu.advclk.i1.bootloader.low_fuses=0x62
+atmega88_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+atmega88_diy.menu.advclk.i128=Internal Oscillator 128 kHz
+atmega88_diy.menu.advclk.i128.bootloader.low_fuses=0xE3
+atmega88_diy.menu.advclk.i128.build.f_cpu=128000L
+
+atmega88_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+atmega88_diy.menu.advclk.xlf.bootloader.low_fuses=0xE5
+
+atmega88_diy.menu.advclk.xlf=Full Swing Crystal/Resonator 0.4-20 MHz
+atmega88_diy.menu.advclk.xlf.bootloader.low_fuses=0xF7
+
+atmega88_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+atmega88_diy.menu.advclk.x400.bootloader.low_fuses=0xF9
+
+atmega88_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+atmega88_diy.menu.advclk.x900.bootloader.low_fuses=0xFB
+
+atmega88_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+atmega88_diy.menu.advclk.x3.bootloader.low_fuses=0xFD
+
+atmega88_diy.menu.advclk.x8=Crystal/Resonator 8-16 MHz 
+atmega88_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
+
+atmega88_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+atmega88_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega88_diy.menu.advfrq.auto=Default
+
+atmega88_diy.menu.advfrq.32k768=32.768 kHz
+atmega88_diy.menu.advfrq.32k768.build.f_cpu=32768L
+atmega88_diy.menu.advfrq.32k768.upload.speed=150
+
+atmega88_diy.menu.advfrq.128k=128 kHz
+atmega88_diy.menu.advfrq.128k.build.f_cpu=128000L
+atmega88_diy.menu.advfrq.128k.upload.speed=300
+
+atmega88_diy.menu.advfrq.1M=1 MHz
+atmega88_diy.menu.advfrq.1M.build.f_cpu=1000000L
+atmega88_diy.menu.advfrq.1M.upload.speed=9600
+
+atmega88_diy.menu.advfrq.4M608=4.608 MHz
+atmega88_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+atmega88_diy.menu.advfrq.4M608.upload.speed=115200
+
+atmega88_diy.menu.advfrq.4M8=4.8 MHz
+atmega88_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+atmega88_diy.menu.advfrq.4M8.upload.speed=19200
+
+atmega88_diy.menu.advfrq.6M=6 MHz
+atmega88_diy.menu.advfrq.6M.build.f_cpu=6000000L
+atmega88_diy.menu.advfrq.6M.upload.speed=57600
+
+atmega88_diy.menu.advfrq.6M4=6.4 MHz
+atmega88_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+atmega88_diy.menu.advfrq.6M4.upload.speed=115200
+
+atmega88_diy.menu.advfrq.8M=8 MHz
+atmega88_diy.menu.advfrq.8M.build.f_cpu=8000000L
+atmega88_diy.menu.advfrq.8M.upload.speed=38400
+
+atmega88_diy.menu.advfrq.9M6=9.6 MHz
+atmega88_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+atmega88_diy.menu.advfrq.9M6.upload.speed=57600
+
+atmega88_diy.menu.advfrq.10M=10 MHz
+atmega88_diy.menu.advfrq.10M.build.f_cpu=10000000L
+atmega88_diy.menu.advfrq.10M.upload.speed=115200
+
+atmega88_diy.menu.advfrq.12M=12 MHz
+atmega88_diy.menu.advfrq.12M.build.f_cpu=12000000L
+atmega88_diy.menu.advfrq.12M.upload.speed=115200
+
+atmega88_diy.menu.advfrq.12M8=12.8 MHz
+atmega88_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+atmega88_diy.menu.advfrq.12M8.upload.speed=115200
+
+atmega88_diy.menu.advfrq.15M36=15.36 MHz
+atmega88_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+atmega88_diy.menu.advfrq.15M36.upload.speed=57600
+
+atmega88_diy.menu.advfrq.16M=16 MHz
+atmega88_diy.menu.advfrq.16M.build.f_cpu=16000000L
+atmega88_diy.menu.advfrq.16M.upload.speed=57600
+
+atmega88_diy.menu.advfrq.19M2=19.2 MHz
+atmega88_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+atmega88_diy.menu.advfrq.19M2.upload.speed=115200
+
+atmega88_diy.menu.advfrq.20M=20 MHz
+atmega88_diy.menu.advfrq.20M.build.f_cpu=20000000L
+atmega88_diy.menu.advfrq.20M.upload.speed=115200
+
+atmega88_diy.menu.advfrq.24M=24 MHz
+atmega88_diy.menu.advfrq.24M.build.f_cpu=24000000L
+atmega88_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega88_diy.menu.advups.auto=Default
+
+atmega88_diy.menu.advups.115200=115200
+atmega88_diy.menu.advups.115200.upload.speed=115200
+
+atmega88_diy.menu.advups.57600=57600
+atmega88_diy.menu.advups.57600.upload.speed=57600
+
+atmega88_diy.menu.advups.38400=38400
+atmega88_diy.menu.advups.38400.upload.speed=38400
+
+atmega88_diy.menu.advups.19200=19200
+atmega88_diy.menu.advups.19200.upload.speed=19200
+
+atmega88_diy.menu.advups.9600=9600
+atmega88_diy.menu.advups.9600.upload.speed=9600
+
+atmega88_diy.menu.advups.2400=2400
+atmega88_diy.menu.advups.2400.upload.speed=2400
+
+atmega88_diy.menu.advups.1200=1200
+atmega88_diy.menu.advups.1200.upload.speed=1200
+
+atmega88_diy.menu.advups.300=300
+atmega88_diy.menu.advups.300.upload.speed=300
+
+atmega88_diy.menu.advups.150=150
+atmega88_diy.menu.advups.150.upload.speed=150
 
 # }}}
 
@@ -689,7 +1287,8 @@ atmega88_diy.menu.lto.disable.ltoarcmd=
 
 atmega168_diy.name=ATmega168/A/P/PA/PB
 atmega168_diy.bootloader.low_fuses=0xE2
-atmega168_diy.bootloader.high_fuses=0xDD
+atmega168_diy.bootloader.high_fuses=0b11011{bootloader.bod_bits}
+atmega168_diy.bootloader.bod_bits=101
 atmega168_diy.bootloader.extended_fuses=0x04
 atmega168_diy.bootloader.unlock_bits=0x3F
 atmega168_diy.bootloader.lock_bits=0x3F
@@ -775,6 +1374,159 @@ atmega168_diy.menu.lto.disable.ltoelfflags=
 atmega168_diy.menu.lto.disable.ltocppflags=
 atmega168_diy.menu.lto.disable.ltoarcmd=
 
+# BOD Level Fuse Bits
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+atmega168_diy.menu.bodlevel.2v7=2.7v
+atmega168_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
+atmega168_diy.menu.bodlevel.disabled=Disabled
+atmega168_diy.menu.bodlevel.disabled.bootloader.bod_bits=111
+atmega168_diy.menu.bodlevel.4v3=4.3v
+atmega168_diy.menu.bodlevel.4v3.bootloader.bod_bits=100
+atmega168_diy.menu.bodlevel.1v8=1.8v
+atmega168_diy.menu.bodlevel.1v8.bootloader.bod_bits=110
+
+# Override: Clock Source Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega168_diy.menu.advclk.auto=Default
+
+atmega168_diy.menu.advclk.i8=Internal Oscillator 8 MHz
+atmega168_diy.menu.advclk.i8.bootloader.low_fuses=0xE2
+atmega168_diy.menu.advclk.i8.build.f_cpu=8000000L
+
+atmega168_diy.menu.advclk.i1=Internal Oscillator 1 MHz
+atmega168_diy.menu.advclk.i1.bootloader.low_fuses=0x62
+atmega168_diy.menu.advclk.i1.build.f_cpu=1000000L
+
+atmega168_diy.menu.advclk.i128=Internal Oscillator 128 kHz
+atmega168_diy.menu.advclk.i128.bootloader.low_fuses=0xE3
+atmega168_diy.menu.advclk.i128.build.f_cpu=128000L
+
+atmega168_diy.menu.advclk.xlf=Low Frequency Crystal/Resonator
+atmega168_diy.menu.advclk.xlf.bootloader.low_fuses=0xE5
+
+atmega168_diy.menu.advclk.xlf=Full Swing Crystal/Resonator 0.4-20 MHz
+atmega168_diy.menu.advclk.xlf.bootloader.low_fuses=0xF7
+
+atmega168_diy.menu.advclk.x400=Crystal/Resonator 400-900 kHz
+atmega168_diy.menu.advclk.x400.bootloader.low_fuses=0xF9
+
+atmega168_diy.menu.advclk.x900=Crystal/Resonator 900 kHz - 3 MHz
+atmega168_diy.menu.advclk.x900.bootloader.low_fuses=0xFB
+
+atmega168_diy.menu.advclk.x3=Crystal/Resonator 3-8 MHz
+atmega168_diy.menu.advclk.x3.bootloader.low_fuses=0xFD
+
+atmega168_diy.menu.advclk.x8=Crystal/Resonator 8-16 MHz 
+atmega168_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
+
+atmega168_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
+atmega168_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
+# Override: Frequency Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega168_diy.menu.advfrq.auto=Default
+
+atmega168_diy.menu.advfrq.32k768=32.768 kHz
+atmega168_diy.menu.advfrq.32k768.build.f_cpu=32768L
+atmega168_diy.menu.advfrq.32k768.upload.speed=150
+
+atmega168_diy.menu.advfrq.128k=128 kHz
+atmega168_diy.menu.advfrq.128k.build.f_cpu=128000L
+atmega168_diy.menu.advfrq.128k.upload.speed=300
+
+atmega168_diy.menu.advfrq.1M=1 MHz
+atmega168_diy.menu.advfrq.1M.build.f_cpu=1000000L
+atmega168_diy.menu.advfrq.1M.upload.speed=9600
+
+atmega168_diy.menu.advfrq.4M608=4.608 MHz
+atmega168_diy.menu.advfrq.4M608.build.f_cpu=4608000L
+atmega168_diy.menu.advfrq.4M608.upload.speed=115200
+
+atmega168_diy.menu.advfrq.4M8=4.8 MHz
+atmega168_diy.menu.advfrq.4M8.build.f_cpu=4800000L
+atmega168_diy.menu.advfrq.4M8.upload.speed=19200
+
+atmega168_diy.menu.advfrq.6M=6 MHz
+atmega168_diy.menu.advfrq.6M.build.f_cpu=6000000L
+atmega168_diy.menu.advfrq.6M.upload.speed=57600
+
+atmega168_diy.menu.advfrq.6M4=6.4 MHz
+atmega168_diy.menu.advfrq.6M4.build.f_cpu=6400000L
+atmega168_diy.menu.advfrq.6M4.upload.speed=115200
+
+atmega168_diy.menu.advfrq.8M=8 MHz
+atmega168_diy.menu.advfrq.8M.build.f_cpu=8000000L
+atmega168_diy.menu.advfrq.8M.upload.speed=38400
+
+atmega168_diy.menu.advfrq.9M6=9.6 MHz
+atmega168_diy.menu.advfrq.9M6.build.f_cpu=9600000L
+atmega168_diy.menu.advfrq.9M6.upload.speed=57600
+
+atmega168_diy.menu.advfrq.10M=10 MHz
+atmega168_diy.menu.advfrq.10M.build.f_cpu=10000000L
+atmega168_diy.menu.advfrq.10M.upload.speed=115200
+
+atmega168_diy.menu.advfrq.12M=12 MHz
+atmega168_diy.menu.advfrq.12M.build.f_cpu=12000000L
+atmega168_diy.menu.advfrq.12M.upload.speed=115200
+
+atmega168_diy.menu.advfrq.12M8=12.8 MHz
+atmega168_diy.menu.advfrq.12M8.build.f_cpu=12800000L
+atmega168_diy.menu.advfrq.12M8.upload.speed=115200
+
+atmega168_diy.menu.advfrq.15M36=15.36 MHz
+atmega168_diy.menu.advfrq.15M36.build.f_cpu=15360000L
+atmega168_diy.menu.advfrq.15M36.upload.speed=57600
+
+atmega168_diy.menu.advfrq.16M=16 MHz
+atmega168_diy.menu.advfrq.16M.build.f_cpu=16000000L
+atmega168_diy.menu.advfrq.16M.upload.speed=57600
+
+atmega168_diy.menu.advfrq.19M2=19.2 MHz
+atmega168_diy.menu.advfrq.19M2.build.f_cpu=19200000L
+atmega168_diy.menu.advfrq.19M2.upload.speed=115200
+
+atmega168_diy.menu.advfrq.20M=20 MHz
+atmega168_diy.menu.advfrq.20M.build.f_cpu=20000000L
+atmega168_diy.menu.advfrq.20M.upload.speed=115200
+
+atmega168_diy.menu.advfrq.24M=24 MHz
+atmega168_diy.menu.advfrq.24M.build.f_cpu=24000000L
+atmega168_diy.menu.advfrq.24M.upload.speed=115200
+
+# Override: Upload Speed Menu
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+atmega168_diy.menu.advups.auto=Default
+
+atmega168_diy.menu.advups.115200=115200
+atmega168_diy.menu.advups.115200.upload.speed=115200
+
+atmega168_diy.menu.advups.57600=57600
+atmega168_diy.menu.advups.57600.upload.speed=57600
+
+atmega168_diy.menu.advups.38400=38400
+atmega168_diy.menu.advups.38400.upload.speed=38400
+
+atmega168_diy.menu.advups.19200=19200
+atmega168_diy.menu.advups.19200.upload.speed=19200
+
+atmega168_diy.menu.advups.9600=9600
+atmega168_diy.menu.advups.9600.upload.speed=9600
+
+atmega168_diy.menu.advups.2400=2400
+atmega168_diy.menu.advups.2400.upload.speed=2400
+
+atmega168_diy.menu.advups.1200=1200
+atmega168_diy.menu.advups.1200.upload.speed=1200
+
+atmega168_diy.menu.advups.300=300
+atmega168_diy.menu.advups.300.upload.speed=300
+
+atmega168_diy.menu.advups.150=150
+atmega168_diy.menu.advups.150.upload.speed=150
 
 # }}}
 

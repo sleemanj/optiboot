@@ -36,18 +36,18 @@
 #
 ################################################################################
 
-menu.version    = ​ Processor Version
-menu.clock      = ​​ Processor Speed
-menu.boot       = ​​​ Use Bootloader
-menu.core       = ​​​​​ Millis, Tone Support
-menu.millis_ppm  = ​​​​​ Millis Accuracy
-menu.print      = ​​​​​​ Print Support
-menu.serial     = ​​​​​​​ Serial Support
-menu.lto        = ​​​​​​​​ Link Time Optimisation (1.6.11+ only)
-menu.bodlevel   = ​​​​​​​​​ Brown-out Detection Level
-menu.advclk     = ​​​​​​​​​​ Override Clock Source
-menu.advfrq     = ​​​​​​​​​​​ Override Frequency
-menu.advups     = ​​​​​​​​​​​​ Override Upload Speed
+menu.version    = 12 Processor Version
+menu.clock      = 11 Processor Speed
+menu.boot       = 10 Use Bootloader
+menu.core       = 09 Millis, Tone Support
+menu.millis_ppm = 08 Millis Accuracy
+menu.print      = 07 Print Support
+menu.serial     = 06 Serial Support
+menu.lto        = 05 Link Time Optimisation
+menu.bodlevel   = 04 Brown-out Detection Level
+menu.advclk     = 03 Override Clock Source
+menu.advfrq     = 02 Override Frequency
+menu.advups     = 01 Override Upload Speed
 
 # The names are put here in the order they will appear in the boards menu
 #  you can repeat these definitions in each board section for completeness
