@@ -101,7 +101,7 @@ EOF
   if grep -F "#define" avrdude.local.conf >/dev/null
   then  
     cat avrdude.local.conf >>avrdude.conf
-    wget https://raw.githubusercontent.com/arduino/Arduino/master/hardware/arduino/avr/programmers.txt -O programmers.tmp.txt
+    wget https://raw.githubusercontent.com/arduino/ArduinoCore-avr/master/programmers.txt -O programmers.tmp.txt
     cat programmers.tmp.txt | sed -r 's/\.name=(.*)/.name=DIY ATmega: \1/' >>programmers.txt  
     echo >>programmers.txt
     cat programmers.local.txt | grep -v "#" >>programmers.txt
