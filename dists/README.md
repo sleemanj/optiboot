@@ -22,6 +22,22 @@
     - [Tunable Bootloaders](#tunable-bootloaders)
     - [Upload Using Programmer - EEPROM Auto Uploading](#upload-using-programmer---eeprom-auto-uploading)
     - [:boom: Upload Using Programmer - Important Note!](#boom-upload-using-programmer---important-note)
+  - [Selectable Options (Tools Menus)](#selectable-options-tools-menus)
+    - [Processor Version](#processor-version)
+    - [Processor Speed](#processor-speed)
+    - [Use Bootloader](#use-bootloader)
+    - [Link Time Optimization](#link-time-optimization)
+    - [Brown-out Detection Level](#brown-out-detection-level)
+    - [Tiny Only Menus](#tiny-only-menus)
+      - [Millis, Tone Support](#millis-tone-support)
+      - [Millis Accuracy](#millis-accuracy)
+      - [Print Support](#print-support)
+      - [Serial Support](#serial-support)
+    - [Overrides Menus](#overrides-menus)
+      - [Override Clock Source](#override-clock-source)
+      - [Override Frequency](#override-frequency)
+      - [Override Upload Speed](#override-upload-speed)
+      - [Override CKOPT (ATMega8 Only)](#override-ckopt-atmega8-only)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -78,6 +94,8 @@ of memory.
  
 Note at current time only 8A, 48P and 328P have been tested, but the others 
 should work too, open an issue if not.
+
+Be sure to see the [Selectable Options (Tools Menus)](#selectable-options-tools-menus) which offers a number of ways to configure your chip beyond the defaults.
 
 ## ATtiny
 
@@ -190,7 +208,8 @@ Note that this has been tested with 1.8.5, older versions your milage may vary.
  
 If you need to burn a bootloader (if it hasn't already been done on your chip or you want to change the chip settings) or set fuses, you can then use the "Burn Bootloader" option to do so, if you selected to use a non-bootloaded setup, then Burn Bootloader will set the appropriate fuses for that too, so make sure you still do it!
 
-The ATtiny series also include additional menus under the Tools which allow you to trade-off certain features for more code space.
+Some chips provide more selectable options, you can read about all the Tools Menu options here...
+[Selectable Options (Tools Menus)](#selectable-options-tools-menus)
 
 <sup>1</sup> Not all "boards" have a Processor Version menu.
 
@@ -242,3 +261,82 @@ Currently the below does not apply (because avrdude and gcc in the current Ardui
 
 ~~Due to [a bug in Arduino](https://github.com/arduino/Arduino/issues/2886) if you Upload Using Programmer you may need to choose an alias of your Programmer from the `Tools > Programmer` menu, you will find there that aliases are present, for example if you normally use "USBAsp" as your programmer and it isn't working then you may need to choose instead one of the aliases, "DIY ATmega: USBAsp" or "DIY ATtiny: USBAsp" (depending if you are programming an ATmega or an ATtiny).~~
 
+
+## Selectable Options (Tools Menus)
+
+### Processor Version
+
+Some chips have multiple similar versions, for example the ATMega328 and the ATMega328P, this menu allows you to select exactly which chip you are dealing with.
+
+### Processor Speed
+
+This is a simple selection for common speeds to run your chip at.  The options in this menu set the clock type, frequency, and the upload speed for bootloaders (upload baud rate, not the `Serial.begin()` rate which is whatever you choose as usual) so that they all work togethor.
+
+Generally there are at least 3 options, 8MHz Internal Oscillator, choose this if you do not have a crystal.  1MHz Internal Oscillator, choose this if you don't have a crystal and want to save power by running slower.  16MHz Crystal/Resonator, choose this if you have an external crystal.
+
+You must *Burn Bootloader* in order to set the fuses after changing the Processor Speed menu.
+
+:boom: **Caution** if you choose a Crystal/Resonator option and you don't actually HAVE a Crystal/Resonator your chip will not function and can only be fixed by adding a Crystal/Resonator or injecting a clock signal.
+
+### Use Bootloader
+
+For chips where it is supported, decide if you will use the Bootloader (to upload over a serial/usb connection), or not (upload only using the ISP Programmer, eg, USBAsp).  **Even if you choose No Bootloader you must Burn Bootloader to set the fuses.**
+
+### Link Time Optimization
+
+Enables the LTO feature of GCC.  Only disable this if your Arduino IDE version does not support it (prior 1.6.11) or if you think it might be causing a problem, or if you want to disassemble the compiled output to investigate.  LTO provides significant reduction in flash consumption in most cases.
+
+### Brown-out Detection Level
+
+If the BOD is available and enabled, this sets the level at which it will cause the chip to reset.  You must *Burn Bootloader* in order to set the fuses after changing the Brown-out Detection Level menu.
+
+### Tiny Only Menus
+
+The following menus are only present on ATTiny chips.  Not all chips have all the menus, it depends on the functionality.
+
+#### Millis, Tone Support
+
+Allows you to disable `millis()` and `tone()` if you don't need those functions to save some space.
+
+#### Millis Accuracy
+
+The more accurate `millis()` is the more FLASH (Program Storage) memory it uses generally speaking, you can use this menu to sacrifice some accuracy of `millis()` to save memory.
+
+#### Print Support
+
+The more things that `print()` (eg `Serial.print()`) can support, the more memory it uses generally speaking, you can use this menu to sacrifice some functions to save memory.
+
+#### Serial Support
+
+Some chips offer different types of serial support, you can use this menu to select how much support, more support means more memory used.
+
+### Overrides Menus
+
+For **expert** users only some additional menus are provided to override fuses and options which normally would be set to defaults or by the previous menus.   Note that if you use the Overrides menus there is **no sanity checking**, for example there is nothing to stop you choosing "Internal Oscillator 8 MHz" and then picking 16MHz from the Override Frequency, your timing would be all wonked up, but that's your perogative if that's what you chose!
+
+Note also that choosing from the Overrides menu may not result in a burnable bootloader, not all bootloader combinations are produced, the fuses will still be set though (the error about no bootloader file will happen after the fuses are burnt) so you can upload with your ISP Programmer if necessary.
+
+#### Override Clock Source
+
+This gives you finer control over what clock source to use for the chip's main clock.  The most common reason to pick something from this menu would be if you are using a TCXO.  As with *Processor Speed* if you choose a Crystal/Resonator or External Clock option be sure you actually have one or you'll be stuck.
+
+You must *Burn Bootloader* in order to set the fuses after changing the Override Clock Source menu.
+
+#### Override Frequency
+
+This gives you finer control over what frequency (F_CPU) to operate at. 
+
+:boom: **Caution** due to the way that some functions of Arduino work, `millis`, `micros`, `pulseIn` and that kind of thing might or might not work (accurately or at all) if your frequency is less than 1 MHz, furthermore if possible you should ensure your frequency is an integer multiple of 1MHz.
+
+#### Override Upload Speed
+
+When using the Bootloader (not for Upload Using Programmer) the upload speed can be tweaked using this setting.  Normally the upload speed is set to an optimal value depending on the main chip frequency (including if you override the frequency) which minimises error while maximising speed.  
+
+The upload speed you can achieve depends fairly significantly on the frequency, and not in a linear fashion, for example, 6.4MHz Frequency you should be able to do 115200 upload speed, but 8MHz you should use 38400, and 9.6MHz is best at 57600.  The reason for this is outside the scope of this document, google is your friend.
+
+Generally you should stick with the default here, the exception would be if you already have a bootloader burned which is using a different baud rate to the default.
+
+
+#### Override CKOPT (ATMega8 Only)
+
+This option is only available on the ATMega8, it allows you to explicityly set or clear the CKOPT fuse.  It's behaviour depends on the clock source.  With Crystal/Resonator it will increase the drive strength, with Internal Oscillators it will do nothing, and with external Clocks or the Low Frequency Crystal option it will enable some internal capacitors so you don't need external ones.
