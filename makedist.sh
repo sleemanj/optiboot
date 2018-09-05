@@ -336,10 +336,10 @@ function build_atmega8_hexs
   #  and baud rates
   build_hexs Makefile.atmega8 "$PACKAGENAME"
   
-  # Make high speed for some chips
-  # AVR_FREQ=20000000L BAUD_RATE=57600  build_hexs "Makefile.atmega8" "$PACKAGENAME"
-  # AVR_FREQ=19200000L BAUD_RATE=57600  build_hexs "Makefile.atmega8" "$PACKAGENAME"
-  
+  # Make non-default upload speeds for some frequencies
+  FORCE_BAUD=1 AVR_FREQ=16000000L BAUD_RATE=115200 build_hexs "Makefile.atmega8" "$PACKAGENAME"
+  FORCE_BAUD=1 AVR_FREQ=8000000L  BAUD_RATE=57600 build_hexs "Makefile.atmega8" "$PACKAGENAME"
+
   # Copy all those to notuner_ variants
   # Note that this means that except where tunable ones are generated again
   # in the next step, optiboot_xxxx.hex and notuner_optiboot_xxxx.hex 
@@ -378,10 +378,11 @@ function build_attiny_hexs
   
   build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME"
   
-  # Make high speed for some chips
-  # AVR_FREQ=20000000L BAUD_RATE=57600  build_hexs "Makefile.attinyx5" "$PACKAGENAME"
-  # AVR_FREQ=19200000L BAUD_RATE=57600  build_hexs "Makefile.attinyx5" "$PACKAGENAME"
+  # Make non-default upload speeds for some frequencies
+  FORCE_BAUD=1 AVR_FREQ=16000000L BAUD_RATE=115200 build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME"
+  FORCE_BAUD=1 AVR_FREQ=8000000L  BAUD_RATE=57600 build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME"
 
+  
   for file in $DIST/$PACKAGENAME/avr/bootloaders/optiboot*.hex
   do
     cp $file $(dirname $file)/notuner_$(basename $file)
