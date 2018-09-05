@@ -34,27 +34,33 @@ function build_hexs
 	# Call without AVR_FREQ and BAUD_RATE set to generate a standardised set
   if [ -z "$AVR_FREQ" ]
   then
-    AVR_FREQ=1000000L  BAUD_RATE=$BAUD_RATE build_hexs "$1" "$2" "$3"
-    AVR_FREQ=8000000L  BAUD_RATE=$BAUD_RATE build_hexs "$1" "$2" "$3"
-    AVR_FREQ=16000000L BAUD_RATE=$BAUD_RATE build_hexs "$1" "$2" "$3"
+    for FRQ in $(get_frequencies)
+    do
+      AVR_FREQ=$FRQ  BAUD_RATE=$BAUD_RATE build_hexs "$1" "$2" "$3"
+    done
+    #AVR_FREQ=1000000L  BAUD_RATE=$BAUD_RATE build_hexs "$1" "$2" "$3"
+    #AVR_FREQ=8000000L  BAUD_RATE=$BAUD_RATE build_hexs "$1" "$2" "$3"
+    #AVR_FREQ=16000000L BAUD_RATE=$BAUD_RATE build_hexs "$1" "$2" "$3"
     return
   fi
   
   if [ -z "$BAUD_RATE" ]
   then
-    case "$AVR_FREQ" in
-			"1000000L") 
-				AVR_FREQ=$AVR_FREQ BAUD_RATE=9600 build_hexs "$1" "$2" "$3"
-				;;
-				
-			"8000000L") 
-				AVR_FREQ=$AVR_FREQ BAUD_RATE=38400 build_hexs "$1" "$2" "$3"
-				;;
-				
-			"16000000L") 
-				AVR_FREQ=$AVR_FREQ BAUD_RATE=57600 build_hexs "$1" "$2" "$3"
-				;;
-    esac
+    AVR_FREQ=$AVR_FREQ BAUD_RATE=$(baud_for_frequency $AVR_FREQ) build_hexs "$1" "$2" "$3"
+    
+    #case "$AVR_FREQ" in
+		#	"1000000L") 
+		#		AVR_FREQ=$AVR_FREQ BAUD_RATE=9600 build_hexs "$1" "$2" "$3"
+		#		;;
+		#		
+		#	"8000000L") 
+		#		AVR_FREQ=$AVR_FREQ BAUD_RATE=38400 build_hexs "$1" "$2" "$3"
+		#		;;
+		#		
+		#	"16000000L") 
+		#		AVR_FREQ=$AVR_FREQ BAUD_RATE=57600 build_hexs "$1" "$2" "$3"
+		#		;;
+    #esac
     return
   fi
   
@@ -346,8 +352,14 @@ function build_atmega8_hexs
     cp $file $(dirname $file)/notuner_$(basename $file)
   done
   
-  # Make tunable 1MHz and 8MHz
+  # Make tunable for internal oscillator frequencies
+  
+  # 128kHz doesn't compile for tinyTuner, it's too slow
+  #AVR_FREQ=128000L build_hexs Makefile.atmega8 "$PACKAGENAME" "TUNABLE"
+  
   AVR_FREQ=1000000L build_hexs Makefile.atmega8 "$PACKAGENAME" "TUNABLE"
+  AVR_FREQ=2000000L build_hexs Makefile.atmega8 "$PACKAGENAME" "TUNABLE"
+  AVR_FREQ=4000000L build_hexs Makefile.atmega8 "$PACKAGENAME" "TUNABLE"
   AVR_FREQ=8000000L build_hexs Makefile.atmega8 "$PACKAGENAME" "TUNABLE"
 }
 
@@ -375,9 +387,33 @@ function build_attiny_hexs
     cp $file $(dirname $file)/notuner_$(basename $file)
   done
 
-  # Make tunable 1MHz and 8MHz
+  # Make tunable for internal oscillator freqs (incl PLL)
+  
+  # 128kHz doesn't compile for tinyTuner, it's too slow
+  # AVR_FREQ=128000L build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
+  
   AVR_FREQ=1000000L build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
   AVR_FREQ=8000000L build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
+  
+  # Only X5 has these
+  AVR_FREQ=6400000L build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"  
+  
+  # 16MHz doesn't compile for tinyTuner, complains about 57600 being too slow for Software Serial
+  # AVR_FREQ=16000000L build_hexs "Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
+}
+
+function get_frequencies
+{
+   cat $DIST/diy_atmega8_series/avr/boards.txt $DIST/diy_attiny/avr/boards.txt \
+    | grep -v "#" \
+    | grep f_cpu= | sed -r 's/.*f_cpu=//' | sort | uniq | sort -n | sed -r 's/\r|\n//'
+}
+
+function baud_for_frequency
+{
+   cat $DIST/diy_atmega8_series/avr/boards.txt $DIST/diy_attiny/avr/boards.txt \
+     | grep "$(cat $DIST/diy_atmega8_series/avr/boards.txt $DIST/diy_attiny/avr/boards.txt | grep f_cpu="$1" | grep advfrq | head -1 | sed -r 's/\.build\.f_cpu=.*//').upload.speed" | head -1 | sed -r 's/.*=//' | sed -r 's/\r|\n//'
+
 }
 
 # Because of the menu-size in 1.0.x boards, we limit to only the 
