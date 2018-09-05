@@ -337,8 +337,8 @@ function build_atmega8_hexs
   build_hexs Makefile.atmega8 "$PACKAGENAME"
   
   # Make high speed for some chips
-  AVR_FREQ=20000000L BAUD_RATE=57600  build_hexs "Makefile.atmega8" "$PACKAGENAME"
-  AVR_FREQ=19200000L BAUD_RATE=57600  build_hexs "Makefile.atmega8" "$PACKAGENAME"
+  # AVR_FREQ=20000000L BAUD_RATE=57600  build_hexs "Makefile.atmega8" "$PACKAGENAME"
+  # AVR_FREQ=19200000L BAUD_RATE=57600  build_hexs "Makefile.atmega8" "$PACKAGENAME"
   
   # Copy all those to notuner_ variants
   # Note that this means that except where tunable ones are generated again
@@ -379,8 +379,8 @@ function build_attiny_hexs
   build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME"
   
   # Make high speed for some chips
-  AVR_FREQ=20000000L BAUD_RATE=57600  build_hexs "Makefile.attinyx5" "$PACKAGENAME"
-  AVR_FREQ=19200000L BAUD_RATE=57600  build_hexs "Makefile.attinyx5" "$PACKAGENAME"
+  # AVR_FREQ=20000000L BAUD_RATE=57600  build_hexs "Makefile.attinyx5" "$PACKAGENAME"
+  # AVR_FREQ=19200000L BAUD_RATE=57600  build_hexs "Makefile.attinyx5" "$PACKAGENAME"
 
   for file in $DIST/$PACKAGENAME/avr/bootloaders/optiboot*.hex
   do
