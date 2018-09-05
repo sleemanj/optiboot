@@ -36,18 +36,18 @@
 #
 ################################################################################
 
-menu.version    = Processor Version
-menu.clock      = Processor Speed
-menu.boot       = Use Bootloader
-menu.core       = Millis, Tone Support
-menu.millis_ppm = Millis Accuracy
-menu.print      = Print Support
-menu.serial     = Serial Support
-menu.lto        = Link Time Optimisation
-menu.bodlevel   = Brown-out Detection Level
-menu.advclk     = Override Clock Source
-menu.advfrq     = Override Frequency
-menu.advups     = Override Upload Speed
+menu.version    = 12 Processor Version
+menu.clock      = 11 Processor Speed
+menu.boot       = 10 Use Bootloader
+menu.core       = 09 Millis, Tone Support
+menu.millis_ppm = 08 Millis Accuracy
+menu.print      = 07 Print Support
+menu.serial     = 06 Serial Support
+menu.lto        = 05 Link Time Optimisation
+menu.bodlevel   = 04 Brown-out Detection Level
+menu.advclk     = 03 Override Clock Source
+menu.advfrq     = 02 Override Frequency
+menu.advups     = 01 Override Upload Speed
 
 # The names are put here in the order they will appear in the boards menu
 #  you can repeat these definitions in each board section for completeness
@@ -325,6 +325,14 @@ attiny25_diy.menu.advfrq.128k.upload.speed=300
 attiny25_diy.menu.advfrq.1M=1 MHz
 attiny25_diy.menu.advfrq.1M.build.f_cpu=1000000L
 attiny25_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny25_diy.menu.advfrq.2M=2 MHz
+attiny25_diy.menu.advfrq.2M.build.f_cpu=2000000L
+attiny25_diy.menu.advfrq.2M.upload.speed=19200
+
+attiny25_diy.menu.advfrq.4M=4 MHz
+attiny25_diy.menu.advfrq.4M.build.f_cpu=4000000L
+attiny25_diy.menu.advfrq.4M.upload.speed=38400
 
 attiny25_diy.menu.advfrq.4M608=4.608 MHz
 attiny25_diy.menu.advfrq.4M608.build.f_cpu=4608000L
@@ -649,6 +657,14 @@ attiny45_diy.menu.advfrq.1M=1 MHz
 attiny45_diy.menu.advfrq.1M.build.f_cpu=1000000L
 attiny45_diy.menu.advfrq.1M.upload.speed=9600
 
+attiny45_diy.menu.advfrq.2M=2 MHz
+attiny45_diy.menu.advfrq.2M.build.f_cpu=2000000L
+attiny45_diy.menu.advfrq.2M.upload.speed=19200
+
+attiny45_diy.menu.advfrq.4M=4 MHz
+attiny45_diy.menu.advfrq.4M.build.f_cpu=4000000L
+attiny45_diy.menu.advfrq.4M.upload.speed=38400
+
 attiny45_diy.menu.advfrq.4M608=4.608 MHz
 attiny45_diy.menu.advfrq.4M608.build.f_cpu=4608000L
 attiny45_diy.menu.advfrq.4M608.upload.speed=115200
@@ -971,6 +987,14 @@ attiny85_diy.menu.advfrq.128k.upload.speed=300
 attiny85_diy.menu.advfrq.1M=1 MHz
 attiny85_diy.menu.advfrq.1M.build.f_cpu=1000000L
 attiny85_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny85_diy.menu.advfrq.2M=2 MHz
+attiny85_diy.menu.advfrq.2M.build.f_cpu=2000000L
+attiny85_diy.menu.advfrq.2M.upload.speed=19200
+
+attiny85_diy.menu.advfrq.4M=4 MHz
+attiny85_diy.menu.advfrq.4M.build.f_cpu=4000000L
+attiny85_diy.menu.advfrq.4M.upload.speed=38400
 
 attiny85_diy.menu.advfrq.4M608=4.608 MHz
 attiny85_diy.menu.advfrq.4M608.build.f_cpu=4608000L
@@ -1342,6 +1366,14 @@ attiny24_diy.menu.advfrq.1M=1 MHz
 attiny24_diy.menu.advfrq.1M.build.f_cpu=1000000L
 attiny24_diy.menu.advfrq.1M.upload.speed=9600
 
+attiny24_diy.menu.advfrq.2M=2 MHz
+attiny24_diy.menu.advfrq.2M.build.f_cpu=2000000L
+attiny24_diy.menu.advfrq.2M.upload.speed=19200
+
+attiny24_diy.menu.advfrq.4M=4 MHz
+attiny24_diy.menu.advfrq.4M.build.f_cpu=4000000L
+attiny24_diy.menu.advfrq.4M.upload.speed=38400
+
 attiny24_diy.menu.advfrq.4M608=4.608 MHz
 attiny24_diy.menu.advfrq.4M608.build.f_cpu=4608000L
 attiny24_diy.menu.advfrq.4M608.upload.speed=115200
@@ -1665,6 +1697,14 @@ attiny44_diy.menu.advfrq.128k.upload.speed=300
 attiny44_diy.menu.advfrq.1M=1 MHz
 attiny44_diy.menu.advfrq.1M.build.f_cpu=1000000L
 attiny44_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny44_diy.menu.advfrq.2M=2 MHz
+attiny44_diy.menu.advfrq.2M.build.f_cpu=2000000L
+attiny44_diy.menu.advfrq.2M.upload.speed=19200
+
+attiny44_diy.menu.advfrq.4M=4 MHz
+attiny44_diy.menu.advfrq.4M.build.f_cpu=4000000L
+attiny44_diy.menu.advfrq.4M.upload.speed=38400
 
 attiny44_diy.menu.advfrq.4M608=4.608 MHz
 attiny44_diy.menu.advfrq.4M608.build.f_cpu=4608000L
@@ -1995,6 +2035,14 @@ attiny84_diy.menu.advfrq.128k.upload.speed=300
 attiny84_diy.menu.advfrq.1M=1 MHz
 attiny84_diy.menu.advfrq.1M.build.f_cpu=1000000L
 attiny84_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny84_diy.menu.advfrq.2M=2 MHz
+attiny84_diy.menu.advfrq.2M.build.f_cpu=2000000L
+attiny84_diy.menu.advfrq.2M.upload.speed=19200
+
+attiny84_diy.menu.advfrq.4M=4 MHz
+attiny84_diy.menu.advfrq.4M.build.f_cpu=4000000L
+attiny84_diy.menu.advfrq.4M.upload.speed=38400
 
 attiny84_diy.menu.advfrq.4M608=4.608 MHz
 attiny84_diy.menu.advfrq.4M608.build.f_cpu=4608000L
@@ -2354,6 +2402,14 @@ attiny13_diy.menu.advfrq.128k.upload.speed=300
 attiny13_diy.menu.advfrq.1M=1 MHz
 attiny13_diy.menu.advfrq.1M.build.f_cpu=1000000L
 attiny13_diy.menu.advfrq.1M.upload.speed=9600
+
+attiny13_diy.menu.advfrq.2M=2 MHz
+attiny13_diy.menu.advfrq.2M.build.f_cpu=2000000L
+attiny13_diy.menu.advfrq.2M.upload.speed=19200
+
+attiny13_diy.menu.advfrq.4M=4 MHz
+attiny13_diy.menu.advfrq.4M.build.f_cpu=4000000L
+attiny13_diy.menu.advfrq.4M.upload.speed=38400
 
 attiny13_diy.menu.advfrq.4M608=4.608 MHz
 attiny13_diy.menu.advfrq.4M608.build.f_cpu=4608000L

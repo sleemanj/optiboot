@@ -299,6 +299,14 @@ atmega8_diy.menu.advfrq.1M=1 MHz
 atmega8_diy.menu.advfrq.1M.build.f_cpu=1000000L
 atmega8_diy.menu.advfrq.1M.upload.speed=9600
 
+atmega8_diy.menu.advfrq.2M=2 MHz
+atmega8_diy.menu.advfrq.2M.build.f_cpu=2000000L
+atmega8_diy.menu.advfrq.2M.upload.speed=19200
+
+atmega8_diy.menu.advfrq.4M=4 MHz
+atmega8_diy.menu.advfrq.4M.build.f_cpu=4000000L
+atmega8_diy.menu.advfrq.4M.upload.speed=38400
+
 atmega8_diy.menu.advfrq.4M608=4.608 MHz
 atmega8_diy.menu.advfrq.4M608.build.f_cpu=4608000L
 atmega8_diy.menu.advfrq.4M608.upload.speed=115200
@@ -588,6 +596,14 @@ atmega48p_diy.menu.advfrq.128k.upload.speed=300
 atmega48p_diy.menu.advfrq.1M=1 MHz
 atmega48p_diy.menu.advfrq.1M.build.f_cpu=1000000L
 atmega48p_diy.menu.advfrq.1M.upload.speed=9600
+
+atmega48p_diy.menu.advfrq.2M=2 MHz
+atmega48p_diy.menu.advfrq.2M.build.f_cpu=2000000L
+atmega48p_diy.menu.advfrq.2M.upload.speed=19200
+
+atmega48p_diy.menu.advfrq.4M=4 MHz
+atmega48p_diy.menu.advfrq.4M.build.f_cpu=4000000L
+atmega48p_diy.menu.advfrq.4M.upload.speed=38400
 
 atmega48p_diy.menu.advfrq.4M608=4.608 MHz
 atmega48p_diy.menu.advfrq.4M608.build.f_cpu=4608000L
@@ -900,6 +916,14 @@ atmega328_diy.menu.advfrq.1M=1 MHz
 atmega328_diy.menu.advfrq.1M.build.f_cpu=1000000L
 atmega328_diy.menu.advfrq.1M.upload.speed=9600
 
+atmega328_diy.menu.advfrq.2M=2 MHz
+atmega328_diy.menu.advfrq.2M.build.f_cpu=2000000L
+atmega328_diy.menu.advfrq.2M.upload.speed=19200
+
+atmega328_diy.menu.advfrq.4M=4 MHz
+atmega328_diy.menu.advfrq.4M.build.f_cpu=4000000L
+atmega328_diy.menu.advfrq.4M.upload.speed=38400
+
 atmega328_diy.menu.advfrq.4M608=4.608 MHz
 atmega328_diy.menu.advfrq.4M608.build.f_cpu=4608000L
 atmega328_diy.menu.advfrq.4M608.upload.speed=115200
@@ -1171,6 +1195,14 @@ atmega88_diy.menu.advfrq.1M=1 MHz
 atmega88_diy.menu.advfrq.1M.build.f_cpu=1000000L
 atmega88_diy.menu.advfrq.1M.upload.speed=9600
 
+atmega88_diy.menu.advfrq.2M=2 MHz
+atmega88_diy.menu.advfrq.2M.build.f_cpu=2000000L
+atmega88_diy.menu.advfrq.2M.upload.speed=19200
+
+atmega88_diy.menu.advfrq.4M=4 MHz
+atmega88_diy.menu.advfrq.4M.build.f_cpu=4000000L
+atmega88_diy.menu.advfrq.4M.upload.speed=38400
+
 atmega88_diy.menu.advfrq.4M608=4.608 MHz
 atmega88_diy.menu.advfrq.4M608.build.f_cpu=4608000L
 atmega88_diy.menu.advfrq.4M608.upload.speed=115200
@@ -1439,6 +1471,14 @@ atmega168_diy.menu.advfrq.128k.upload.speed=300
 atmega168_diy.menu.advfrq.1M=1 MHz
 atmega168_diy.menu.advfrq.1M.build.f_cpu=1000000L
 atmega168_diy.menu.advfrq.1M.upload.speed=9600
+
+atmega168_diy.menu.advfrq.2M=2 MHz
+atmega168_diy.menu.advfrq.2M.build.f_cpu=2000000L
+atmega168_diy.menu.advfrq.2M.upload.speed=19200
+
+atmega168_diy.menu.advfrq.4M=4 MHz
+atmega168_diy.menu.advfrq.4M.build.f_cpu=4000000L
+atmega168_diy.menu.advfrq.4M.upload.speed=38400
 
 atmega168_diy.menu.advfrq.4M608=4.608 MHz
 atmega168_diy.menu.advfrq.4M608.build.f_cpu=4608000L
