@@ -314,8 +314,6 @@ Some chips offer different types of serial support, you can use this menu to sel
 
 For **expert** users only some additional menus are provided to override fuses and options which normally would be set to defaults or by the previous menus.   Note that if you use the Overrides menus there is **no sanity checking**, for example there is nothing to stop you choosing "Internal Oscillator 8 MHz" and then picking 16MHz from the Override Frequency, your timing would be all wonked up, but that's your perogative if that's what you chose!
 
-Note also that choosing from the Overrides menu may not result in a burnable bootloader, not all bootloader combinations are produced, the fuses will still be set though (the error about no bootloader file will happen after the fuses are burnt) so you can upload with your ISP Programmer if necessary.
-
 #### Override Clock Source
 
 This gives you finer control over what clock source to use for the chip's main clock.  The most common reason to pick something from this menu would be if you are using a TCXO.  As with *Processor Speed* if you choose a Crystal/Resonator or External Clock option be sure you actually have one or you'll be stuck.
@@ -330,12 +328,11 @@ This gives you finer control over what frequency (F_CPU) to operate at.
 
 #### Override Upload Speed
 
-When using the Bootloader (not for Upload Using Programmer) the upload speed can be tweaked using this setting.  Normally the upload speed is set to an optimal value depending on the main chip frequency (including if you override the frequency) which minimises error while maximising speed.  
+When using the Bootloader (not for Upload Using Programmer) the upload speed can be tweaked using this setting.  This does not affect "Serial" or "SoftwareSerial" etc, just uploads using the bootloader.
 
-The upload speed you can achieve depends fairly significantly on the frequency, and not in a linear fashion, for example, 6.4MHz Frequency you should be able to do 115200 upload speed, but 8MHz you should use 38400, and 9.6MHz is best at 57600.  The reason for this is outside the scope of this document, google is your friend.
+Generally you should stick with the default here if you are burning a bootloader, the exception would be if you already have a bootloader burned which is using a different rate to the default.
 
-Generally you should stick with the default here, the exception would be if you already have a bootloader burned which is using a different baud rate to the default.
-
+:boom: All frequencies above 1MHz should at least have a *Default* upload speed that has a bootloader file, but anything other than *Default* may or may not have a working bootloader and will produce an error when you Burn Bootloader.  In short, the only time you need to use this menu is if you already have a burned bootloader which has a different upload speed and you don't want to re-burn with *Default* (which will be the fastest recommended).
 
 #### Override CKOPT (ATMega8 Only)
 
