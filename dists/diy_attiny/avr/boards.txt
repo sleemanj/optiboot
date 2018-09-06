@@ -36,18 +36,23 @@
 #
 ################################################################################
 
-menu.version    = Processor Version
-menu.clock      = Processor Speed
-menu.boot       = Use Bootloader
-menu.core       = Millis, Tone Support
-menu.millis_ppm = Millis Accuracy
-menu.print      = Print Support
-menu.serial     = Serial Support
-menu.lto        = Link Time Optimisation
-menu.bodlevel   = Brown-out Detection Level
-menu.advclk     = Override Clock Source
-menu.advfrq     = Override Frequency
-menu.advups     = Override Upload Speed
+# Note that there is an invisible zero-width non-breaking space character after 
+# each menu title to differentiate it from the diy_atmega8 menus which have the
+# same names without that if you have both atmega8 and attiny installed then the 
+# menu ordering will be the atmega8 ordering.
+
+menu.version    = Processor Version 
+menu.clock      = Processor Speed 
+menu.boot       = Use Bootloader 
+menu.core       = Millis, Tone Support 
+menu.millis_ppm = Millis Accuracy 
+menu.print      = Print Support 
+menu.serial     = Serial Support 
+menu.lto        = Link Time Optimisation 
+menu.bodlevel   = Brown-out Detection Level 
+menu.advclk     = Override Clock Source 
+menu.advfrq     = Override Frequency 
+menu.advups     = Override Upload Speed 
 
 # The names are put here in the order they will appear in the boards menu
 #  you can repeat these definitions in each board section for completeness
@@ -138,6 +143,7 @@ attiny25_diy.menu.boot.none=No (ISP Programmer Upload)
 attiny25_diy.menu.boot.none.upload.maximum_size=2048
 attiny25_diy.menu.boot.none.bootloader.tool=diy_attiny:avrdude_nobootloader
 
+
 # Speed Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -163,13 +169,10 @@ attiny25_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny25_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny25_diy.menu.clock.1MHz.upload.speed=9600
 
-attiny25_diy.menu.clock.over=Special Speed (Override)
-attiny25_diy.menu.clock.over.build.f_cpu=8000000L
-attiny25_diy.menu.clock.over.bootloader.low_fuses=0xE2
-attiny25_diy.menu.clock.over.upload.speed=38400
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 attiny25_diy.menu.core.SmallerCore=Millis Available, No Tone
 attiny25_diy.menu.core.SmallerCore.build.variant=tinyX5
 attiny25_diy.menu.core.SmallerCore.build.core=tiny
@@ -185,8 +188,10 @@ attiny25_diy.menu.core.SmallestCore.build.variant=tinyX5
 attiny25_diy.menu.core.SmallestCore.build.core=tiny
 attiny25_diy.menu.core.SmallestCore.build.extra_flags=-DNO_MILLIS -DNO_TONE
 
+
 # Print Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 attiny25_diy.menu.print.BinHexDec=Bin, Hex, Dec Supported
 attiny25_diy.menu.print.BinHexDec.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN -DPRINT_USE_BASE_DEC -DPRINT_USE_BASE_HEX
 
@@ -209,8 +214,10 @@ attiny25_diy.menu.print.Oct.build.custom_flags.print.use_base=-DPRINT_USE_BASE_O
 attiny25_diy.menu.print.Bin=Bin Only Supported (Smallest)
 attiny25_diy.menu.print.Bin.build.custom_flags.print.use_base=-DPRINT_USE_BASE_BIN
 
+
 # Millis Accuracy
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 attiny25_diy.menu.millis_ppm.1p6=Better Or Equal 1.666% Error (Default)
 attiny25_diy.menu.millis_ppm.1p6.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=16666UL
 
@@ -241,8 +248,10 @@ attiny25_diy.menu.millis_ppm.0p25.build.custom_flags.millis_ppm=-DACCEPTABLE_MIL
 attiny25_diy.menu.millis_ppm.0p1=Better Or Equal 0.1% Error (Highest Code Use)
 attiny25_diy.menu.millis_ppm.0p1.build.custom_flags.millis_ppm=-DACCEPTABLE_MILLIS_ERROR_PPM=1000UL
 
+
 # Link Time Optimisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 attiny25_diy.menu.lto.enable=LTO Enabled
 attiny25_diy.menu.lto.enable.ltocflags=-flto -DLTO_ENABLED -fno-fat-lto-objects
 attiny25_diy.menu.lto.enable.ltoelfflags=-g -flto -DLTO_ENABLED -fuse-linker-plugin
@@ -254,8 +263,10 @@ attiny25_diy.menu.lto.disable.ltoelfflags=
 attiny25_diy.menu.lto.disable.ltocppflags=
 attiny25_diy.menu.lto.disable.ltoarcmd=
 
+
 # BOD Level Fuse Bits
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 attiny25_diy.menu.bodlevel.2v7=2.7v
 attiny25_diy.menu.bodlevel.2v7.bootloader.bod_bits=101
 attiny25_diy.menu.bodlevel.disabled=Disabled
@@ -308,6 +319,7 @@ attiny25_diy.menu.advclk.x8.bootloader.low_fuses=0xFF
 
 attiny25_diy.menu.advclk.xc=External Clock (TCXO, OCXO...)
 attiny25_diy.menu.advclk.xc.bootloader.low_fuses=0xE0
+
 
 # Override: Frequency Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -389,6 +401,7 @@ attiny25_diy.menu.advfrq.20M.upload.speed=115200
 attiny25_diy.menu.advfrq.24M=24 MHz
 attiny25_diy.menu.advfrq.24M.build.f_cpu=24000000L
 attiny25_diy.menu.advfrq.24M.upload.speed=115200
+
 
 # Override: Upload Speed Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -494,11 +507,6 @@ attiny45_diy.menu.clock.1MHz=1MHz Internal Oscillator
 attiny45_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny45_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny45_diy.menu.clock.1MHz.upload.speed=9600
-
-attiny45_diy.menu.clock.over=Special Speed (Override)
-attiny45_diy.menu.clock.over.build.f_cpu=8000000L
-attiny45_diy.menu.clock.over.bootloader.low_fuses=0xE2
-attiny45_diy.menu.clock.over.upload.speed=38400
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -825,11 +833,6 @@ attiny85_diy.menu.clock.1MHz=1MHz Internal Oscillator
 attiny85_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny85_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny85_diy.menu.clock.1MHz.upload.speed=9600
-
-attiny85_diy.menu.clock.over=Special Speed (Override)
-attiny85_diy.menu.clock.over.build.f_cpu=8000000L
-attiny85_diy.menu.clock.over.bootloader.low_fuses=0xE2
-attiny85_diy.menu.clock.over.upload.speed=38400
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1199,11 +1202,6 @@ attiny24_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny24_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny24_diy.menu.clock.1MHz.upload.speed=9600
 
-attiny24_diy.menu.clock.over=Special Speed (Override)
-attiny24_diy.menu.clock.over.build.f_cpu=8000000L
-attiny24_diy.menu.clock.over.bootloader.low_fuses=0xE2
-attiny24_diy.menu.clock.over.upload.speed=38400
-
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 attiny24_diy.menu.core.SmallerCore=Millis Available, No Tone
@@ -1531,11 +1529,6 @@ attiny44_diy.menu.clock.1MHz=1MHz Internal Oscillator
 attiny44_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny44_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny44_diy.menu.clock.1MHz.upload.speed=9600
-
-attiny44_diy.menu.clock.over=Special Speed (Override)
-attiny44_diy.menu.clock.over.build.f_cpu=8000000L
-attiny44_diy.menu.clock.over.bootloader.low_fuses=0xE2
-attiny44_diy.menu.clock.over.upload.speed=38400
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1869,11 +1862,6 @@ attiny84_diy.menu.clock.1MHz=1MHz Internal Oscillator
 attiny84_diy.menu.clock.1MHz.build.f_cpu=1000000L
 attiny84_diy.menu.clock.1MHz.bootloader.low_fuses=0x62
 attiny84_diy.menu.clock.1MHz.upload.speed=9600
-
-attiny84_diy.menu.clock.over=Special Speed (Override)
-attiny84_diy.menu.clock.over.build.f_cpu=8000000L
-attiny84_diy.menu.clock.over.bootloader.low_fuses=0xE2
-attiny84_diy.menu.clock.over.upload.speed=38400
 
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2231,11 +2219,6 @@ attiny13_diy.menu.clock.1_2MHz=1.2MHz Internal Oscillator
 attiny13_diy.menu.clock.1_2MHz.build.f_cpu=1200000L
 attiny13_diy.menu.clock.1_2MHz.bootloader.low_fuses=0x62
 
-attiny13_diy.menu.clock.over=Special Speed (Override)
-attiny13_diy.menu.clock.over.build.f_cpu=9600000L
-attiny13_diy.menu.clock.over.bootloader.low_fuses=0x7A
-
-
 # Core Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -2483,34 +2466,34 @@ attiny13_diy.menu.advfrq.24M.upload.speed=115200
 # Override: Upload Speed Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-attiny13_diy.menu.advups.auto=Default
+#attiny13_diy.menu.advups.auto=Default
 
-attiny13_diy.menu.advups.115200=115200
-attiny13_diy.menu.advups.115200.upload.speed=115200
+#attiny13_diy.menu.advups.115200=115200
+#attiny13_diy.menu.advups.115200.upload.speed=115200
 
-attiny13_diy.menu.advups.57600=57600
-attiny13_diy.menu.advups.57600.upload.speed=57600
+#attiny13_diy.menu.advups.57600=57600
+#attiny13_diy.menu.advups.57600.upload.speed=57600
 
-attiny13_diy.menu.advups.38400=38400
-attiny13_diy.menu.advups.38400.upload.speed=38400
+#attiny13_diy.menu.advups.38400=38400
+#attiny13_diy.menu.advups.38400.upload.speed=38400
 
-attiny13_diy.menu.advups.19200=19200
-attiny13_diy.menu.advups.19200.upload.speed=19200
+#attiny13_diy.menu.advups.19200=19200
+#attiny13_diy.menu.advups.19200.upload.speed=19200
 
-attiny13_diy.menu.advups.9600=9600
-attiny13_diy.menu.advups.9600.upload.speed=9600
+#attiny13_diy.menu.advups.9600=9600
+#attiny13_diy.menu.advups.9600.upload.speed=9600
 
-attiny13_diy.menu.advups.2400=2400
-attiny13_diy.menu.advups.2400.upload.speed=2400
+#attiny13_diy.menu.advups.2400=2400
+#attiny13_diy.menu.advups.2400.upload.speed=2400
 
-attiny13_diy.menu.advups.1200=1200
-attiny13_diy.menu.advups.1200.upload.speed=1200
+#attiny13_diy.menu.advups.1200=1200
+#attiny13_diy.menu.advups.1200.upload.speed=1200
 
-attiny13_diy.menu.advups.300=300
-attiny13_diy.menu.advups.300.upload.speed=300
+#attiny13_diy.menu.advups.300=300
+#attiny13_diy.menu.advups.300.upload.speed=300
 
-attiny13_diy.menu.advups.150=150
-attiny13_diy.menu.advups.150.upload.speed=150
+#attiny13_diy.menu.advups.150=150
+#attiny13_diy.menu.advups.150.upload.speed=150
 
 # }}}
 
