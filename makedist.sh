@@ -361,6 +361,7 @@ function build_atmega8_hexs
   AVR_FREQ=2000000L build_hexs Makefile.atmega8 "$PACKAGENAME" "TUNABLE"
   AVR_FREQ=4000000L build_hexs Makefile.atmega8 "$PACKAGENAME" "TUNABLE"
   AVR_FREQ=8000000L build_hexs Makefile.atmega8 "$PACKAGENAME" "TUNABLE"
+  FORCE_BAUD=1 AVR_FREQ=8000000L  BAUD_RATE=57600 build_hexs "Makefile.atmega8" "$PACKAGENAME" "TUNABLE"
 }
 
 function build_attiny_hexs
@@ -395,6 +396,7 @@ function build_attiny_hexs
   
   AVR_FREQ=1000000L build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
   AVR_FREQ=8000000L build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
+  FORCE_BAUD=1 AVR_FREQ=8000000L  BAUD_RATE=57600 build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"
   
   # Only X5 has these
   AVR_FREQ=6400000L build_hexs "Makefile.attinyx4 Makefile.attinyx5" "$PACKAGENAME" "TUNABLE"  
