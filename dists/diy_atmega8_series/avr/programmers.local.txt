@@ -10,7 +10,7 @@
 #
 ################################################################################
 
-ee_usbasp.name=USBasp + Upload EEPROM (Not For Burn Bootloader)
+ee_usbasp.name=DIY ATmega: USBasp + Upload EEPROM (Not For Burn Bootloader)
 ee_usbasp.communication=usb
 ee_usbasp.protocol=usbasp
 ee_usbasp.program.protocol=usbasp
