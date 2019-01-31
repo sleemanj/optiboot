@@ -2180,7 +2180,7 @@ attiny13_diy.menu.version.attiny13 = ATtiny13
 attiny13_diy.menu.version.attiny13.build.mcu = attiny13
 
 attiny13_diy.menu.version.attiny13a = ATtiny13a
-attiny13_diy.menu.version.attiny13a.build.mcu  = attiny13
+attiny13_diy.menu.version.attiny13a.build.mcu  = attiny13a
 
 # Bootloader Menu
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
