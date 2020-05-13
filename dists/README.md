@@ -15,7 +15,7 @@
     - [ATtiny13](#attiny13)
       - [SPI / Wire (I2C, TWI) On Tiny13](#spi--wire-i2c-twi-on-tiny13)
     - [ATtiny4, ATtiny5, ATtiny9, ATtiny10](#attiny4-attiny5-attiny9-attiny10)
-  - [Installation & Usage](#installation-&-usage)
+  - [Installation & Usage](#installation--usage)
     - [Automatic Installation through Board Manager (Recommended)](#automatic-installation-through-board-manager-recommended)
     - [Manual Installation (Not Recommended)](#manual-installation-not-recommended)
     - [Usage](#usage)
