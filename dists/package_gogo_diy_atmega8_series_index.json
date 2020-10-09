@@ -15,6 +15,42 @@
 {
   "name": "DIY ATmega8, ATmega48, ATmega88, ATmega168, ATmega328",
   "architecture": "avr",
+  "version": "2020.10.9",
+  "category": "Contributed",
+  "help": {
+      "online": "https://github.com/sleemanj/optiboot/dists/"
+  },
+  "url": "https://raw.githubusercontent.com/sleemanj/optiboot/master/dists/board_manager_packages/diy_atmega8_series_2020_10_9.zip",  
+  "archiveFileName": "diy_atmega8_series_2020_10_9.zip",
+  
+  "checksum": "SHA-256:f3e2173b959034e13e1be6a4d220b70dcdf66498f31d910ce0e139eb87600a78",
+  "size": "1274728",
+
+  "boards": [
+    {"name": "ATmega8"},
+    {"name": "ATmega48"},
+    {"name": "ATmega88"},
+    {"name": "ATmega168"},
+    {"name": "ATmega328"},
+    {"name": "and variants thereof"}                                 
+  ],
+  "toolsDependencies": [
+    {
+      "packager": "arduino",
+      "name": "avrdude",
+      "version": "6.3.0-arduino17"
+    },
+    {
+      "packager": "arduino",
+      "name": "avr-gcc",
+      "version": "7.3.0-atmel3.6.1-arduino7"
+    }
+  ]
+},
+
+{
+  "name": "DIY ATmega8, ATmega48, ATmega88, ATmega168, ATmega328",
+  "architecture": "avr",
   "version": "2018.9.9",
   "category": "Contributed",
   "help": {

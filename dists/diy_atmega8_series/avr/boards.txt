@@ -786,7 +786,7 @@ atmega328_diy.menu.version.atmega328p = Atmega328P
 atmega328_diy.menu.version.atmega328p.build.mcu = atmega328p
 
 atmega328_diy.menu.version.atmega328pb = Atmega328PB
-atmega328_diy.menu.version.atmega328pb.build.mcu = atmega328p
+atmega328_diy.menu.version.atmega328pb.build.mcu = atmega328pb
 
 atmega328_diy.menu.version.atmega328  = ATmega328
 atmega328_diy.menu.version.atmega328.build.mcu = atmega328
