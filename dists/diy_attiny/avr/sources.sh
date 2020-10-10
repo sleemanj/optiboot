@@ -98,23 +98,25 @@ cat >avrdude.conf <<EOF
 ###############################################################################
 EOF
 
+  # From at least IDE 1.8.13 only the programmers defined by the core are
+  #  shown, so we will need to copy in the programmers from the core into 
+  #  our own programmers.txt
+  #
+  # However older IDE versions will display all the programmers, which means
+  #  that we need to prefix our ones so older IDE versions will be clear!
+  wget https://raw.githubusercontent.com/arduino/ArduinoCore-avr/master/programmers.txt -O programmers.tmp.txt
+  cat programmers.tmp.txt | sed -r 's/\.name=(.*)/.name=DIY ATTiny: \1/' >>programmers.txt  
+  echo >>programmers.txt
+  cat programmers.local.txt | grep -v "#" >>programmers.txt
+  rm  programmers.tmp.txt
+  
+  
   if grep -F "#define" avrdude.local.conf >/dev/null
   then  
     cat avrdude.local.conf >>avrdude.conf
-    wget https://raw.githubusercontent.com/arduino/ArduinoCore-avr/master/programmers.txt -O programmers.tmp.txt
-    cat programmers.tmp.txt | sed -r 's/\.name=(.*)/.name=DIY ATTiny: \1/' >>programmers.txt  
-    echo >>programmers.txt
-    cat programmers.local.txt | grep -v "#" >>programmers.txt
-    rm  programmers.tmp.txt
   else
-    # Not using a custom avrdude.conf        
-    cat programmers.local.txt | grep -v "#" >>programmers.txt
-    
-    # If we have our own programmers we MUST have our own 
-    # avrdude.conf, so copy it in place from arduino.  This whole configuration system is an inconsistent mess.
     # The local file will include some other since it isnt an avrdude.conf itself   
     cat $(grep -F "#include" avrdude.local.conf | sed -r 's/.*"(.*)".*/\1/') >>avrdude.conf
-    
   fi
   
 }
